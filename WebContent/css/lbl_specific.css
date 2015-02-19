@@ -1,0 +1,74 @@
+@CHARSET "ISO-8859-1";
+
+
+
+#topic_input {
+	
+	padding: 20px 25px 15px 15px;
+	
+}
+
+#output_lang {
+	
+	padding: 10px 25px 25px 0px;
+
+	
+}
+
+#level_of_detail {
+	
+	padding: 10px 25px 25px 0px;
+	
+}
+
+#time_feedback{
+	padding: 10px 25px 25px 25px;
+}
+
+
+#gConnect {
+	
+	padding: 20px 25px 25px 25px;
+	
+}
+
+#logo_signin {
+	
+	padding: 120px 25px 25px 25px;
+	
+}
+
+.centered_button
+{
+	text-align:center;
+	margin:auto;
+	padding: 120px 25px 25px 25px;
+}
+
+#continue_1{
+	padding: 28px 25px 25px 10px;
+}
+
+.lbl_input_btn{
+	padding: 10px 25px 25px 0px;
+}
+
+#lbl_heading{
+	padding: 0px 0px 0px 15px;
+}
+
+#sign_out_btm {
+/*   position: relative; */
+/*   top: 50%; */
+/*   transform: translateY(40%); */
+}
+
+#welcome_msg{
+/*   position: relative; */
+/*   top: 50%; */
+/*   transform: translateY(40%); */
+}
+
+#heading_topic{
+	padding: 10px 0px 25px 0px;
+}
