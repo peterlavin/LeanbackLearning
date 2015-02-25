@@ -88,8 +88,9 @@ function setErrorMsg(){
 //	$("#time_feedback").show();
 	$("#time_feedback").empty();
 	$("#time_feedback").append('<div class="btn-toolbar" id="time_feedback_toolbar"></div>');
-	$("#time_feedback_toolbar").css({"padding": "0px 05px 0px 5px"});
-	$("#time_feedback").append('Test Error Message Test Error Message Test Error Message');
+	// Custom padding to keep flow when buttons are replaced with an error message
+	$("#time_feedback_toolbar").css({"padding": "14px 0px 0px 14px"});
+	$("#time_feedback").append('Error Message: Placeholder failure message feedback for user');
 	
 }
 

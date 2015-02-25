@@ -35,9 +35,10 @@ public class SequenceServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		System.out.println("doGet in SequenceServlet has been invoked");
 		
-		String responseJsStr = " --- From Servlet --- " + request.getParameter("name");
+		String responseJsStr = " --- From Servlet --- " + request.getParameter("testArg1");
+
+		System.out.println("doGet in SequenceServlet has been invoked " + responseJsStr);
 		
 		/*
 		 * Write string to response
