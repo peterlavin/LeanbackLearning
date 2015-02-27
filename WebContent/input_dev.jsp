@@ -27,81 +27,28 @@
     	
     	<!-- 		Own css file for local settings -->
   		<link rel="stylesheet" href="css/lbl_specific.css">
-  		
-  		
-<!--   		Needed until document.ready() is included -->
-  		<script type="text/javascript">
-	  		function setup(){
-  				
-//   				$("#time_feedback").css("visibility", "hidden");
-//   				// TODO change this to use the g+ signin variable
-//   		        $('#usermsg').append($('<h4> Welcome "User Name"</h4>'));
-//   		        $('#play_button').hide();
-//   		        $('#loader').hide();
-  		        
-//   		        // Set language and detail buttons to default highlighting
-//   		  		$('#en_btn').css({"background":"#BEBEBE"});
-//   				$('#en_btn').css({"font-weight":"bold"});
-//   				$('#2_lod_btn').css({"background":"#BEBEBE"});
-//   				$('#2_lod_btn').css({"font-weight":"bold"});
-  				
-//   				/* var which 'knows' what stage (1 or 2) the selection and input process is at */
-//   				submitStage = 'first';
-  			
-//   				console.log('setup() has been called');
-  			}
-  		</script>
-  		
-  		
-  		<script type="text/javascript">
-
-// 	var name = "test_string";
-	
-// 	$(document).ready(function() {
-						
-
-// 					$('#button_submit').click(function(event) {
-						
-// 						console.log("Test line in submit.click(fn(event)) [HEADER]");
-
-// 												$.get('SequenceServlet', {
-// 																	name : name
-// 																},
-// 																function(responseText) {
-
-// 																	console.log("Returned text:\n" + responseText);
-
-// 																}); //end of function(responseText) brace
-											
-// 										}); // end submit.click function(event)
-						
-// 					}); // end document.ready function
-
-	</script>
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
 
 </head>
 
 
 
-
-<body onload="setup()">
-
+<body>
 
 
 
-. 
-    <div class="container-fluid" id="heading_topic">
+
+
+
+
+
+
+
+
+
+
+
+ 
+   <div class="container-fluid" id="heading_topic">
        
       <div class="col-xs-4" id="lbl_logo">
        	<img src="images/logo_placeholder2.png" alt="Leanback learning" style="width:100px;height:50px">
@@ -125,12 +72,7 @@
     
     </div>
     
-    
-    
-    
-    
-    
-    
+        
    	<div class="container-fluid" id="lang_lod_play">
 	<div class="col-xs-6">
 	
@@ -200,6 +142,12 @@
 	<button type="button" OnClick="setErrorMsg()">Test Msg</button>
 	
 	<button id="button_submit" type="button">doGet()</button>
+	
+	
+	
+	
+	
+	
 
 
 

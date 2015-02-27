@@ -8,12 +8,27 @@
  */
 
 
-var submitStage;
 var wcSec;
-var outputLod;
 
+var outputlang = "";
+var detail = "";
+var langentered = "";
 
+var	topics = "";
 
+/* var which 'knows' what stage (1 or 2) the selection and input process is at */
+var submitStage = 'first';
+
+/* Word-count values returned in first stage */
+var level_1_wcSec = 0;
+var level_2_wcSec = 0;
+var level_3_wcSec = 0;
+
+var currentWcSec = 0;
+var obj;
+
+// set here when returned from the doPost() call, passed again to doGet() method for use there.
+var jobID;
 
 
 $(function() {
@@ -39,16 +54,35 @@ $(function() {
 				
 				$('#button_submit').click(function(event) {
 					
-					var arg1 = "one";
-					var arg2 = "two";
+					
+					// if idnum and name are undefined, set them to some value for testing
+					
+					if(typeof idnum == 'undefined'){
+						var idnum = '123456789'; 
+					};
+					
+					if(typeof name == 'undefined'){
+					    var name = 'Joe Soap'; 
+					};
+					
+					
 
-					console.log("button_submit was click wt: " + arg1 + " : " + arg2);
+					topics = $('#topics').val();
+		//			detail = detail;
+					outputland = $('#outputland');
+					
+					console.log("button_submit was click wt:\nidnum: " + idnum + "\nname: " + name + "\ntopics: " + topics + "\ndet: " + detail + "\nlang: " + outputlang);
 					
 					
 					/* Call the Servlet method to process/complete the job */
-					$.get('SequenceServlet', {
-										testArg1 : arg1,
-										testArg2 : arg2
+					$.post('SequenceServlet', {
+						
+										idnum : idnum,
+										name : name,
+										topics : topics,
+										detail : detail,
+										outputlang : outputlang
+										
 									},
 									function(responseText) {
 										
@@ -69,6 +103,27 @@ $(function() {
 
 
 }); // end of overall function which contains events
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -123,12 +178,14 @@ function setLanguage(lang){
 	$('#'+ lang + '_btn').css({"background":"#BEBEBE"});
 	$('#'+ lang + '_btn').css({"font-weight":"bold"});
 	
+	outputlang = lang;
+	
 }
 
 function setDetail(lod){
 
 	// TODO set the lod variable here
-	console.log(lod + " passed.");
+	console.log(lod + " passed for lod.");
 	
 	// reset all buttons to standard background
 	$('.level_of_detail_btn').css({"background":"#DDDDDD"});
@@ -139,10 +196,10 @@ function setDetail(lod){
 	$('#'+ lod + '_lod_btn').css({"font-weight":"bold"});
 	
 	if (submitStage == 'first') {
-		outputLod = lod;
+		detail = lod;
 	}
 	else {
-		if(lod != outputLod){
+		if(lod != detail){
 			createButtons(5555);
 		}
 	}
@@ -181,8 +238,6 @@ function toggleLoader(){
 
 function createButtons(wcSec){
 	
-	// TODO, remove this, for test only
-	submitStage = 'second';
 	console.log('Ss now: ' + submitStage + ', wcSec passed is: ' + wcSec);
 	
 	var min = wcSec * 0.05;

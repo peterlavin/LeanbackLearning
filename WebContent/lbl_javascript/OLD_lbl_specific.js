@@ -37,9 +37,7 @@ $(function() {
 	
 	// when document is ready and loaded, the event 'onload' is fired.
 	// the function in ready(...) is a callback fn
-	$(document)
-			.ready(
-					function() {
+	$(document).ready(function() {
 						/* Set the time slider colors in preparation for being made visible */
 						updateTimeSlider();
 						/* Hide all components which are not yet needed */
@@ -55,6 +53,7 @@ $(function() {
 						document.getElementById('button_startover').innerHTML = "Clear <span class=\"glyphicon glyphicon-refresh\"></span>";
 						
 						$('#button_submit').click(function(event) {
+							
 											if (submitStage == 'first') {
 												console.log("\n\nSubmit function called for "
 																+ submitStage
@@ -63,10 +62,10 @@ $(function() {
 												if (name == "Your name? (optional)") {
 													name = "guest";
 												}
+												
 												topics = $('#topics').val();
 												langentered = "auto"; // now detected automatically, auto used for database entry only
-												
-												
+																								
 												/* checks for no topics, or only white spaces in topics box */
 												var missing = [];
 												

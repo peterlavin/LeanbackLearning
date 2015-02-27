@@ -13,6 +13,12 @@
  * jQuery initialization
  */
 
+/*
+ * These are declared and set here, and are then visible in lbl_specific.js
+ */
+ var idnum = ""; 
+ var name = "";
+
 
 $(function() {
 	
@@ -169,12 +175,18 @@ var helper = (function() {
 	        
 	        $('#profile').append($('<h5>Unique user ID: ' + profile.id + '</h5>'));
 	        
+	        // Sets the id variable
+	        idnum = profile.id;
+	        console.log(idnum);
 	        
 	        
 //	      added PL
 	        $('#usermsg').empty();
 	        $('#usermsg').append($('<h4>Welcome ' + profile.displayName + '</h4>'));
 	        
+	        // Sets the name variable
+	        name = profile.displayName;
+	        console.log(name);        
 	        
 	        
 	        
