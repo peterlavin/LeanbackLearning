@@ -102,6 +102,23 @@ public class SequenceServlet extends HttpServlet {
 			}
 		}
 		
+		
+		
+		Properties prop = new Properties();
+		/*
+		 * Initialise the properties object for all methods in this servlet
+		 */
+		try {
+			InputStream inStrm = SequenceServlet.class.getClassLoader()
+					.getResourceAsStream("/config/properties");
+			prop.load(inStrm);
+			println("Properties file read successfully in init()");
+		} catch (IOException | NullPointerException e) {
+
+			println("Error Initialising properties inputstream");
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -129,27 +146,6 @@ public class SequenceServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		/*
-		 * This method receives the topic selection from the user and gets three
-		 * different word-counts from SSC for three different levels of detail.
-		 * These are then returned to the UI (JSP) page for further
-		 * 'summarising/time' details to be selected.
-		 */
-		Properties prop = new Properties();
-		/*
-		 * Initialise the properties object
-		 */
-		try {
-			InputStream inStrm = SequenceServlet.class.getClassLoader()
-					.getResourceAsStream("/config/properties");
-			prop.load(inStrm);
-			println("Properties file read successfully in doPost()");
-		} catch (IOException | NullPointerException e) {
-
-			println("Error Initialising properties inputstream");
-			e.printStackTrace();
-		}
-
 		
 		/*
 		 * Gets input variable(s) from the request (entered on the index.jsp
@@ -179,11 +175,6 @@ public class SequenceServlet extends HttpServlet {
 		dataForDB.add(strTopics);
 		dataForDB.add(strOutputLang);
 		dataForDB.add(strDetail);
-		
-
-		
-		
-		
 		
 		try {
 			

@@ -1,0 +1,35 @@
+
+
+Notes on creation of new database for LeanbackLearning (Feb 2015)
+
+// To create the database...
+
+CREATE DATABASE db_leanbacklearning;
+
+
+// To create the tbl_jobs...
+
+CREATE TABLE `tbl_jobs` (
+  `jobid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` varchar(64) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `server_os` varchar(10) DEFAULT NULL,
+  `topics` varchar(255) DEFAULT NULL,
+  `init_time` int(2) DEFAULT NULL,
+  `final_time` int(2) DEFAULT NULL,
+  `init_detail` int(2) DEFAULT NULL,
+  `final_detail` int(2) DEFAULT NULL,
+  `outputlanguage` varchar(255) DEFAULT NULL,
+  `ssc_status` tinyint(1) DEFAULT NULL,
+  `ssc_timetaken` float(10,2) DEFAULT NULL,
+  `ssc_filelength` int(11) DEFAULT NULL,
+  `ssc_wc` int(5) DEFAULT NULL,
+  `ss_status` tinyint(1) DEFAULT NULL,
+  `ss_timetaken` float(10,2) DEFAULT NULL,
+  `ss_filelength` int(11) DEFAULT NULL,
+  `file_name` varchar(255) DEFAULT NULL,
+  `mp3_playtime` int(4) DEFAULT NULL,
+  `multipart_job` tinyint(1) DEFAULT NULL,
+  `num_parts` int(2) DEFAULT NULL,
+  PRIMARY KEY (`jobid`)
+) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1

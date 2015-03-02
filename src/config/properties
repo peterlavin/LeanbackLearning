@@ -1,0 +1,95 @@
+
+
+
+##### Sets out Windows and Linux file storage directories for audio files.
+audioFileStorageWindows=c:/inetpub/wwwroot/lbl/audio
+audioFileStorageLinux=/var/www/lbl/audio
+audioFileExtension=mp3
+
+
+
+##### Sets out Windows and Linux file storage directories for XML text content files.
+contentFileStorageWindows=c:/inetpub/wwwroot/lbl/content
+contentFileStorageLinux=/var/www/lbl/content
+contentFileExtension=xml
+contentFilePrependix=meta
+
+
+
+##### Details for Search, Summarise & Combine web service
+#sAndCIpAddress=localhost
+# IP address for 4CPU 14GB RAM VM on SCSS cloud
+sAndCIpAddress=10.63.0.7
+sAndCServicePath=summariser
+sAndCServicePort=9999
+sAndCServiceTestPath=check&1&2&3
+sAndCServiceWordCountPath=&null&null&null
+sscTimeoutValue=300000
+
+
+
+##### Details for the Speech Syntheses service
+speechserviceIpAddress=10.63.0.5
+speechserviceUriPath=LeanbackLearning/service/synthesise
+speechserviceTimeoutValue=40000
+
+
+
+##### Details for hostname/IP address from which the created MP3 file will be served
+#mediaServerIP=134.226.48.38
+mediaServerIP=lbl.scss.tcd.ie
+#mediaServerIP=lbltest.scss.tcd.ie
+#mediaServerIP=localhost
+audioUrlPath=lbl/audio
+audioWebProto=http
+#audioWebProto=https
+
+
+##### Details for GLOBIC logging
+contentServerIP=134.226.48.38
+#contentServerIP=localhost
+contentUrlPath=lbl/content
+globicServerIP=phaedrus.scss.tcd.ie
+globicServerPath=CS3BC2/group6/tomcat/falcon/rest/linkedData/postGlobicData
+##### GLOBIC logging on or off (i.e. true or false)
+globiclog=false
+
+##### Details for break-up of SSC XML file and Parts naming details
+initialSet=5
+blockSize=5
+parts=_Part_
+
+##### Error strings/codes for feedback on failure
+error0=Undfined error
+error0a=Please contact admin
+
+error2=Database problem
+error2a=Please try again
+
+error3=No topics entered
+error3a=
+
+error4=Service problem
+error4a=SSC failure
+
+error5=No results found
+error5a=Please try again
+
+error6=Service problem
+error6a=Failed to make audio files
+
+error7=Disambiguation needed
+error7a=Please try other topics
+
+
+###### wordcount to seconds of playtime multiplier
+wordcountMultiple=2.67
+
+
+
+################################################## Not used by Servlet, notes only ###############################
+#   URL for GLOBIC services
+#   http://phaedrus.scss.tcd.ie/gls/globicLog/register/?componentName=leanback_learning&password=cngl1&partitionName=leanback_learning
+# 	globicUrl = "http://phaedrus.scss.tcd.ie/CS3BC2/group2/tomcat/Globic/rest/globic/postGlobicData";
+
+

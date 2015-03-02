@@ -27,12 +27,11 @@ public class DbaseEntry {
 		/*
 		 * Order of details added to this ArrayList in SequencerServlet class
 		 */
-		// dataForDB.add(strName); 0
-		// dataForDB.add(strTopics); 1
-		// dataForDB.add(strTime); 2
-		// dataForDB.add(strDetail); 3
-		// dataForDB.add(strLangEntered); 4
-		// dataForDB.add(strOutputLang); 5
+//		dataForDB.add(strIDnum);		0
+//		dataForDB.add(strName);			1
+//		dataForDB.add(strTopics);		2
+//		dataForDB.add(strOutputLang);	3
+//		dataForDB.add(strDetail);		4
 
 		/*
 		 * Get the server OS from System

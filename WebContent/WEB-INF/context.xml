@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- Specify a JDBC datasource, change IP address to use a different VM/database -->
+	<!-- DB IP addresses are... 134.226.48.38 for production env, 10.63.0.55 for test env -->
+    
+    <Resource 
+    
+    	name="jdbc/lbldb" 
+    
+    	auth="Container"
+    
+        type="javax.sql.DataSource" 
+        
+        username="lbluser"
+        
+        password="2sd7zpzr"
+    
+        driverClassName="com.mysql.jdbc.Driver"
+    
+        url="jdbc:mysql://10.63.0.55:3306/db_leanbacklearning"
+    
+        maxActive="1000"
+        
+        maxIdle="4" 
+        
+        maxConnectionAge = "86400"
+        
+        autoReconnect="true"
+
+        maxIdleTimeExcessConnections = "1800" />
+ 
+</Context>

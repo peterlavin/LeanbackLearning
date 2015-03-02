@@ -55,7 +55,7 @@ $(function() {
 				$('#button_submit').click(function(event) {
 					
 					
-					// if idnum and name are undefined, set them to some value for testing
+					// if idnum and name are undefined, set them to some value for testing in input_dev.jsp use
 					
 					if(typeof idnum == 'undefined'){
 						var idnum = '123456789'; 
