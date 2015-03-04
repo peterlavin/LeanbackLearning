@@ -9,27 +9,29 @@ CREATE DATABASE db_leanbacklearning;
 
 // To create the tbl_jobs...
 
-CREATE TABLE `tbl_jobs` (
-  `jobid` int(11) NOT NULL AUTO_INCREMENT,
-  `userid` varchar(64) DEFAULT NULL,
-  `username` varchar(255) DEFAULT NULL,
-  `server_os` varchar(10) DEFAULT NULL,
-  `topics` varchar(255) DEFAULT NULL,
-  `init_time` int(2) DEFAULT NULL,
-  `final_time` int(2) DEFAULT NULL,
-  `init_detail` int(2) DEFAULT NULL,
-  `final_detail` int(2) DEFAULT NULL,
-  `outputlanguage` varchar(255) DEFAULT NULL,
-  `ssc_status` tinyint(1) DEFAULT NULL,
-  `ssc_timetaken` float(10,2) DEFAULT NULL,
-  `ssc_filelength` int(11) DEFAULT NULL,
-  `ssc_wc` int(5) DEFAULT NULL,
-  `ss_status` tinyint(1) DEFAULT NULL,
-  `ss_timetaken` float(10,2) DEFAULT NULL,
-  `ss_filelength` int(11) DEFAULT NULL,
-  `file_name` varchar(255) DEFAULT NULL,
-  `mp3_playtime` int(4) DEFAULT NULL,
-  `multipart_job` tinyint(1) DEFAULT NULL,
-  `num_parts` int(2) DEFAULT NULL,
-  PRIMARY KEY (`jobid`)
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=latin1
+mysql> describe tbl_jobs;
++----------------+--------------+------+-----+---------+----------------+
+| Field          | Type         | Null | Key | Default | Extra          |
++----------------+--------------+------+-----+---------+----------------+
+| jobid          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| userid         | varchar(64)  | YES  |     | NULL    |                |
+| username       | varchar(255) | YES  |     | NULL    |                |
+| server_os      | varchar(10)  | YES  |     | NULL    |                |
+| topics         | varchar(255) | YES  |     | NULL    |                |
+| init_detail    | int(2)       | YES  |     | NULL    |                |
+| outputlanguage | varchar(255) | YES  |     | NULL    |                |
+| final_detail   | int(2)       | YES  |     | NULL    |                |
+| time           | int(2)       | YES  |     | NULL    |                |
+| ssc_status     | tinyint(1)   | YES  |     | NULL    |                |
+| ssc_timetaken  | float(10,2)  | YES  |     | NULL    |                |
+| ssc_filelength | int(11)      | YES  |     | NULL    |                |
+| ssc_wc         | int(5)       | YES  |     | NULL    |                |
+| ss_status      | tinyint(1)   | YES  |     | NULL    |                |
+| ss_timetaken   | float(10,2)  | YES  |     | NULL    |                |
+| ss_filelength  | int(11)      | YES  |     | NULL    |                |
+| file_name      | varchar(255) | YES  |     | NULL    |                |
+| mp3_playtime   | int(4)       | YES  |     | NULL    |                |
+| num_parts      | int(2)       | YES  |     | NULL    |                |
++----------------+--------------+------+-----+---------+----------------+
+19 rows in set (0.00 sec)
+

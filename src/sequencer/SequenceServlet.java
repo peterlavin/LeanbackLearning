@@ -2,6 +2,9 @@ package sequencer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -17,11 +20,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+
+
+
+
+
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+
+import config.ErrorTypes;
+import remoteservices.SearchSummAndCombine;
 import databaseutils.DbaseEntry;
-//import remoteservices.SearchAndCombine;
 
 /**
  * Servlet implementation class SequenceServlet
@@ -67,8 +87,6 @@ public class SequenceServlet extends HttpServlet {
 
 		System.out.println("init() has been called in LeanbackLearning SequenceServlet");
 		
-		
-		
 		/*
 		 * Calling super.init means that config can be used anywhere in this
 		 * class
@@ -76,6 +94,7 @@ public class SequenceServlet extends HttpServlet {
 		super.init(config);
 
 		try {
+
 			/*
 			 * Get DataSource using details in context.xml
 			 * 
@@ -86,21 +105,12 @@ public class SequenceServlet extends HttpServlet {
 			Context envContext = (Context) initContext.lookup("java:/comp/env");
 			dataSource = (DataSource) envContext.lookup("jdbc/lbldb");
 
-			/*
-			 * Get Boolean debug varialbe from context (set in
-			 * WebContent/WEB-INF/web.xml)
-			 */
-			ServletContext context = getServletContext();
-			debug = Boolean.valueOf(context.getInitParameter("debug"));
-
-			println("Init() method has been called, debug mode is set to "
-					+ debug);
-
 		} catch (NamingException e) {
-			if (debug) {
+			if (true) {
 				e.printStackTrace();
 			}
 		}
+		
 		
 		
 		
@@ -118,7 +128,13 @@ public class SequenceServlet extends HttpServlet {
 			println("Error Initialising properties inputstream");
 			e.printStackTrace();
 		}
-		
+
+		/*
+		 * Read debug (true/false) from properties file
+		 */
+		debug = Boolean.parseBoolean(prop.getProperty("debug"));
+		println("Debug mode is set to '" + debug + "' in init()");
+				
 	}
 
 	/**
@@ -143,6 +159,7 @@ public class SequenceServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
@@ -157,13 +174,15 @@ public class SequenceServlet extends HttpServlet {
 		String strIDnum = request.getParameter("idnum").trim();
 		String strName = request.getParameter("name").trim();
 		String strTopics = request.getParameter("topics").trim();
-		String strDetail = request.getParameter("detail");
+		String strInitDetail = request.getParameter("init_detail");
 		String strOutputLang = request.getParameter("outputlang");
 		
 		/*
 		 * Check that the database is available and that the connection is 'awake'
 		 */
 		DbaseEntry dbe = new DbaseEntry(this.debug);
+		String strJobId = "";
+		String responseJsStr = "";
 		
 		/*
 		 * Add the user input parameters to an arraylist for database entry,
@@ -173,107 +192,181 @@ public class SequenceServlet extends HttpServlet {
 		dataForDB.add(strIDnum);
 		dataForDB.add(strName);
 		dataForDB.add(strTopics);
+		dataForDB.add(strInitDetail);
 		dataForDB.add(strOutputLang);
-		dataForDB.add(strDetail);
+		
 		
 		try {
 			
 			/*
-			 * Update the column ssc_status in the table tbl_jobs
+			 * Create a DB entry for this job and get a new job ID number from the database
 			 */
 			conn = dataSource.getConnection();
 			jobId = dbe.CreatInitialDbEntry(conn, dataForDB);
 
 		} catch (Exception e1) {
+			
+			/*
+			 * jobId may be returned as -1 if there is an error with the DB,
+			 * or needs to be set to -1 here if the database is unreachable. 
+			 */
+			jobId = -1;
+			
 			System.err
-					.println("ERROR in SSC DB UPDATE: " + e1.getMessage());
+					.println("ERROR in initial DB call for new Job ID number: " + e1.getMessage());
 			if (debug) {
 				e1.printStackTrace();
 			}
 		} 
 		
-		
-		
+		if (jobId != -1) {
+			
+			/*
+			 * If the jobId is not -1, a new jobId has been created successfully, therefore
+			 * proceed to call SSC to get word-count information about the topics
+			 */
+			
+			if (this.debug) {
+				println("jobId created: " + jobId);
+			}
+			
+			/*
+			 * Replace all spaces with underscores
+			 */
+			String strTopicsWithUnderScrs = strTopics.replace(" ", "_");
+			
+			SearchSummAndCombine ssc = new SearchSummAndCombine(this.debug);
+
+			/*
+			 * Initialise the properties object to read word-count multiplier from properties file.
+			 * Properties prop is created once and passed as required
+			 */
+			Properties prop = new Properties();
+			try {
+				InputStream inStrm = SequenceServlet.class.getClassLoader()
+						.getResourceAsStream("/config/properties");
+				prop.load(inStrm);
+				println("Properties file read successfully in doPost()");
+			} catch (IOException | NullPointerException e) {
+
+				println("Error Initialising properties inputstream");
+				e.printStackTrace();
+			}
+
+			String sscWordCountXML = ssc.getSscWc(strTopicsWithUnderScrs,prop);
+
+			/*
+			 * Check that the returned string is valid XML and apply logic to determine
+			 * what response is sent. This effectively determines if the SSC response is OK.
+			 */
+			if (validStringToXMLConversion(sscWordCountXML)) {
+
+				if (this.debug) {
+					println("XML WC returned...\n" + prettyFormat(sscWordCountXML));
+				}
+
+				/*
+				 * Create a JSON object to contain the jobId
+				 */
+				JSONObject jsJobId = new JSONObject();
+				jsJobId.put("jobid", new Integer(jobId));
+				
+				/*
+				 * Convert the word-count XML to another JSON object
+				 */
+				Document wcXmlDoc = convertStringToDocument(sscWordCountXML);
+
+				JSONObject jsWc = new JSONObject();
+
+				jsWc = convertWcToSecToJson(wcXmlDoc, prop);
+
+				
+				JSONArray jsArray = new JSONArray();
+				
+				jsArray.add(jsJobId);
+				jsArray.add(jsWc);
+				
+				
+				if(debug){
+					println("jsArray (success) is: " + jsArray);
+				}
+				
+				responseJsStr = jsArray.toJSONString();
+				
+				/*
+				 * TODO, print pretty here to debug
+				 */
+
+			}
+			else {
+				
+				// put default SSC failure response into an array with the new jobid
+				
+				/*
+				 * Create a JSON object to contain the jobId
+				 */
+				JSONObject jsJobId = new JSONObject();
+				jsJobId.put("jobid", new Integer(jobId));
+				
+				if(debug){
+					println("jsJobId is: " + jsJobId);
+				}
+				
+				JSONObject jsWc = new JSONObject();
+				
+				jsWc.put("level_1", "failure");
+				
+				
+				if(debug){
+					println("jsWc (failure) is: " + jsWc);
+				}
+				
+				JSONArray jsArray = new JSONArray();
+				
+				jsArray.add(jsJobId);
+				jsArray.add(jsWc);
+				
+				if(debug){
+					println("jsArray (failure) is: " + jsArray);
+				}
+				
+				responseJsStr = jsArray.toJSONString();
+				
+				
+			}
+
+		} else if (jobId == -1) {
+			/*
+			 * -1 means failure to generate a new jobId in the database.
+			 */
+			
+			JSONObject jsJobIdFail = new JSONObject();
+			
+			jsJobIdFail.put("jobid", new Integer(jobId));
+			
+			JSONArray jsArray = new JSONArray();
+			
+			JSONObject jsSscFail = new JSONObject();
+			
+			jsSscFail.put("level_1", new String("failure"));
+			
+			jsArray.add(jsJobIdFail);
+			jsArray.add(jsSscFail);
+			
+			if(debug){
+				println("jsArray (DB failure) is: " + jsArray);
+			}
+			
+			responseJsStr = jsArray.toJSONString();
+			
+		}
 		
 		/*
-		 * Get a new job ID number from the database
+		 * Write string to response
 		 */
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		String strPrelimTopics = request.getParameter("prelimTopics");
-//
-//		/*
-//		 * Replace all spaces with underscores
-//		 */
-//		String strPrelimTopicsWithUnderScrs = strPrelimTopics.replace(" ", "_");
-//
-//		SearchAndCombine sac = new SearchAndCombine(this.debug);
-//
-//		// String sscWordCountXML =
-//		// "<wordcount><level_1>0</level_1><level_2>0</level_2><level_3>0</level_3></wordcount>";
-//		String sscWordCountXML = sac.getSscWc(strPrelimTopicsWithUnderScrs,
-//				prop);
-//
-//		/*
-//		 * Default string to return (signals a failure at this stage)
-//		 */
-//		String responseJsStr = "{\"level_1\":\"failure\"}";
-//
-//		/*
-//		 * Check returned string is valid XML and apply logic to determine what
-//		 * response is sent
-//		 */
-//		if (validStringToXMLConversion(sscWordCountXML)) {
-//
-//			if (this.debug) {
-//				println("XML WC returned...\n" + prettyFormat(sscWordCountXML));
-//			}
-//
-//			/*
-//			 * Now, convert this to JSON and send back to UI.
-//			 * 
-//			 * First convert the XML string to be an XML Document
-//			 */
-//			Document wcXmlDoc = convertStringToDocument(sscWordCountXML);
-//
-//			JSONObject js = new JSONObject();
-//
-//			js = convertWcToSecToJson(wcXmlDoc, prop);
-//
-//			responseJsStr = js.toJSONString();
-//
-//		}
-//
-//		/*
-//		 * Write string to response
-//		 */
-//		response.setContentType("text/plain");
-//		response.setCharacterEncoding("UTF-8");
-//		response.getWriter().write(responseJsStr);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		response.setContentType("text/plain");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(responseJsStr);
 		
 	}
 
@@ -298,6 +391,173 @@ public class SequenceServlet extends HttpServlet {
 			System.out.println(obj[0]);
 		}
 	}
+	
+	/*
+	 * Method which receives a string and returns a boolean depending of whether
+	 * the string converts to an XML document.
+	 */
+	private Boolean validStringToXMLConversion(String xmlStr) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder;
+		Boolean stringIsXML = false;
+		try {
+			builder = factory.newDocumentBuilder();
+			@SuppressWarnings("unused")
+			Document newDoc = builder.parse(new InputSource(new StringReader(
+					xmlStr)));
+			stringIsXML = true;
+		} catch (Exception e) {
+			if (this.debug) {
+				println("String returned from SSC (below) did not convert to XML");
+				println(xmlStr);
+				stringIsXML = false;
+			}
+		}
+		return stringIsXML;
+	}
+	
+	/*
+	 * Method to pretty print an XML string
+	 */
+	@SuppressWarnings("restriction")
+	private String prettyFormat(String unformattedXml) {
+		try {
+			final Document document = parseXmlFile(unformattedXml);
+
+			OutputFormat format = new OutputFormat(document);
+			format.setLineWidth(65);
+			format.setIndenting(true);
+			format.setIndent(5);
+			Writer out = new StringWriter();
+			XMLSerializer serializer = new XMLSerializer(out, format);
+			serializer.serialize(document);
+
+			return out.toString();
+
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/*
+	 * Method which receives a string and returns an XML document which is
+	 * created from that string.
+	 * 
+	 * If the string cannot be converted to XML (due to form, etc), a null# is
+	 * returned. This is detected by the calling method.
+	 */
+	private Document convertStringToDocument(String xmlStr) {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder;
+		try {
+			builder = factory.newDocumentBuilder();
+			Document newDoc = builder.parse(new InputSource(new StringReader(
+					xmlStr)));
+
+			/*
+			 * Required XML file is returned here
+			 */
+			return newDoc;
+		} catch (Exception e) {
+			System.out.println("Error with form of XML in SearchAndCombine\n");
+			if (this.debug) {
+				e.printStackTrace();
+			}
+		}
+		/*
+		 * Only if error is found, return null
+		 */
+		return null;
+	}
+	
+	/*
+	 * Used by the above method
+	 */
+	private Document parseXmlFile(String in) {
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			InputSource is = new InputSource(new StringReader(in));
+			return db.parse(is);
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
+		} catch (SAXException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/*
+	 * Converts the SSC Wordcount to Seconds using an empirically obtained
+	 * constant (words per second) and puts them in a JSON object
+	 */
+
+	@SuppressWarnings("unchecked")
+	private JSONObject convertWcToSecToJson(Document wcXmlDoc, Properties prop) {
+
+		/*
+		 * Get constant from config/properties file for WC to seconds conversion
+		 */
+		String wcMultipleStr = prop.getProperty("wordcountMultiple");
+
+		float wcMultipleInt = Float.parseFloat(wcMultipleStr);
+
+		NodeList nList = wcXmlDoc.getElementsByTagName("*");
+		println();
+
+		JSONObject jsob = new JSONObject();
+
+		for (int i = 0; i < nList.getLength(); i++) {
+
+			if (nList.item(i).getNodeName().startsWith("level_")) {
+
+				/*
+				 * Check that the value to be parsed as an Int is not a NaN string
+				 */
+				String wcValue = nList.item(i).getTextContent();
+				
+				if(isStringInteger(wcValue)){
+					
+				/*
+				 * Convert the word-count value to seconds playtime, rounding
+				 * happens automatically as the result is an integer
+				 */
+				int secondsPlaytime = (int) ((Integer.parseInt(nList.item(i).getTextContent()) / wcMultipleInt));
+
+				jsob.put(nList.item(i).getNodeName(), secondsPlaytime);
+
+				}
+				else {
+					
+					jsob.put(nList.item(i).getNodeName(), 0);
+					
+				}
+			} // end for loop
+
+		}
+
+		return jsob;
+	}
+	
+	/*
+	 * Check is a string can parse to an Integer
+	 */
+	
+	private boolean isStringInteger(String value) {
+	    try { 
+	        Integer.parseInt(value); 
+	    } catch(NumberFormatException e) {
+	    	
+	    	if(debug){
+	    		println(value  + " found in WC XML");
+	    	}
+	        return false; 
+	    }
+
+	    return true;
+	}
+	
 	
 }
 

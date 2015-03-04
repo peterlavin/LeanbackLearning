@@ -1,5 +1,6 @@
 
-
+##### Sets Boolean value of debug
+debug=true
 
 ##### Sets out Windows and Linux file storage directories for audio files.
 audioFileStorageWindows=c:/inetpub/wwwroot/lbl/audio
@@ -51,7 +52,6 @@ contentServerIP=134.226.48.38
 contentUrlPath=lbl/content
 globicServerIP=phaedrus.scss.tcd.ie
 globicServerPath=CS3BC2/group6/tomcat/falcon/rest/linkedData/postGlobicData
-##### GLOBIC logging on or off (i.e. true or false)
 globiclog=false
 
 ##### Details for break-up of SSC XML file and Parts naming details

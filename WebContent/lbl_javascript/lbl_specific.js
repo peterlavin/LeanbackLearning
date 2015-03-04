@@ -10,8 +10,8 @@
 
 var wcSec;
 
-var outputlang = "";
-var detail = "";
+var outputlang = "en";
+var detail = "2";
 var langentered = "";
 
 var	topics = "";
@@ -68,10 +68,9 @@ $(function() {
 					
 
 					topics = $('#topics').val();
-		//			detail = detail;
-					outputland = $('#outputland');
+					outputlang = outputlang;
 					
-					console.log("button_submit was click wt:\nidnum: " + idnum + "\nname: " + name + "\ntopics: " + topics + "\ndet: " + detail + "\nlang: " + outputlang);
+					console.log("button_submit was click wt:\n\nidnum: " + idnum + "\nname: " + name + "\ntopics: " + topics + "\ndet: " + detail + "\nlang: " + outputlang);
 					
 					
 					/* Call the Servlet method to process/complete the job */
@@ -80,13 +79,18 @@ $(function() {
 										idnum : idnum,
 										name : name,
 										topics : topics,
-										detail : detail,
+										init_detail : detail,
 										outputlang : outputlang
 										
 									},
 									function(responseText) {
 										
-										console.log("Test returned is... " + responseText);									
+										console.log("Test returned is... " + responseText);
+										
+										obj = eval(responseText);
+										
+										console.log("obj[0].jobid is: " + obj[0].jobid);
+										console.log("obj[1].level_1 is: " + obj[1].level_1);
 										
 									}); //end of function(responseText) brace			
 		
