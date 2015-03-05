@@ -87,10 +87,67 @@ $(function() {
 										
 										console.log("Test returned is... " + responseText);
 										
+										submitStage = 'second';
+										console.log('submitStage is now: ' + submitStage);
+										
 										obj = eval(responseText);
 										
-										console.log("obj[0].jobid is: " + obj[0].jobid);
-										console.log("obj[1].level_1 is: " + obj[1].level_1);
+										// For debug only, TODO remove
+										console.log("Job ID is: " + obj[0].jobid);
+										console.log("Level 1 is: " + obj[1].level_1);
+										console.log("Level 2 is: " + obj[1].level_2);
+										console.log("Level 3 is: " + obj[1].level_3);
+										
+										/* Get the three values from the JSON */
+										level_1_wcSec = obj[1].level_1;
+										level_2_wcSec = obj[1].level_2;
+										level_3_wcSec = obj[1].level_3;
+										
+										
+										if (level_1_wcSec == 0) {
+											// show message to user - there is nothing available, try something different
+										}
+										else if (level_1_wcSec == "failure") {
+											console.log("\nFailure reported from doPost method for: " + topics);
+										}
+										else {
+											
+											console.log("\nSuccess reported from doPost method for: " + topics);
+											
+										/* Sets the variable which will force the alternative (next) to be processed on second submit */
+										submitStage = 'second';
+										
+											/* Depending on Level of Detail selected, set the current WC value */
+											if (detail == '1') {
+												currentWcSec = level_1_wcSec;
+											} else if (detail == '2') {
+												currentWcSec = level_2_wcSec;
+											} else if (detail == '3') {
+												currentWcSec = level_3_wcSec;
+											}
+											
+											
+											
+											
+										}
+										
+										
+										console.log("LOD is currently set to be " + detail);
+										
+										createButtons(currentWcSec);
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
 										
 									}); //end of function(responseText) brace			
 		
@@ -186,31 +243,51 @@ function setLanguage(lang){
 	
 }
 
-function setDetail(lod){
+function setDetail(detailFromButton){
 
-	// TODO set the lod variable here
-	console.log(lod + " passed for lod.");
+	console.log(detailFromButton + " passed for detailFromButton.");
+	
+	/*
+	 * Changes are made to buttons only if a button calls for
+	 * a change of detail, i.e. not a repeat selection of the
+	 * same level of detail.
+	 */
+	if(detailFromButton != detail){
 	
 	// reset all buttons to standard background
 	$('.level_of_detail_btn').css({"background":"#DDDDDD"});
 	$('.level_of_detail_btn').css({"font-weight":"normal"});
 	
 	// then set the selected button to be dark with bold text
-	$('#'+ lod + '_lod_btn').css({"background":"#BEBEBE"});
-	$('#'+ lod + '_lod_btn').css({"font-weight":"bold"});
+	$('#'+ detailFromButton + '_lod_btn').css({"background":"#BEBEBE"});
+	$('#'+ detailFromButton + '_lod_btn').css({"font-weight":"bold"});
 	
-	if (submitStage == 'first') {
-		detail = lod;
+	console.log("Detail was " + detail);
+	detail = detailFromButton;
+	console.log("Detail now is " + detail);
+	
 	}
-	else {
-		if(lod != detail){
-			createButtons(5555);
+
+	
+	if(submitStage == "second"){
+		
+		if (detail == '1') {
+			currentWcSec = level_1_wcSec;
+		} else if (detail == '2') {
+			currentWcSec = level_2_wcSec;
+		} else if (detail == '3') {
+			currentWcSec = level_3_wcSec;
 		}
+		
+		createButtons(currentWcSec);
+
 	}
-	
-	
 
 }
+
+
+
+
 
 function testToggle(){
 	

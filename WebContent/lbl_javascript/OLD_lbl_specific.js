@@ -132,10 +132,12 @@ $(function() {
 																	console
 																			.log("Level 3: "
 																					+ obj.level_3);
+																	
 																	/* Get the three values from the JSON */
 																	level_1_wcSec = obj.level_1;
 																	level_2_wcSec = obj.level_2;
 																	level_3_wcSec = obj.level_3;
+																	
 																	/* First, check if there are 'words' available, i.e. not zero values */
 																	if (level_1_wcSec == 0) {
 																		console
@@ -183,6 +185,7 @@ $(function() {
 																						+ topics);
 																		/* Sets the variable which will force the alternative (next) to be processed on second submit */
 																		submitStage = 'second';
+																		
 																		/* Depending on Level of Detail selected, set the current WC value */
 																		if (outputLod == '1') {
 																			currentWc = level_1_wcSec;
@@ -191,6 +194,7 @@ $(function() {
 																		} else if (outputLod == '3') {
 																			currentWc = level_3_wcSec;
 																		}
+																		
 																		/* Hide the 'wait' image, make the 'Select prefered time' slider visible */
 																		document
 																				.getElementById("wordcount_loader_img").style.display = "none";
@@ -301,6 +305,21 @@ $(function() {
 										}); // end submit.click function(event)
 						
 					}); // end document.ready function
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

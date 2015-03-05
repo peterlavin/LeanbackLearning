@@ -36,6 +36,8 @@ import org.xml.sax.SAXException;
 
 
 
+
+
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
@@ -517,7 +519,7 @@ public class SequenceServlet extends HttpServlet {
 				 */
 				String wcValue = nList.item(i).getTextContent();
 				
-				if(isStringInteger(wcValue)){
+				if(isStringInteger(wcValue, 10)){
 					
 				/*
 				 * Convert the word-count value to seconds playtime, rounding
@@ -541,23 +543,51 @@ public class SequenceServlet extends HttpServlet {
 	}
 	
 	/*
-	 * Check is a string can parse to an Integer
+	 * Check is a string can parse to an Integer, minus numbers not expected
+	 * but are dealt with
 	 */
-	
-	private boolean isStringInteger(String value) {
-	    try { 
-	        Integer.parseInt(value); 
-	    } catch(NumberFormatException e) {
-	    	
-	    	if(debug){
-	    		println(value  + " found in WC XML");
-	    	}
-	        return false; 
-	    }
+	private boolean isStringInteger(String s, int radix) {
+			
+		    if(s.isEmpty()){
 
-	    return true;
-	}
-	
+		    	return false;
+		    	
+		    }
+		    
+		    for(int i = 0; i < s.length(); i++) {
+		    	
+		    	/*
+		    	 * Allows for a string to start with -, e.g. -123
+		    	 */
+		        if(i == 0 && s.charAt(i) == '-') {
+		        	
+		        	/*
+		        	 * But if it's only '-', then it's not a nunber
+		        	 */
+		            if(s.length() == 1) {
+		            	return false;
+		            }
+		            else {
+		            	continue;
+		            }
+		        }
+		        
+		        /*
+		         * All alpha chars return -1, all numeric chars return the actual number
+		         */
+		        if(Character.digit(s.charAt(i),radix) < 0) {
+		        	
+		        	if(debug){
+		        		println(" This NON-numeric char found in word-count XML: " + s.charAt(i));
+		        	}
+		        	
+		        	return false;
+		        }
+		    }
+		    
+		    return true;
+		    
+		}
 	
 }
 
