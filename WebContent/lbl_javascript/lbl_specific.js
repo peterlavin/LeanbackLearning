@@ -52,10 +52,56 @@ $(function() {
 				
 				
 				
-				$('#button_submit').click(function(event) {
+				$('#button_continue').click(function(event) {
 					
+					if (submitStage == 'first') {
+						
+						/*
+						 * Validate 'topics' entered, can't be empty or just white spaces 
+						 */
+						if (topics = $('#topics').val().trim() == "") {
+							alert("Please enter what you would like to learn about");
+							document.getElementById('topics').value = "";
+							document.getElementById('topics').placeholder = "What do you want to learn about?";
+							return false;
+						}
 					
-					// if idnum and name are undefined, set them to some value for testing in input_dev.jsp use
+						// Set topics
+						topics = $('#topics').val();
+						
+						// Disable topics input, grey-out lang and detail buttons
+						$("#topics").attr("disabled", true);
+						greyLanguageButtons();
+						greyDetailButtons();
+						
+						$('#loader').show();
+						$('#continue').hide();
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					///////////////////////////////////////////////////////////////////////////////////
+					/* **********************************************************************************
+					 *  if idnum and name are undefined, set them to some value for testing in input_dev.jsp use
+					 * TODO remove this when in index.jsp
+					 */
 					
 					if(typeof idnum == 'undefined'){
 						var idnum = '123456789'; 
@@ -64,14 +110,9 @@ $(function() {
 					if(typeof name == 'undefined'){
 					    var name = 'Joe Soap'; 
 					};
+					console.log("button_continue was click wt:\n\nidnum: " + idnum + "\nname: " + name + "\ntopics: " + topics + "\ndet: " + detail + "\nlang: " + outputlang);
 					
-					
-
-					topics = $('#topics').val();
-					outputlang = outputlang;
-					
-					console.log("button_submit was click wt:\n\nidnum: " + idnum + "\nname: " + name + "\ntopics: " + topics + "\ndet: " + detail + "\nlang: " + outputlang);
-					
+					///////////////////////////////////////////////////////////////////////////////////
 					
 					/* Call the Servlet method to process/complete the job */
 					$.post('SequenceServlet', {
@@ -85,18 +126,15 @@ $(function() {
 									},
 									function(responseText) {
 										
+										
+										
+										
 										console.log("Test returned is... " + responseText);
 										
 										submitStage = 'second';
 										console.log('submitStage is now: ' + submitStage);
 										
 										obj = eval(responseText);
-										
-										// For debug only, TODO remove
-										console.log("Job ID is: " + obj[0].jobid);
-										console.log("Level 1 is: " + obj[1].level_1);
-										console.log("Level 2 is: " + obj[1].level_2);
-										console.log("Level 3 is: " + obj[1].level_3);
 										
 										/* Get the three values from the JSON */
 										level_1_wcSec = obj[1].level_1;
@@ -106,6 +144,16 @@ $(function() {
 										
 										if (level_1_wcSec == 0) {
 											// show message to user - there is nothing available, try something different
+											
+											
+											
+											
+											
+											
+											
+											
+											
+											
 										}
 										else if (level_1_wcSec == "failure") {
 											console.log("\nFailure reported from doPost method for: " + topics);
@@ -117,17 +165,8 @@ $(function() {
 										/* Sets the variable which will force the alternative (next) to be processed on second submit */
 										submitStage = 'second';
 										
-											/* Depending on Level of Detail selected, set the current WC value */
-											if (detail == '1') {
-												currentWcSec = level_1_wcSec;
-											} else if (detail == '2') {
-												currentWcSec = level_2_wcSec;
-											} else if (detail == '3') {
-												currentWcSec = level_3_wcSec;
-											}
-											
-											
-											
+										/* Set the current WC value, this depends on level of detail selected */
+										setCurrentWcSec();
 											
 										}
 										
@@ -136,21 +175,44 @@ $(function() {
 										
 										createButtons(currentWcSec);
 										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
-										
+										$('#loader').hide();
+										$('#continue').show();
+										restoreDetailButtons();
 										
 									}); //end of function(responseText) brace			
-		
+					}
+					else if(submitStage == 'second'){
+						
+					console.log("\n\nSecond phase has been called, ready to call SSC for content\n\n");
+					
+					greyDetailButtons();
+					
+					$('#time_feedback_toolbar').fadeTo(250, 0.6);
+					
+					// this doesnt work !!!!!!!!! need to do individual buttons!!!!!!!
+					$('#time_feedback_toolbar').attr("disabled", true);
+					
+					greyTimeButtons();
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+						
+						//   call doGet, create jPlayer instance
+						
+					}
 					
 					
 						}); // end submit.click function(event)
@@ -188,9 +250,27 @@ $(function() {
 
 
 
-
-
 /* For demo only, TODO remove when in app */
+
+
+function setCurrentWcSec() {
+
+	// Recall that detail is a global variable
+	if (detail == '1') {
+		currentWcSec = level_1_wcSec;
+	} else if (detail == '2') {
+		currentWcSec = level_2_wcSec;
+	} else if (detail == '3') {
+		currentWcSec = level_3_wcSec;
+	}
+	
+} 
+
+
+
+
+
+
 
 function testFn() {
 	
@@ -245,12 +325,10 @@ function setLanguage(lang){
 
 function setDetail(detailFromButton){
 
-	console.log(detailFromButton + " passed for detailFromButton.");
-	
 	/*
 	 * Changes are made to buttons only if a button calls for
-	 * a change of detail, i.e. not a repeat selection of the
-	 * same level of detail.
+	 * a change of detail, i.e. it is not a repeat selection
+	 * of the same level of detail.
 	 */
 	if(detailFromButton != detail){
 	
@@ -266,21 +344,13 @@ function setDetail(detailFromButton){
 	detail = detailFromButton;
 	console.log("Detail now is " + detail);
 	
-	}
-
+		if(submitStage == "second"){
+			
+			setCurrentWcSec();
+			
+			createButtons(currentWcSec);
 	
-	if(submitStage == "second"){
-		
-		if (detail == '1') {
-			currentWcSec = level_1_wcSec;
-		} else if (detail == '2') {
-			currentWcSec = level_2_wcSec;
-		} else if (detail == '3') {
-			currentWcSec = level_3_wcSec;
 		}
-		
-		createButtons(currentWcSec);
-
 	}
 
 }
@@ -295,6 +365,59 @@ function testToggle(){
 	  $('#continue_1').toggle();
 	
 }
+
+function greyLanguageButtons(){
+	
+	$("#fr_btn").fadeTo(250, 0.6);
+	$("#fr_btn").attr("disabled", true);
+	
+	$("#en_btn").fadeTo(250, 0.6);
+	$("#en_btn").attr("disabled", true);
+	
+	$("#de_btn").fadeTo(250, 0.6);
+	$("#de_btn").attr("disabled", true);
+	
+}
+
+function greyDetailButtons() {
+	
+	$("#1_lod_btn").fadeTo(250, 0.6);
+	$("#1_lod_btn").attr("disabled", true);
+	
+	$("#2_lod_btn").fadeTo(250, 0.6);
+	$("#2_lod_btn").attr("disabled", true);
+	
+	$("#3_lod_btn").fadeTo(250, 0.6);
+	$("#3_lod_btn").attr("disabled", true);
+	
+}
+
+function restoreDetailButtons(){
+	
+	$("#1_lod_btn").animate({opacity:'1'});
+	$("#1_lod_btn").attr("disabled", false);
+	
+	$("#2_lod_btn").animate({opacity:'1'});
+	$("#2_lod_btn").attr("disabled", false);
+	
+	$("#3_lod_btn").animate({opacity:'1'});
+	$("#3_lod_btn").attr("disabled", false);
+	
+}
+
+function greyTimeButtons(){
+	
+	//$('#time_feedback_toolbar').
+	
+	
+	
+	
+	
+}
+
+
+
+
 
 
 function hideTimeButtons(){

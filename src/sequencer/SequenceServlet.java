@@ -535,6 +535,7 @@ public class SequenceServlet extends HttpServlet {
 					jsob.put(nList.item(i).getNodeName(), 0);
 					
 				}
+				
 			} // end for loop
 
 		}

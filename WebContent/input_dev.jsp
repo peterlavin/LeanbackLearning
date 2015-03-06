@@ -65,7 +65,7 @@
       <form class="form-horizontal" role="form" id="topic_input">
         <div class="form-group">
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="topics" placeholder="What do you want to learn about?">
+            <input name="test" type="text" class="form-control" id="topics" placeholder="What do you want to learn about?">
           </div>
         </div>
     </form>
@@ -81,6 +81,7 @@
 			<button class="btn output_lang_btn" id="en_btn" OnClick="setLanguage('en')">English</button>
 			<button class="btn output_lang_btn" id="de_btn" OnClick="setLanguage('de')">German</button>
 		</div>
+		
 	    <div class="row btn-toolbar" id="level_of_detail">  
 			<button class="btn level_of_detail_btn" id="1_lod_btn" OnClick="setDetail(1)">Overview</button>
 			<button class="btn level_of_detail_btn" id="2_lod_btn" OnClick="setDetail(2)">Normal</button>
@@ -94,8 +95,8 @@
 		<input id="play_image" type="image" height="75" width="75" src="images/play_button.png" name="saveForm" OnClick="testToggle()"/>
 	</div>
 	
-	<div class="row" id="continue_1">
-        <button type="button" class="btn btn-success" OnClick="testToggle()">Continue</button>
+	<div class="row" id="continue">
+        <button type="button" class="btn btn-success" id="button_continue">Continue</button>
     </div>
     
     <div class="row" id="loader">
@@ -141,7 +142,12 @@
 	<button type="button" OnClick="toggleSubmitStage()">Toggle Sub Stg</button>
 	<button type="button" OnClick="setErrorMsg()">Test Msg</button>
 	
-	<button id="button_submit" type="button">doGet()</button>
+	<button id="button_continue" type="button">doGet()</button>
+	
+	<button type="button" OnClick="greyLangButtons();greyDetailButtons()">Test Grey</button>
+	
+	<button type="button" OnClick="restoreDetailButtons()">Restore</button>
+	
 	
 	
 	
