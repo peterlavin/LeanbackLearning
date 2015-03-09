@@ -23,6 +23,7 @@ var submitStage = 'first';
 var level_1_wcSec = 0;
 var level_2_wcSec = 0;
 var level_3_wcSec = 0;
+var time;
 
 var currentWcSec = 0;
 var obj;
@@ -37,7 +38,10 @@ $(function() {
 		
 				$("#time_feedback").css("visibility", "hidden");
 		        $('#play_button').hide();
+		        $('#pause_button').hide();
 		        $('#loader').hide();
+		        $('#startover').hide();
+		    	$('#jp_container_1').hide();
 		        
 		        // Set language and detail buttons to default highlighting
 		  		$('#en_btn').css({"background":"#BEBEBE"});
@@ -53,6 +57,33 @@ $(function() {
 				
 				
 				$('#button_continue').click(function(event) {
+					
+					
+					///////////////////////////////////////////////////////////////////////////////////
+					/* **********************************************************************************
+					 *  if idnum and name are undefined, set them to some value for testing in input_dev.jsp use
+					 * TODO remove this when in index.jsp
+					 */
+					
+					if(typeof idnum == 'undefined'){
+						var idnum = '123456789'; 
+					}
+					
+					if(typeof name == 'undefined'){
+					    var name = 'Joe Soap'; 
+					}
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 					
 					if (submitStage == 'first') {
 						
@@ -79,37 +110,10 @@ $(function() {
 						
 						
 						
+												
 						
 						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-					///////////////////////////////////////////////////////////////////////////////////
-					/* **********************************************************************************
-					 *  if idnum and name are undefined, set them to some value for testing in input_dev.jsp use
-					 * TODO remove this when in index.jsp
-					 */
 					
-					if(typeof idnum == 'undefined'){
-						var idnum = '123456789'; 
-					};
-					
-					if(typeof name == 'undefined'){
-					    var name = 'Joe Soap'; 
-					};
 					console.log("button_continue was click wt:\n\nidnum: " + idnum + "\nname: " + name + "\ntopics: " + topics + "\ndet: " + detail + "\nlang: " + outputlang);
 					
 					///////////////////////////////////////////////////////////////////////////////////
@@ -141,22 +145,28 @@ $(function() {
 										level_2_wcSec = obj[1].level_2;
 										level_3_wcSec = obj[1].level_3;
 										
+										console.log("level_1_wcSec = " + level_1_wcSec);
+										
 										
 										if (level_1_wcSec == 0) {
+											
 											// show message to user - there is nothing available, try something different
+											setErrorMsg("No presentation available for <span style='font-weight:bold;'>" + topics + "</span>, please try something else");
 											
-											
-											
-											
-											
-											
-											
-											
-											
+											$('#loader').hide();
+											$('#startover').show();
 											
 										}
 										else if (level_1_wcSec == "failure") {
+
 											console.log("\nFailure reported from doPost method for: " + topics);
+											
+											setErrorMsg("SSC failure for: " + topics);
+											
+											$('#loader').hide();
+											$('#startover').show();
+											
+											
 										}
 										else {
 											
@@ -168,16 +178,20 @@ $(function() {
 										/* Set the current WC value, this depends on level of detail selected */
 										setCurrentWcSec();
 											
-										}
 										
 										
 										console.log("LOD is currently set to be " + detail);
 										
-										createButtons(currentWcSec);
+										createTimeButtons(currentWcSec);
 										
 										$('#loader').hide();
 										$('#continue').show();
 										restoreDetailButtons();
+										
+										}
+										
+										
+										
 										
 									}); //end of function(responseText) brace			
 					}
@@ -187,13 +201,27 @@ $(function() {
 					
 					greyDetailButtons();
 					
-					$('#time_feedback_toolbar').fadeTo(250, 0.6);
-					
-					// this doesnt work !!!!!!!!! need to do individual buttons!!!!!!!
-					$('#time_feedback_toolbar').attr("disabled", true);
-					
 					greyTimeButtons();
 					
+					$('#loader').show();
+					
+					$('#continue').hide();
+					
+					//   call doGet, create jPlayer instance
+
+					
+					$.get('SequenceServlet',
+							{
+								
+								idnum : idnum,
+								name : name,
+								time : time,
+								topics : topics,
+								init_detail : detail,
+								outputlang : outputlang
+							},
+							function(responseText) {
+								
 					
 					
 					
@@ -205,17 +233,52 @@ $(function() {
 					
 					
 					
+				
 					
+				 	var playlist = [{"title":"Part 1 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_1.mp3"},{"title":"Part 2 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_2.mp3"},{"title":"Part 3 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_3.mp3"}];
 					
-					
-					
+					new jPlayerPlaylist({
+						jPlayer: "#jquery_jplayer_1",
+						cssSelectorAncestor: ""
+					},
+					playlist,	
+					{
+						swfPath: "playlist/js",
+						supplied: "mp3",
+						wmode: "window",
+						smoothPlayBar: true,
+						cssSelector: {title: "#title", play: "#play", pause: "#pause", stop: "#stop", currentTime: "#currentTime", duration: "#duration"},
+						keyEnabled: true
 						
-						//   call doGet, create jPlayer instance
-						
-					}
+					});
 					
 					
-						}); // end submit.click function(event)
+					$('#loader').hide();
+					$('#play_button').show();
+					
+					
+					
+					
+					}); //end of function(responseText) brace
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					} // end of submitStage if, else if
+					
+					
+				}); // end submit.click function(event)
 					
 					
 					
@@ -250,7 +313,6 @@ $(function() {
 
 
 
-/* For demo only, TODO remove when in app */
 
 
 function setCurrentWcSec() {
@@ -267,6 +329,45 @@ function setCurrentWcSec() {
 } 
 
 
+function reload() {
+	
+	window.location.reload(true);
+
+}
+
+/*
+ * Show and hide the JPlayer <div>
+ */
+function togglePlayer(){
+	$('#jp_container_1').toggle();
+}
+
+
+
+/*
+ * Scripts for two local buttons, play and pause
+ */
+function localPlay() {
+	
+	$("#jquery_jplayer_1").jPlayer("play");
+	$('#play_button').hide();
+	$('#pause_button').show();
+	
+}
+
+function localPause() {
+	
+	$("#jquery_jplayer_1").jPlayer("pause");
+	$('#play_button').show();
+	$('#pause_button').hide();
+}
+
+
+
+
+
+
+
 
 
 
@@ -279,14 +380,16 @@ function testFn() {
 	
 }
 
-function setErrorMsg(){
+function setErrorMsg(errorMessage){
 	
-//	$("#time_feedback").show();
 	$("#time_feedback").empty();
 	$("#time_feedback").append('<div class="btn-toolbar" id="time_feedback_toolbar"></div>');
+	
 	// Custom padding to keep flow when buttons are replaced with an error message
 	$("#time_feedback_toolbar").css({"padding": "14px 0px 0px 14px"});
-	$("#time_feedback").append('Error Message: Placeholder failure message feedback for user');
+	$("#time_feedback").append(errorMessage);
+	
+	$("#time_feedback").css("visibility", "visible");
 	
 }
 
@@ -348,7 +451,7 @@ function setDetail(detailFromButton){
 			
 			setCurrentWcSec();
 			
-			createButtons(currentWcSec);
+			createTimeButtons(currentWcSec);
 	
 		}
 	}
@@ -407,18 +510,20 @@ function restoreDetailButtons(){
 
 function greyTimeButtons(){
 	
-	//$('#time_feedback_toolbar').
+	var children = [];
+	$("#time_feedback_toolbar").children().each(function() {
+		children.push(this);
+	});
 	
 	
-	
-	
-	
+	for(i=0; i< children.length; i++ ){
+		
+		var thisChild = children[i];
+        $(children[i]).fadeTo(250, 0.6);
+		$(thisChild).attr("disabled", true);
+		
+	}
 }
-
-
-
-
-
 
 function hideTimeButtons(){
 	
@@ -440,7 +545,7 @@ function toggleLoader(){
 	}
 }
 
-function createButtons(wcSec){
+function createTimeButtons(wcSec){
 	
 	console.log('Ss now: ' + submitStage + ', wcSec passed is: ' + wcSec);
 	
@@ -502,6 +607,9 @@ function setTimeReqd(setVal) {
 	// TODO use this to set the (global) time variable for sending to Servlet doGet() method
 		
 	console.log("setTimeReqd called: " + setVal + ":");
+	
+	time = setVal;
+	
 		
 	// reset all buttons to standart background
 	$('.timeButton').css({"background":"#DDDDDD"});

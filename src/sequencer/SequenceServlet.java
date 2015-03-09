@@ -145,16 +145,23 @@ public class SequenceServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		String responseJsStr = " --- From Servlet --- " + request.getParameter("testArg2");
+		
+		
+		
+		System.out.println(request.getParameter("idnum"));
+		System.out.println(request.getParameter("name"));
+		System.out.println(request.getParameter("time"));
+		System.out.println(request.getParameter("topics"));
+		System.out.println(request.getParameter("init_detail"));
+		System.out.println(request.getParameter("outputlang"));
 
-		System.out.println("doGet in SequenceServlet has been invoked " + responseJsStr);
 		
 		/*
 		 * Write string to response
 		 */
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(responseJsStr);
+		response.getWriter().write("Ret from doGet");
 		
 	}
 

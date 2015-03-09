@@ -140,14 +140,10 @@ $(function() {
 																	
 																	/* First, check if there are 'words' available, i.e. not zero values */
 																	if (level_1_wcSec == 0) {
-																		console
-																				.log("\nNo results found for: "
-																						+ topics);
+																		console.log("\nNo results found for: " + topics);
 																		/* Show the 'No results found' feedback, set the text and show it to the user */
-																		document
-																				.getElementById("error_feedback_row").style.display = "block";
-																		document
-																				.getElementById('error_feedback').innerHTML = "No results found for <span style='font-weight:bold;'>"
+																		document.getElementById("error_feedback_row").style.display = "block";
+																		document.getElementById('error_feedback').innerHTML = "No results found for <span style='font-weight:bold;'>"
 																				+ topics
 																				+ "</span>, please try different topic words";
 																		/* Change 'Clear' to 'Start Over' to start another job */
@@ -299,6 +295,8 @@ $(function() {
 																	document
 																			.getElementById("buttons_row").style.padding = "5px 20px 20px 20px";
 																}); //end of function(responseText) brace
+												
+												
 												
 											} // end of main else stm for submit boolean
 											

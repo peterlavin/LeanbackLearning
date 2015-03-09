@@ -27,6 +27,27 @@
     	
     	<!-- 		Own css file for local settings -->
   		<link rel="stylesheet" href="css/lbl_specific.css">
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+	  	<!--  The following four lines are related to JPlayer Playlists only -->
+		<link href="playlist/css/jPlayer.css" rel="stylesheet" type="text/css" />
+		<link href="playlist/skin/pink.flag/jplayer.pink.flag.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="playlist/js/jquery.jplayer.min.js"></script>
+		<script type="text/javascript" src="playlist/js/jplayer.playlist.min.js"></script>
+  		
+  		
+  		
+  		
+  		
+  		
+  		
+  		
 
 </head>
 
@@ -92,8 +113,14 @@
 	<div class="col-xs-6">
 
 	<div class="row" id="play_button">
-		<input id="play_image" type="image" height="75" width="75" src="images/play_button.png" name="saveForm" OnClick="testToggle()"/>
+		<input id="play_image" type="image" height="75" width="75" src="images/play_button.png" name="saveForm" OnClick="localPlay()"/>
 	</div>
+	
+	<div class="row" id="pause_button">
+	    <input id="pauseButton" type="image" src="images/pause_button.png" height="75" width="75" OnClick="localPause()"/>
+	</div>
+	
+	
 	
 	<div class="row" id="continue">
         <button type="button" class="btn btn-success" id="button_continue">Continue</button>
@@ -101,6 +128,10 @@
     
     <div class="row" id="loader">
 	    <img src="images/ajax_loader_gray_256.gif" style="width:125px;height:125px">
+    </div>
+    
+    <div class="row" id="startover">
+        <button type="button" class="btn btn-success" id="button_startover" OnClick="reload()" >Start Over</button>
     </div>
     
 	</div>
@@ -123,6 +154,40 @@
     </div>
     
     
+    
+    <!-- 	HTML required for the player (only the list is shown here) -->
+    <div id="container">
+	<div id="content_main">
+		<section>
+		<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+		<div id="jp_container_1" class="jp-audio">
+			<div class="jp-type-playlist">
+				<div class="jp-playlist" id="playlist-part">
+					<ul>
+						<li></li>
+					</ul>
+				</div>
+				 <div class="jp-no-solution">
+					 <span>Update Required</span>
+					 To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+				 </div>
+			</div>
+		</div>
+      </section>
+	</div>
+</div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 <!--     Test code to show/hide the time feedback row of buttons, TODO remove -->
 
 <hr>
@@ -130,23 +195,28 @@
     
 <!--     <button id="hideTimeButton" type="button" OnClick="hideTimeButtons()">Hide/Show</button> -->
     <br>
-    <button type="button" OnClick="createButtons(399)">Create 399 s</button>
-    <button type="button" OnClick="createButtons(401)">Create 401 s</button>
-    <button type="button" OnClick="createButtons(699)">Create 699 s</button>
-    <button type="button" OnClick="createButtons(701)">Create 701 s</button>
-    <button type="button" OnClick="createButtons(1000)">Create 1000 s</button>
-    <button type="button" OnClick="createButtons(3000)">Create 3000 s</button>
-	<button type="button" OnClick="createButtons(10000)">Create 10K s</button>
+    <button type="button" OnClick="createTimeButtons(399)">Create 399 s</button>
+    <button type="button" OnClick="createTimeButtons(401)">Create 401 s</button>
+    <button type="button" OnClick="createTimeButtons(699)">Create 699 s</button>
+    <button type="button" OnClick="createTimeButtons(701)">Create 701 s</button>
+    <button type="button" OnClick="createTimeButtons(1000)">Create 1000 s</button>
+    <button type="button" OnClick="createTimeButtons(3000)">Create 3000 s</button>
+	<button type="button" OnClick="createTimeButtons(10000)">Create 10K s</button>
 	<br><br>
 	<button type="button" OnClick="toggleLoader()">Toggle Loader</button>
 	<button type="button" OnClick="toggleSubmitStage()">Toggle Sub Stg</button>
-	<button type="button" OnClick="setErrorMsg()">Test Msg</button>
+	<button type="button" OnClick="setErrorMsg('A test Error Message')">Test Msg</button>
 	
 	<button id="button_continue" type="button">doGet()</button>
 	
-	<button type="button" OnClick="greyLangButtons();greyDetailButtons()">Test Grey</button>
+	<button type="button" OnClick="greyLanguageButtons();greyDetailButtons()">Test Grey</button>
 	
 	<button type="button" OnClick="restoreDetailButtons()">Restore</button>
+	
+	<button type="button" OnClick="greyTimeButtons()">Grey Time</button>
+	
+	<button id="hideButton" type="button" OnClick="togglePlayer()">Toggle JP View</button>
+	
 	
 	
 	

@@ -10,10 +10,7 @@
 <!--  The following five lines are related to JPlayer Playlists only -->
 <link href="playlist/css/jPlayer.css" rel="stylesheet" type="text/css" />
 <link href="playlist/skin/pink.flag/jplayer.pink.flag.css" rel="stylesheet" type="text/css" />
-
-<!-- <script type="text/javascript" src="playlist/code.jquery.com/jquery-1.7.2.min.js"></script> -->
 <script type="text/javascript" src="playlist/code.jquery.com/jquery-2.0.0.js"></script>
-
 <script type="text/javascript" src="playlist/js/jquery.jplayer.min.js"></script>
 <script type="text/javascript" src="playlist/js/jplayer.playlist.min.js"></script>
 
@@ -44,7 +41,9 @@ $(document).ready(function(){
 		
 	});
 
-});
+	
+	
+}); // end of $(document).ready(function()
 
 </script>
 
@@ -58,6 +57,10 @@ $(document).ready(function(){
     <input id="playButton" type="image" src="images/play_button.png" height="75" width="75" OnClick="localPlay()"/>
     <input id="pauseButton" type="image" src="images/pause_button.png" height="75" width="75" OnClick="localPause()"/>
   </div>
+  
+  
+  
+  
 
 <!-- 	HTML required for the player (only the list is shown here) -->
 <div id="container">
