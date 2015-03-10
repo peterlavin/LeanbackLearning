@@ -36,28 +36,24 @@ $(function() {
 
 	$(document).ready(function() {
 		
-				$("#time_feedback").css("visibility", "hidden");
+				// Set initial button visiblity as needed
 		        $('#play_button').hide();
 		        $('#pause_button').hide();
 		        $('#loader').hide();
 		        $('#startover').hide();
 		    	$('#jp_container_1').hide();
+		    	$("#time_feedback").css("visibility", "hidden");
 		        
 		        // Set language and detail buttons to default highlighting
 		  		$('#en_btn').css({"background":"#BEBEBE"});
-				$('#en_btn').css({"font-weight":"bold"}); // TODO, set the variables also
+				$('#en_btn').css({"font-weight":"bold"});
 				$('#2_lod_btn').css({"background":"#BEBEBE"});
 				$('#2_lod_btn').css({"font-weight":"bold"});
 				
 				/* var which 'knows' what stage (1 or 2) the selection and input process is at */
 				submitStage = 'first';
 			
-				console.log('setup() has been called in (document).ready(function() in external JS source file');
-				
-				
-				
 				$('#button_continue').click(function(event) {
-					
 					
 					///////////////////////////////////////////////////////////////////////////////////
 					/* **********************************************************************************
@@ -73,23 +69,9 @@ $(function() {
 					    var name = 'Joe Soap'; 
 					}
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					if (submitStage == 'first') {
 						
-						/*
-						 * Validate 'topics' entered, can't be empty or just white spaces 
-						 */
+						// Validate 'topics' entered, it can't be empty or be just white spaces 
 						if (topics = $('#topics').val().trim() == "") {
 							alert("Please enter what you would like to learn about");
 							document.getElementById('topics').value = "";
@@ -97,7 +79,7 @@ $(function() {
 							return false;
 						}
 					
-						// Set topics
+						// After validatin, get topics from input
 						topics = $('#topics').val();
 						
 						// Disable topics input, grey-out lang and detail buttons
@@ -105,20 +87,13 @@ $(function() {
 						greyLanguageButtons();
 						greyDetailButtons();
 						
+						// Show the loader and wait for a response from SSC
 						$('#loader').show();
 						$('#continue').hide();
-						
-						
-						
-												
-						
-						
 					
 					console.log("button_continue was click wt:\n\nidnum: " + idnum + "\nname: " + name + "\ntopics: " + topics + "\ndet: " + detail + "\nlang: " + outputlang);
 					
-					///////////////////////////////////////////////////////////////////////////////////
-					
-					/* Call the Servlet method to process/complete the job */
+					// Call the Servlet method to get word-count information for topics
 					$.post('SequenceServlet', {
 						
 										idnum : idnum,
@@ -130,27 +105,24 @@ $(function() {
 									},
 									function(responseText) {
 										
-										
-										
-										
-										console.log("Test returned is... " + responseText);
-										
 										submitStage = 'second';
 										console.log('submitStage is now: ' + submitStage);
+
+										console.log("Test returned is... " + responseText);
 										
 										obj = eval(responseText);
 										
-										/* Get the three values from the JSON */
+										// Get the three values from the JSON
 										level_1_wcSec = obj[1].level_1;
 										level_2_wcSec = obj[1].level_2;
 										level_3_wcSec = obj[1].level_3;
 										
+										// level_1 is used to determine sucess or not
 										console.log("level_1_wcSec = " + level_1_wcSec);
-										
 										
 										if (level_1_wcSec == 0) {
 											
-											// show message to user - there is nothing available, try something different
+											// show message to user, i.e. there is nothing available, try something different
 											setErrorMsg("No presentation available for <span style='font-weight:bold;'>" + topics + "</span>, please try something else");
 											
 											$('#loader').hide();
@@ -166,20 +138,17 @@ $(function() {
 											$('#loader').hide();
 											$('#startover').show();
 											
-											
 										}
 										else {
 											
 											console.log("\nSuccess reported from doPost method for: " + topics);
 											
-										/* Sets the variable which will force the alternative (next) to be processed on second submit */
-										submitStage = 'second';
+											/* Sets the variable which will force the alternative (next) to be processed on second submit */
+											submitStage = 'second';
 										
-										/* Set the current WC value, this depends on level of detail selected */
-										setCurrentWcSec();
+											/* Set the current WC value, this depends on level of detail selected */
+											setCurrentWcSec();
 											
-										
-										
 										console.log("LOD is currently set to be " + detail);
 										
 										createTimeButtons(currentWcSec);
@@ -190,125 +159,61 @@ $(function() {
 										
 										}
 										
-										
-										
-										
 									}); //end of function(responseText) brace			
 					}
+					
 					else if(submitStage == 'second'){
 						
-					console.log("\n\nSecond phase has been called, ready to call SSC for content\n\n");
-					
-					greyDetailButtons();
-					
-					greyTimeButtons();
-					
-					$('#loader').show();
-					
-					$('#continue').hide();
-					
-					//   call doGet, create jPlayer instance
-
-					
-					$.get('SequenceServlet',
-							{
-								
-								idnum : idnum,
-								name : name,
-								time : time,
-								topics : topics,
-								init_detail : detail,
-								outputlang : outputlang
-							},
-							function(responseText) {
-								
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-				
-					
-				 	var playlist = [{"title":"Part 1 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_1.mp3"},{"title":"Part 2 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_2.mp3"},{"title":"Part 3 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_3.mp3"}];
-					
-					new jPlayerPlaylist({
-						jPlayer: "#jquery_jplayer_1",
-						cssSelectorAncestor: ""
-					},
-					playlist,	
-					{
-						swfPath: "playlist/js",
-						supplied: "mp3",
-						wmode: "window",
-						smoothPlayBar: true,
-						cssSelector: {title: "#title", play: "#play", pause: "#pause", stop: "#stop", currentTime: "#currentTime", duration: "#duration"},
-						keyEnabled: true
+						console.log("\n\nSecond phase has been called, ready to call SSC for content\n\n");
 						
-					});
-					
-					
-					$('#loader').hide();
-					$('#play_button').show();
-					
-					
-					
-					
-					}); //end of function(responseText) brace
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
+						greyDetailButtons();
+						
+						greyTimeButtons();
+						
+						$('#loader').show();
+						
+						$('#continue').hide();
+						
+						$.get('SequenceServlet',
+								{
+									idnum : idnum,
+									name : name,
+									time : time,
+									topics : topics,
+									detail : detail,
+									outputlang : outputlang
+								},
+								function(responseText) {
+						
+					 	var playlist = [{"title":"Part 1 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_1.mp3"},{"title":"Part 2 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_2.mp3"},{"title":"Part 3 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_3.mp3"}];
+						
+						new jPlayerPlaylist({
+							jPlayer: "#jquery_jplayer_1",
+							cssSelectorAncestor: ""
+						},
+						playlist,	
+						{
+							swfPath: "playlist/js",
+							supplied: "mp3",
+							wmode: "window",
+							smoothPlayBar: true,
+							cssSelector: {title: "#title", play: "#play", pause: "#pause", stop: "#stop", currentTime: "#currentTime", duration: "#duration"},
+							keyEnabled: true
+							
+						});
+						
+						$('#loader').hide();
+						$('#play_button').show();
+						
+						}); //end of function(responseText) brace
 					
 					} // end of submitStage if, else if
 					
-					
 				}); // end submit.click function(event)
 					
-					
-					
-					
-	}); // end of (document).ready(function) {} brace
+		}); // end of (document).ready(function) {} brace
 
-
-
-
-}); // end of overall function which contains events
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	}); // end of overall function which contains events
 
 
 
@@ -547,7 +452,7 @@ function toggleLoader(){
 
 function createTimeButtons(wcSec){
 	
-	console.log('Ss now: ' + submitStage + ', wcSec passed is: ' + wcSec);
+	console.log('Ss now: ' + submitStage + ', wcSec use for time buttons is: ' + wcSec);
 	
 	var min = wcSec * 0.05;
 	var max = wcSec * 0.8;

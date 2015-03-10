@@ -147,14 +147,25 @@ public class SequenceServlet extends HttpServlet {
 		
 		
 		
-		
-		System.out.println(request.getParameter("idnum"));
-		System.out.println(request.getParameter("name"));
-		System.out.println(request.getParameter("time"));
-		System.out.println(request.getParameter("topics"));
-		System.out.println(request.getParameter("init_detail"));
-		System.out.println(request.getParameter("outputlang"));
+		System.out.println("\nFrom the Java Servlet...");
+		System.out.println("JObId" + request.getParameter("idnum"));
+		System.out.println("Name: " + request.getParameter("name"));
+		System.out.println("Time: " + request.getParameter("time"));
+		System.out.println("Topics: " + request.getParameter("topics"));
+		System.out.println("Det: " + request.getParameter("init_detail"));
+		System.out.println("Output lang: " + request.getParameter("outputlang"));
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		/*
 		 * Write string to response
@@ -162,6 +173,9 @@ public class SequenceServlet extends HttpServlet {
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write("Ret from doGet");
+		
+		
+
 		
 	}
 
