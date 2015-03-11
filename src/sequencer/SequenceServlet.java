@@ -38,6 +38,9 @@ import org.xml.sax.SAXException;
 
 
 
+
+
+import com.google.gson.Gson;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
@@ -144,23 +147,60 @@ public class SequenceServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
+		Properties prop = new Properties();
+		/*
+		 * Initialise the properties object for all methods in this servlet
+		 */
+		try {
+			InputStream inStrm = SequenceServlet.class.getClassLoader()
+					.getResourceAsStream("/config/properties");
+			prop.load(inStrm);
+			println("Properties file read successfully in init()");
+		} catch (IOException | NullPointerException e) {
+
+			println("Error Initialising properties inputstream");
+			e.printStackTrace();
+		}
 		
 		
 		System.out.println("\nFrom the Java Servlet...");
-		System.out.println("JObId" + request.getParameter("idnum"));
+		System.out.println("JObId " + request.getParameter("idnum"));
 		System.out.println("Name: " + request.getParameter("name"));
 		System.out.println("Time: " + request.getParameter("time"));
 		System.out.println("Topics: " + request.getParameter("topics"));
-		System.out.println("Det: " + request.getParameter("init_detail"));
+		System.out.println("Det: " + request.getParameter("detail"));
 		System.out.println("Output lang: " + request.getParameter("outputlang"));
 
 		
 		
+		/*
+		 * Dev code to mimic a playlist and word-count in a nested JSON
+		 */
+		
+		int numberInPlaylist = 3;
+		int overAllWordount = 181;
+		int predictedSeconds = (int) (overAllWordount/2.6);
+		
+		println("predictedSeconds is: " + predictedSeconds);
+		
+		String audioNamingDetailsParts = "1241_BelfastCityJSONTest_en_Part_";
+		
+		
+		JSONArray jsonArray = createPlaylistJson(numberInPlaylist,audioNamingDetailsParts, prop);
+		
+		JSONObject jsWC = new JSONObject();
+		
+		jsWC.put("wordcount", new Integer(predictedSeconds));
 		
 		
 		
-		
+		JSONArray jsWCandPList = new JSONArray();
+				
+		jsWCandPList.add(0, jsWC);
+		jsWCandPList.add(1, jsonArray);
+				
+				
+		String json = new Gson().toJson(jsWCandPList);
 		
 		
 		
@@ -172,7 +212,7 @@ public class SequenceServlet extends HttpServlet {
 		 */
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write("Ret from doGet");
+		response.getWriter().write(json);
 		
 		
 
@@ -610,6 +650,64 @@ public class SequenceServlet extends HttpServlet {
 		    return true;
 		    
 		}
+	
+	
+	/*
+	 * Method to create a JSONArray which contains the numbers and URLs to he
+	 * audio files in the playlist
+	 */
+	@SuppressWarnings("unchecked")
+	private JSONArray createPlaylistJson(int numberInPlaylist,
+			String audioNamingDetailsParts, Properties prop) {
+
+		/*
+		 * Get Strings from the properties file for use in file names, etc.
+		 */
+		String mediaServerIP = prop.getProperty("mediaServerIP");
+		String urlPath = prop.getProperty("audioUrlPath");
+		String audioFileExtension = prop.getProperty("audioFileExtension");
+		String audioWebProto = prop.getProperty("audioWebProto");
+
+		/*
+		 * Allows debuging on Windows dev m/c and use on Linux VM for demo
+		 */
+		if (System.getProperty("os.name").startsWith("Windows")) {
+			// localhost used if on Windows during dev
+			mediaServerIP = "localhost";
+		}
+
+		/*
+		 * Create an JSONArray (for a number of JSONObjects)
+		 */
+
+		JSONArray overallList = new JSONArray();
+
+		for (int j = 0; j < numberInPlaylist; j++) {
+
+			/*
+			 * Create a new object for each iteration
+			 */
+			JSONObject js = new JSONObject();
+
+			/*
+			 * Populate this object with details for this iteration
+			 */
+
+			js.put("title", "Part " + (j + 1) + " of " + numberInPlaylist);
+			js.put("mp3", audioWebProto + "://" + mediaServerIP + "/" + urlPath + "/"
+					+ audioNamingDetailsParts + (j + 1) + "."
+					+ audioFileExtension);
+
+			/*
+			 * Add this object to the list
+			 */
+			overallList.add(js);
+
+		}
+
+		return overallList;
+
+	}
 	
 }
 

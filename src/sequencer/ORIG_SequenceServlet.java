@@ -860,7 +860,7 @@ public class ORIG_SequenceServlet<Response> extends HttpServlet {
 			for (int b = 0; b < numberOfBalSentences; b++) {
 
 				/*
-				 * for each b, call a method to determing what number of parts
+				 * for each b, call a method to determining what number of parts
 				 * there would be for a presentation with that number of lines,
 				 * this gives the location of each line
 				 */

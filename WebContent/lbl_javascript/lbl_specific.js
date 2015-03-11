@@ -28,6 +28,8 @@ var time;
 var currentWcSec = 0;
 var obj;
 
+var playing = false;
+
 // set here when returned from the doPost() call, passed again to doGet() method for use there.
 var jobID;
 
@@ -35,6 +37,7 @@ var jobID;
 $(function() {
 
 	$(document).ready(function() {
+		
 		
 				// Set initial button visiblity as needed
 		        $('#play_button').hide();
@@ -184,9 +187,23 @@ $(function() {
 									outputlang : outputlang
 								},
 								function(responseText) {
+									
+						//console.log("Actually returned...\n" + responseText);
+						//var playlist = [{"title":"Part 1 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_1.mp3"},{"title":"Part 2 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_2.mp3"},{"title":"Part 3 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_3.mp3"}];
 						
-					 	var playlist = [{"title":"Part 1 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_1.mp3"},{"title":"Part 2 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_2.mp3"},{"title":"Part 3 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_3.mp3"}];
+						var playlistAndDuration = JSON.parse(responseText);
 						
+						var retSecondsObj = playlistAndDuration[0];
+						var retSeconds = retSecondsObj.wordcount;
+						
+						var playlist = playlistAndDuration[1];
+						console.log("Ret Seconds: " + retSeconds);
+						
+						
+						
+						setUpProgressBar(retSeconds);
+						
+					 	
 						new jPlayerPlaylist({
 							jPlayer: "#jquery_jplayer_1",
 							cssSelectorAncestor: ""
@@ -204,6 +221,10 @@ $(function() {
 						
 						$('#loader').hide();
 						$('#play_button').show();
+						
+						
+						
+						
 						
 						}); //end of function(responseText) brace
 					
@@ -258,6 +279,8 @@ function localPlay() {
 	$('#play_button').hide();
 	$('#pause_button').show();
 	
+	playing = true;
+	
 }
 
 function localPause() {
@@ -265,6 +288,8 @@ function localPause() {
 	$("#jquery_jplayer_1").jPlayer("pause");
 	$('#play_button').show();
 	$('#pause_button').hide();
+	
+	playing = false;
 }
 
 
@@ -522,6 +547,71 @@ function setTimeReqd(setVal) {
 	// then set the selected button to be dark with bold text
 	$('#'+setVal).css({"background":"#BEBEBE"});
 	$('#'+setVal).css({"font-weight":"bold"});
+}
+
+
+function setUpProgressBar(duration) {
+	
+	
+	// Firstly, create the progress bar in the time_feedback div
+	
+	$("#time_feedback").empty();
+	$("#time_feedback").append('<div class="container"><div id="progresslabel"><h1></h1></div>' + 
+			'<div class="progress">' +
+			'<div id="progressvalue" class="progress-bar" role="progressbar" + aria-valuenow="0" aria-' +
+			'valuemin="0" aria-valuemax="100" style="width:0%"></div></div></div>');
+	
+	// initialise times for progress  bar
+	var initTimer = duration, minutes, seconds;
+    initMinutes = parseInt(initTimer / 60, 10);
+    initSeconds = parseInt(initTimer % 60, 10);
+ //   initMinutes = initMinutes < 10 ? "0" + initMinutes : initMinutes;
+    initSeconds = initSeconds < 10 ? "0" + initSeconds : initSeconds;
+    
+	document.getElementById('progresslabel').innerHTML = "0:00" + " of " + initMinutes + ":" + initSeconds + " played";
+	
+    var timer = 0, minutes, seconds;
+    
+    setInterval(function () {
+    	
+      if(playing){
+    	
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+   //     minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+        
+//        console.log(duration);
+//        console.log(timer + "\n");
+
+        currentValue = Math.round((timer/duration) * 100);
+//        
+        document.getElementById('progressvalue').setAttribute("style", "width:" + currentValue + "%");
+        document.getElementById('progressvalue').setAttribute("aria-valuenow",currentValue);
+    	document.getElementById('progresslabel').innerHTML = minutes + ":" + seconds + " of " + initMinutes + ":" + initSeconds + " played";
+        
+        ++ timer;
+        
+        // when timer reaches 0, stop
+        if (timer > duration) {
+            timer = duration;
+        }
+        
+       }  
+        
+    }, 1000);
+}
+
+
+function togglePlayingStatus(){
+	
+	if(playing == false){
+		playing = true;
+	}
+	else {
+		playing = false;
+	}
+	
 }
 
 

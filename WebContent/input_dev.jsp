@@ -155,6 +155,14 @@
     
     
     
+    
+		
+		
+    
+    
+    
+    
+    
     <!-- 	HTML required for the player (only the list is shown here) -->
     <div id="container">
 	<div id="content_main">
@@ -178,7 +186,18 @@
 </div>
     
     
-    
+    		
+    		
+    		
+    		
+    	
+<!-- 		<div class="container"> -->
+<!--   		<div id="progresslabel"><h1></h1></div> -->
+<!--   		<div class="progress"> -->
+<!--     			<div id="progressvalue" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div> -->
+<!--   			</div> -->
+<!-- 		</div> -->
+		
     
     
     
@@ -216,8 +235,6 @@
 	<button type="button" OnClick="greyTimeButtons()">Grey Time</button>
 	
 	<button id="hideButton" type="button" OnClick="togglePlayer()">Toggle JP View</button>
-	
-	
 	
 	
 	

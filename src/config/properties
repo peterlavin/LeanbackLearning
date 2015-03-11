@@ -38,9 +38,9 @@ speechserviceTimeoutValue=40000
 
 ##### Details for hostname/IP address from which the created MP3 file will be served
 #mediaServerIP=134.226.48.38
-mediaServerIP=lbl.scss.tcd.ie
+#mediaServerIP=lbl.scss.tcd.ie
 #mediaServerIP=lbltest.scss.tcd.ie
-#mediaServerIP=localhost
+mediaServerIP=localhost
 audioUrlPath=lbl/audio
 audioWebProto=http
 #audioWebProto=https
