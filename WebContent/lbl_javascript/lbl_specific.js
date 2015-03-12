@@ -115,12 +115,15 @@ $(function() {
 										
 										obj = eval(responseText);
 										
+										// Get the job ID number from the response
+										jobID = obj[0].jobid;
+										
 										// Get the three values from the JSON
 										level_1_wcSec = obj[1].level_1;
 										level_2_wcSec = obj[1].level_2;
 										level_3_wcSec = obj[1].level_3;
 										
-										// level_1 is used to determine sucess or not
+										// level_1 is used to determine success or not
 										console.log("level_1_wcSec = " + level_1_wcSec);
 										
 										if (level_1_wcSec == 0) {
@@ -181,9 +184,10 @@ $(function() {
 								{
 									idnum : idnum,
 									name : name,
-									time : time,
+									jobid : jobID,
 									topics : topics,
-									detail : detail,
+									time : time,
+									final_detail : detail,
 									outputlang : outputlang
 								},
 								function(responseText) {

@@ -137,6 +137,70 @@ public class DbaseEntry {
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	 * Method to update a job with the users final 'level of detail' and time preferences
+	 */
+	public void updateFinalUserPrefs(Connection conn, String jobId, String final_detail, String time) {
+
+		String updateSscStm = "UPDATE tbl_jobs SET final_detail=" + final_detail + ",time=" + time + " where jobid=" + jobId + ";";
+
+		Statement stm = null;
+		
+		try {
+
+			stm = conn.createStatement();
+			stm.executeUpdate(updateSscStm);
+
+		} catch (SQLException e) {
+			System.err.println("ERROR in SSC UPDATE: " + e.getMessage());
+		} finally {
+			try {
+				if(stm != null) {
+					stm.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if (conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/*
 	 * Method to update an existing job on its status after a call has been made
 	 * to the remote Search-Summarise-Combine web service.

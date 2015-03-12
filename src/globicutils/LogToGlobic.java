@@ -49,17 +49,17 @@ public class LogToGlobic {
 	}
 
 	/*
-	 * Method to log data with GLOBIC service. Receives an ArrayList, converts
-	 * this to XML and saves it to disk.
-	 * 
-	 * Two files are saved to disk here, one containing metadata on the job and
-	 * the actual content returned from the SSC service.
+	 * Method receives a String URL which is posted to GLOBIC.
+	 * GLOBIC uses this URL to fetch two XML file for parsing/storage.
+	 * The HTTP response code is used to determine overall success of
+	 * GLOBIC logging attempt. The response code (200 or otherwise) is
+	 * dependent on the GLOBIC implementation.
 	 * 
 	 * @param String, String, Properties
 	 * 
 	 * @return boolean
 	 */
-	public boolean logDataWithGlobic(String jobId, String strContentMetaUrl, Properties prop) {
+	public boolean logDataWithGlobic(String strContentMetaUrl, Properties prop) {
 
 		boolean globicLogSuccess = false;
 
@@ -71,10 +71,8 @@ public class LogToGlobic {
 
 		globicServerIP = prop.getProperty("globicServerIP");
 		globicServerPath = prop.getProperty("globicServerPath");
-						
 		
 		String globicUrl = "http://" + globicServerIP + "/" + globicServerPath + "?";
-		
 		
         try {
 
@@ -84,6 +82,7 @@ public class LogToGlobic {
             @SuppressWarnings("deprecation")
 			DefaultHttpClient httpClient = new DefaultHttpClient();
             
+            // Post the URL to GLOBIC, the hard-coded "contentConsumed1" string is a variable required by GLOBIC
             String query = URLEncoder.encode("contentConsumed1", "UTF-8") + "=" + URLEncoder.encode(strContentMetaUrl, "UTF-8");
             
 
@@ -93,16 +92,20 @@ public class LogToGlobic {
             	println("GLOBIC URL target... " + globicUrl + query  + "rubbish");
             }
             
-            
-            
-            
-            
+            // Actually post the response...
             HttpPost postRequest = new HttpPost(globicUrl + query);
+            
+            /*
+             *  GLOBIC reacts to this post by fetching the meta_xxxxx.xml and content XML file from the Lbl host machine,
+             *  if successful, it returns a 200 response. 
+             */  
 
+            // Get the response code
             HttpResponse response = httpClient.execute(postRequest);
             
             println("Print of resp code from phad: " + response.getStatusLine().getStatusCode());
             
+            // GLOBIC response is checked, a boolean is set and used to record success in the DB 
             if (response.getStatusLine().getStatusCode() == 200) {
             	System.out.println("\nSUCCESS " + response.getStatusLine().getStatusCode() + " returned from GLOBIC server.\n");
             	globicLogSuccess = true;
@@ -125,15 +128,12 @@ public class LogToGlobic {
             }
             
             httpClient.getConnectionManager().shutdown();
-            
 
         } catch (MalformedURLException e) {
 
             e.printStackTrace();
         } catch (IOException e) {
-
             e.printStackTrace();
-
         }
 
 		return globicLogSuccess;
@@ -189,8 +189,12 @@ public class LogToGlobic {
 	/*
 	 * Log printing method
 	 */
-	private static void println(Object obj) {
-		System.out.println(obj);
+	private static void println(Object... obj) {
+		if (obj.length == 0) {
+			System.out.println();
+		} else {
+			System.out.println(obj[0]);
+		}
 	}
 
 }

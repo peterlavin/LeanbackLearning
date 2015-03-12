@@ -230,12 +230,19 @@ public class ORIG_SequenceServlet<Response> extends HttpServlet {
 	} // end of doPost() method
 
 /*
- * FIXME removal of brackets before balanceing of sentences if possible, as doing it  afterwards
- * may leave a very short sentence. Alt, do this in SSC, outisde of this service.
+ * FIXME removal of brackets before balancing of sentences if possible, as doing it afterwards
+ * may leave a very short sentence. Alt, do this in SSC, outside of this service.
  * 
  * 	(non-Javadoc)
  * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
  */
+	
+	
+	
+	
+	
+	
+	
 	
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -625,7 +632,7 @@ public class ORIG_SequenceServlet<Response> extends HttpServlet {
 			 * Save the XML document to disk, available to be served
 			 * over HTML to GLOBIC (at end of this method).
 			 * 
-			 * True/False returned here, depeneding on success or not of
+			 * True/False returned here, depending on success or not of
 			 * saving of the XML text content and metadata file to disk for
 			 * GLOBIC. Failure is NOT fatal to the over all job success. A
 			 * false value prevents GLOBIC logging being attempted at the
@@ -1129,8 +1136,16 @@ public class ORIG_SequenceServlet<Response> extends HttpServlet {
 			 * sends it to GLOBIC.
 			 */
 			LogToGlobic ltg = new LogToGlobic(this.debug);
-			globicDataFetchSuccess = true; // ltg.logDataWithGlobic(strJobId,strContentMetaUrl,
-											// prop);
+			globicDataFetchSuccess = true; 
+			
+			// TODO uncomment these lines
+			// TODO
+			// TODO
+			// TODO
+			// TODO
+			// TODO
+			
+			//ltg.logDataWithGlobic(strContentMetaUrl,prop);
 
 		}
 
@@ -1148,8 +1163,8 @@ public class ORIG_SequenceServlet<Response> extends HttpServlet {
 			// TODO
 
 			FileToDisk ftdDel = new FileToDisk(this.debug);
-			// ftdDel.deleteContentFiles(contentNamingDetails, prop);
-			// ftdDel.deleteContentFiles(metaContentNamingDetails, prop);
+			//ftdDel.deleteContentFiles(contentNamingDetails, prop);
+			//ftdDel.deleteContentFiles(metaContentNamingDetails, prop);
 
 		}
 
@@ -1190,13 +1205,12 @@ public class ORIG_SequenceServlet<Response> extends HttpServlet {
 
 		}
 		
-		
-		
-		
-		
-		
-
 	} // end of doGet method
+	
+	
+	
+	
+		
 
 	/*
 	 * ///////////////////// Helper methods /////////////////////////
@@ -1610,6 +1624,9 @@ public class ORIG_SequenceServlet<Response> extends HttpServlet {
 
 		return globicDocToSend;
 	}
+	
+	
+	
 
 	/*
 	 * Method used to write all responses when there has been an error in the
