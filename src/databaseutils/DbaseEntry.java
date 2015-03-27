@@ -352,10 +352,11 @@ public class DbaseEntry {
 	 */
 	public void updateSpSynStatus(Connection conn, int jobId, String ssTimetaken, int fileLength) {
 
-		String updateFileStm = "UPDATE tbl_jobs SET ss_filelength='" + fileLength
-				+ "',ss_timetaken ='" + ssTimetaken
-				+ "',multipart_job='1'"
-				+ " where jobid=" + jobId + ";";
+//		String updateFileStm = "UPDATE tbl_jobs SET ss_filelength='" + fileLength + "',ss_timetaken ='" + ssTimetaken + "',multipart_job='1'" + " where jobid=" + jobId + ";";
+		String updateFileStm = "UPDATE tbl_jobs SET ss_filelength='" + fileLength + "',ss_timetaken ='" + ssTimetaken + "' where jobid=" + jobId + ";";
+		
+		
+		println("updateFileStm debug: " + updateFileStm);
 
 		Statement stm = null;
 		

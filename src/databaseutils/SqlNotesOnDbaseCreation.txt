@@ -35,3 +35,64 @@ mysql> describe tbl_jobs;
 +----------------+--------------+------+-----+---------+----------------+
 19 rows in set (0.00 sec)
 
+// SQL to create this (from show create table tbl_jobs)...
+
+CREATE TABLE `tbl_jobs` (
+  `jobid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` varchar(64) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `server_os` varchar(10) DEFAULT NULL,
+  `topics` varchar(255) DEFAULT NULL,
+  `init_detail` int(2) DEFAULT NULL,
+  `outputlanguage` varchar(255) DEFAULT NULL,
+  `final_detail` int(2) DEFAULT NULL,
+  `time` int(2) DEFAULT NULL,
+  `ssc_status` tinyint(1) DEFAULT NULL,
+  `ssc_timetaken` float(10,2) DEFAULT NULL,
+  `ssc_filelength` int(11) DEFAULT NULL,
+  `ssc_wc` int(5) DEFAULT NULL,
+  `ss_status` tinyint(1) DEFAULT NULL,
+  `ss_timetaken` float(10,2) DEFAULT NULL,
+  `ss_filelength` int(11) DEFAULT NULL,
+  `file_name` varchar(255) DEFAULT NULL,
+  `mp3_playtime` int(4) DEFAULT NULL,
+  `num_parts` int(2) DEFAULT NULL,
+  PRIMARY KEY (`jobid`)
+) ENGINE=InnoDB AUTO_INCREMENT=197 DEFAULT CHARSET=latin1
+
+
+=================================================================================================================
+							PARTS TABLE
+=================================================================================================================
+
+mysql> describe tbl_parts;
++--------------+-------------+------+-----+---------+-------+
+| Field        | Type        | Null | Key | Default | Extra |
++--------------+-------------+------+-----+---------+-------+
+| jobid        | int(11)     | NO   | PRI | NULL    |       |
+| part_num     | int(2)      | NO   | PRI | NULL    |       |
+| blocksize    | int(2)      | YES  |     | NULL    |       |
+| initialset   | int(2)      | YES  |     | NULL    |       |
+| part_wc      | int(5)      | YES  |     | NULL    |       |
+| ss_timetaken | float(10,2) | YES  |     | NULL    |       |
+| ss_status    | tinyint(1)  | YES  |     | NULL    |       |
+| mp3_playtime | int(4)      | YES  |     | NULL    |       |
++--------------+-------------+------+-----+---------+-------+
+
+
+// SQL to create this...
+
+CREATE TABLE `tbl_parts` (
+  `jobid` int(11) NOT NULL,
+  `part_num` int(2) NOT NULL,
+  `blocksize` int(2) DEFAULT NULL,
+  `initialset` int(2) DEFAULT NULL,
+  `part_wc` int(5) DEFAULT NULL,
+  `ss_timetaken` float(10,2) DEFAULT NULL,
+  `ss_status` tinyint(1) DEFAULT NULL,
+  `mp3_playtime` int(4) DEFAULT NULL,
+  PRIMARY KEY (`jobid`,`part_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+=================================================================================================================
+

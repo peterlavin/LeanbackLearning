@@ -182,7 +182,6 @@ public class SequenceServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/*
 		 * SuppressWarnings is added above as JSONObject cannot be parameterised 
@@ -310,7 +309,7 @@ public class SequenceServlet extends HttpServlet {
 
 			overallSuccess = false;
 
-			println("Error Initialising properties inputstream");
+			println("Error initialising properties inputstream");
 
 			/*
 			 * Writes a hard coded error that does not rely on the 'failed' prop
@@ -376,24 +375,13 @@ public class SequenceServlet extends HttpServlet {
 		} catch (Exception e1) {
 			System.err
 					.println("ERROR in Final Prefs DB UPDATE: " + e1.getMessage());
-			if (debug) {
-				e1.printStackTrace();
+				if (debug) {
+					e1.printStackTrace();
+				}
 			}
-		} 
-			
-			
-			
-			
-			
-			
-			
+						
 		} // end of overallSuccess if-stm for initial jobId database call
 
-		
-		
-		
-		
-		
 		
 		/*
 		 * Check that the topics string is not empty, all other fields may be
@@ -463,7 +451,7 @@ public class SequenceServlet extends HttpServlet {
 		if (overallSuccess) {
 
 			/*
-			 * integer variable used for word count of retrned SSC XML document,
+			 * integer variable used for word count of returned SSC XML document,
 			 * recorded in database if SSC part of job is successful
 			 */
 
@@ -482,7 +470,7 @@ public class SequenceServlet extends HttpServlet {
 			 * used
 			 */
 			String strDataForSC = strTopicsWithUnderScrs + "&" + strTime + "&"
-					+ strDetail + "&" + strOutputLang;
+					+ strFinalDetail + "&" + strOutputLang;
 
 			/*
 			 * ACTUAL CALL FOR SSC SERVICE
@@ -645,7 +633,7 @@ public class SequenceServlet extends HttpServlet {
 			}
 			dataArrayGlobic.add("contenturl#######" + strContentUrl);
 			dataArrayGlobic.add("topics#######" + strTopics);
-			dataArrayGlobic.add("langentered#######" + strLangEntered);
+			/////////// Depricated ////////////dataArrayGlobic.add("langentered#######" + strLangEntered);
 			dataArrayGlobic.add("outputlang#######" + strOutputLang);
 
 			/*

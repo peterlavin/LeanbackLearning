@@ -4,14 +4,14 @@ debug=true
 
 ##### Sets out Windows and Linux file storage directories for audio files.
 audioFileStorageWindows=c:/inetpub/wwwroot/lbl/audio
-audioFileStorageLinux=/var/www/lbl/audio
+audioFileStorageLinux=/var/www/html/lbl/audio
 audioFileExtension=mp3
 
 
 
 ##### Sets out Windows and Linux file storage directories for XML text content files.
 contentFileStorageWindows=c:/inetpub/wwwroot/lbl/content
-contentFileStorageLinux=/var/www/lbl/content
+contentFileStorageLinux=/var/www/html/lbl/content
 contentFileExtension=xml
 contentFilePrependix=meta
 
