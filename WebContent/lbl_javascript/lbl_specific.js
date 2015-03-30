@@ -192,19 +192,16 @@ $(function() {
 								},
 								function(responseText) {
 									
-						//console.log("Actually returned...\n" + responseText);
+						console.log("Full returned...\n" + responseText);
 						//var playlist = [{"title":"Part 1 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_1.mp3"},{"title":"Part 2 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_2.mp3"},{"title":"Part 3 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_3.mp3"}];
 						
 						var playlistAndDuration = JSON.parse(responseText);
 						
 						var retSecondsObj = playlistAndDuration[0];
-						var retSeconds = retSecondsObj.wordcount;
+						var retSeconds = retSecondsObj.seconds;
 						
 						var playlist = playlistAndDuration[1];
-						console.log("Ret Seconds: " + retSeconds);
-						
-						
-						
+												
 						setUpProgressBar(retSeconds);
 						
 					 	

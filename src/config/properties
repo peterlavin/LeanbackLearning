@@ -82,9 +82,9 @@ error7=Disambiguation needed
 error7a=Please try other topics
 
 
-###### wordcount to seconds of playtime multiplier
-wordcountMultiple=2.67
-
+###### wordcount to seconds of playtime multiplier, the lower figure is more accurate for short presentations
+#wordcountMultiple=2.67
+wordcountMultiple=2.4
 
 
 ################################################## Not used by Servlet, notes only ###############################

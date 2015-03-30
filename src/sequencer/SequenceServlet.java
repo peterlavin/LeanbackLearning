@@ -74,6 +74,7 @@ import org.xml.sax.SAXException;
 
 
 
+
 import com.google.gson.Gson;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
@@ -182,37 +183,12 @@ public class SequenceServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/*
 		 * SuppressWarnings is added above as JSONObject cannot be parameterised 
 		 */
 		
-//		Properties prop = new Properties();
-//		/*
-//		 * Initialise the properties object for all methods in this servlet
-//		 */
-//		try {
-//			InputStream inStrm = SequenceServlet.class.getClassLoader()
-//					.getResourceAsStream("/config/properties");
-//			prop.load(inStrm);
-//			println("Properties file read successfully in init()");
-//		} catch (IOException | NullPointerException e) {
-//
-//			println("Error Initialising properties inputstream");
-//			e.printStackTrace();
-//		}
-//		
-//		
-//		System.out.println("\nFrom the Java Servlet...");
-//		System.out.println("JObId " + request.getParameter("idnum"));
-//		System.out.println("Name: " + request.getParameter("name"));
-//		System.out.println("Time: " + request.getParameter("time"));
-//		System.out.println("Topics: " + request.getParameter("topics"));
-//		System.out.println("Det: " + request.getParameter("detail"));
-//		System.out.println("Output lang: " + request.getParameter("outputlang"));
-//
-//		
-//		
 //		/*
 //		 * Dev code to mimic a playlist and word-count in a nested JSON
 //		 * Dev code to mimic a playlist and word-count in a nested JSON
@@ -860,12 +836,36 @@ public class SequenceServlet extends HttpServlet {
 			 * 
 			 * Make a JSON object instead of a hashmap
 			 */
-			JSONArray jsonArray = createPlaylistJson(numberInPlaylist,audioNamingDetailsParts, prop);
-//			JSONArray jsonArray = createPlaylistJson(numUniquePartLocations, audioNamingDetailsParts, prop);
+			JSONArray jsonArrayPlist = createPlaylistJson(numberInPlaylist,audioNamingDetailsParts, prop);
 			
+			/*
+			 * Create and popluate a JOSN for the word count of the original XML content
+			 * file retruned from SSC
+			 */
+		
 			
-			
+			String wcMultipleStr = prop.getProperty("wordcountMultiple");
 
+			float wcMultipleFloat = Float.parseFloat(wcMultipleStr);
+
+			int predictedSeconds = (int) ((xmlWordCount / wcMultipleFloat));
+			
+			
+			if(debug){
+				println("WC from original XML is: " + xmlWordCount);			
+				println("predictedSeconds is: " + predictedSeconds);
+			}
+			
+								
+			JSONObject jsWC = new JSONObject();
+			
+			jsWC.put("seconds", new Integer(predictedSeconds));
+			
+			JSONArray jsWCandPList = new JSONArray();
+					
+			jsWCandPList.add(0, jsWC);
+			jsWCandPList.add(1, jsonArrayPlist);
+			
 			/*
 			 * Create an ArrayList which contains the required output language
 			 * as received from the user's entry at the UI.
@@ -994,7 +994,7 @@ public class SequenceServlet extends HttpServlet {
 				println("Writing (first part) response for: "
 						+ audioNamingDetailsParts + partNumberOne + "\n");
 
-				String json = new Gson().toJson(jsonArray);
+				String json = new Gson().toJson(jsWCandPList);
 				response.setContentType("text/plain");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(json);
@@ -1515,8 +1515,10 @@ public class SequenceServlet extends HttpServlet {
 	}
 	
 	/*
-	 * Converts the SSC Wordcount to Seconds using an empirically obtained
-	 * constant (words per second) and puts them in a JSON object
+	 * Converts the SSC three word counts to seconds using an empirically obtained
+	 * constant (words per second) and puts them in a JSON object.
+	 * 
+	 * NB, seconds are returned to the UI, not the actual word counts XML file
 	 */
 
 	@SuppressWarnings("unchecked")
@@ -1527,7 +1529,7 @@ public class SequenceServlet extends HttpServlet {
 		 */
 		String wcMultipleStr = prop.getProperty("wordcountMultiple");
 
-		float wcMultipleInt = Float.parseFloat(wcMultipleStr);
+		float wcMultipleFloat = Float.parseFloat(wcMultipleStr);
 
 		NodeList nList = wcXmlDoc.getElementsByTagName("*");
 		println();
@@ -1549,7 +1551,7 @@ public class SequenceServlet extends HttpServlet {
 				 * Convert the word-count value to seconds playtime, rounding
 				 * happens automatically as the result is an integer
 				 */
-				int secondsPlaytime = (int) ((Integer.parseInt(nList.item(i).getTextContent()) / wcMultipleInt));
+				int secondsPlaytime = (int) ((Integer.parseInt(nList.item(i).getTextContent()) / wcMultipleFloat));
 
 				jsob.put(nList.item(i).getNodeName(), secondsPlaytime);
 
