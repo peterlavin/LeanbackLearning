@@ -237,10 +237,10 @@ public class SearchSummAndCombine {
 			}
 
 //			String xmlStrSscToReturn = createLocalDocument();
-//			println("******** Reading Content XML document from local disk ********");
-//			String xmlStrSscToReturn = readDocumentFromFile();
+			println("******** Reading Content XML document from local disk ********");
+			String xmlStrSscToReturn = readDocumentFromFile();
 			
-			String xmlStrSscToReturn = CallSummaryService(strUrl, timeout);
+//			String xmlStrSscToReturn = CallSummaryService(strUrl, timeout);
 
 			String timeTaken = calculateTime(startTime, System.nanoTime());
 
@@ -429,10 +429,7 @@ public class SearchSummAndCombine {
 		 * 
 		 */
 		
-		File mockFile = new File("C:\\inetpub\\wwwroot\\lbl\\content\\1.xml");
-//		File mockFile = new File("C:\\inetpub\\wwwroot\\lbl\\content\\0807_Brazil.xml");
-//		File mockFile = new File("C:\\inetpub\\wwwroot\\lbl\\content\\TestBrokenSentence.xml");
-		
+		File mockFile = new File("/var/www/html/lbl/content/212_Waterford.xml");
 
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = null;

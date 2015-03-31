@@ -56,19 +56,6 @@
 <body>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
- 
    <div class="container-fluid" id="heading_topic">
        
       <div class="col-xs-4" id="lbl_logo">
@@ -236,7 +223,9 @@
 	
 	<button id="hideButton" type="button" OnClick="togglePlayer()">Toggle JP View</button>
 	
+	<button id="selectZero" type="button" OnClick="selectZero()">Select 0</button>
 	
+	<button id="stopPlayer" type="button" OnClick="localStop()">Stop & Reset</button>
 	
 	
 	

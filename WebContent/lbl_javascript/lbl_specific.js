@@ -33,6 +33,11 @@ var playing = false;
 // set here when returned from the doPost() call, passed again to doGet() method for use there.
 var jobID;
 
+var retSeconds;
+
+var thisPlayer;
+
+var intervalTimer;
 
 $(function() {
 
@@ -198,28 +203,42 @@ $(function() {
 						var playlistAndDuration = JSON.parse(responseText);
 						
 						var retSecondsObj = playlistAndDuration[0];
-						var retSeconds = retSecondsObj.seconds;
+						retSeconds = retSecondsObj.seconds;
 						
 						var playlist = playlistAndDuration[1];
 												
-						setUpProgressBar(retSeconds);
 						
 					 	
-						new jPlayerPlaylist({
+						thisPlayer = new jPlayerPlaylist({
 							jPlayer: "#jquery_jplayer_1",
 							cssSelectorAncestor: ""
 						},
-						playlist,	
+						playlist,
 						{
 							swfPath: "playlist/js",
 							supplied: "mp3",
 							wmode: "window",
 							smoothPlayBar: true,
 							cssSelector: {title: "#title", play: "#play", pause: "#pause", stop: "#stop", currentTime: "#currentTime", duration: "#duration"},
-							keyEnabled: true
-							
+							keyEnabled: true,
+							ended : function() {
+								console.log("Ended called at..." + thisPlayer.current)
+								
+								console.log("Length is: " + Object.keys(thisPlayer.playlist).length);
+								
+								if((thisPlayer.current + 1) == Object.keys(thisPlayer.playlist).length){
+									
+									console.log("End of last item in playlist, stopping");
+									//localStop();
+									// set a var and stop the player in the setInterval loop on the next 'paused == true'
+								}
+								
+							}
 						});
 						
+						
+						
+						setUpProgressBar(retSeconds);
 						$('#loader').hide();
 						$('#play_button').show();
 						
@@ -293,13 +312,27 @@ function localPause() {
 	playing = false;
 }
 
-
-
-
-
-
-
-
+function localStop(){
+	
+	$("#jquery_jplayer_1").jPlayer("stop");
+	
+	// revert to track one in the playlist
+	thisPlayer.select(0);
+	
+	// set global var playing to false to stop progress bar
+	playing = false;
+	
+	// set up buttons for restarting TODO, add stop button when ready
+	$('#play_button').show();
+	$('#pause_button').hide();
+	
+	// reset progress bar to zero again
+	clearInterval(intervalTimer);
+		
+	// Create a new progress bar using the global var retSeconds
+	setUpProgressBar(retSeconds);
+			
+}
 
 
 
@@ -388,9 +421,6 @@ function setDetail(detailFromButton){
 	}
 
 }
-
-
-
 
 
 function testToggle(){
@@ -557,33 +587,33 @@ function setUpProgressBar(duration) {
 	// Firstly, create the progress bar in the time_feedback div
 	
 	$("#time_feedback").empty();
+	
 	$("#time_feedback").append('<div class="container"><div id="progresslabel"><h1></h1></div>' + 
 			'<div class="progress">' +
 			'<div id="progressvalue" class="progress-bar" role="progressbar" + aria-valuenow="0" aria-' +
 			'valuemin="0" aria-valuemax="100" style="width:0%"></div></div></div>');
 	
+	
 	// initialise times for progress  bar
 	var initTimer = duration, minutes, seconds;
     initMinutes = parseInt(initTimer / 60, 10);
     initSeconds = parseInt(initTimer % 60, 10);
- //   initMinutes = initMinutes < 10 ? "0" + initMinutes : initMinutes;
     initSeconds = initSeconds < 10 ? "0" + initSeconds : initSeconds;
     
 	document.getElementById('progresslabel').innerHTML = "0:00" + " of " + initMinutes + ":" + initSeconds + " played";
 	
-    var timer = 0, minutes, seconds;
-    
-    setInterval(function () {
+	var timer = 0, minutes, seconds;
+	
+    intervalTimer = setInterval(function () {
     	
       if(playing){
     	
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
-   //     minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
         
 //        console.log(duration);
-//        console.log(timer + "\n");
+//        console.log("Timer is: " + timer + "\n");
 
         currentValue = Math.round((timer/duration) * 100);
 //        
@@ -598,10 +628,14 @@ function setUpProgressBar(duration) {
             timer = duration;
         }
         
-       }  
-        
+       }
+            
     }, 1000);
 }
+
+
+
+
 
 
 function togglePlayingStatus(){
