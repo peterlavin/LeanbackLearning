@@ -2519,8 +2519,8 @@ public class SequenceServlet extends HttpServlet {
 		}
 		
 
-		println("\n=== * === End of all processing for job " + jobId
-				+ " === * ===");
+		println("\n=== *** === End of all processing for job " + jobId
+				+ " === *** ===");
 	}
 	
 	

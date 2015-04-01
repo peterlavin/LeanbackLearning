@@ -109,6 +109,13 @@
 	
 	
 	
+	<div class="row" id="stop_button">
+	    <input id="stopButton" type="image" src="images/stop_button.png" height="75" width="75" OnClick="localStopAndReset()"/>
+	</div>
+	
+	
+	
+	
 	<div class="row" id="continue">
         <button type="button" class="btn btn-success" id="button_continue">Continue</button>
     </div>
@@ -225,7 +232,7 @@
 	
 	<button id="selectZero" type="button" OnClick="selectZero()">Select 0</button>
 	
-	<button id="stopPlayer" type="button" OnClick="localStop()">Stop & Reset</button>
+	<button id="stopPlayer" type="button" OnClick="localStopAndReset()">Stop & Reset</button>
 	
 	
 	

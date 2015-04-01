@@ -39,6 +39,8 @@ var thisPlayer;
 
 var intervalTimer;
 
+var lastEndedValue = 0;
+
 $(function() {
 
 	$(document).ready(function() {
@@ -47,8 +49,9 @@ $(function() {
 				// Set initial button visiblity as needed
 		        $('#play_button').hide();
 		        $('#pause_button').hide();
+		        $('#stop_button').hide();
 		        $('#loader').hide();
-		        $('#startover').hide();
+		       // $('#startover').hide();
 		    	$('#jp_container_1').hide();
 		    	$("#time_feedback").css("visibility", "hidden");
 		        
@@ -222,15 +225,20 @@ $(function() {
 							cssSelector: {title: "#title", play: "#play", pause: "#pause", stop: "#stop", currentTime: "#currentTime", duration: "#duration"},
 							keyEnabled: true,
 							ended : function() {
-								console.log("Ended called at..." + thisPlayer.current)
 								
-								console.log("Length is: " + Object.keys(thisPlayer.playlist).length);
+								lastEndedValue++;
+
+								console.log(lastEndedValue + " of " + Object.keys(thisPlayer.playlist).length + " in playlist completed");
 								
-								if((thisPlayer.current + 1) == Object.keys(thisPlayer.playlist).length){
-									
-									console.log("End of last item in playlist, stopping");
-									//localStop();
-									// set a var and stop the player in the setInterval loop on the next 'paused == true'
+								if(Object.keys(thisPlayer.playlist).length == 1){
+									console.log("End of SINGLE item playlist, now stopping");
+									// stop now if there is only one item in the playlist
+									localStopAndReset();
+								}
+								//else if((thisPlayer.current + 1) == Object.keys(thisPlayer.playlist).length && (thisPlayer.current + 1) == lastEndedValue){
+								else if((lastEndedValue) == Object.keys(thisPlayer.playlist).length){
+									console.log("End of last item in multi-item playlist, now stopping");
+									localStopAndReset();
 								}
 								
 							}
@@ -312,12 +320,16 @@ function localPause() {
 	playing = false;
 }
 
-function localStop(){
+function localStopAndReset(){
+	
+	console.log("localStopAndReset() called");
 	
 	$("#jquery_jplayer_1").jPlayer("stop");
 	
 	// revert to track one in the playlist
-	thisPlayer.select(0);
+	if(thisPlayer){
+		thisPlayer.select(0);
+	}
 	
 	// set global var playing to false to stop progress bar
 	playing = false;
@@ -325,12 +337,15 @@ function localStop(){
 	// set up buttons for restarting TODO, add stop button when ready
 	$('#play_button').show();
 	$('#pause_button').hide();
-	
+		
 	// reset progress bar to zero again
 	clearInterval(intervalTimer);
 		
 	// Create a new progress bar using the global var retSeconds
 	setUpProgressBar(retSeconds);
+	
+	// reset the lastEndedValue to zero
+	lastEndedValue = 0;
 			
 }
 
@@ -375,18 +390,26 @@ function toggleSubmitStage(){
 
 function setLanguage(lang){
 	
-	// TODO set the language variable here, should also have a default set in doc.ready()
-	console.log(lang + " passed.");
+	if(lang != outputlang){
+		
 	
-	// reset all buttons to standard background
-	$('.output_lang_btn').css({"background":"#DDDDDD"});
-	$('.output_lang_btn').css({"font-weight":"normal"});
+		// TODO set the language variable here, should also have a default set in doc.ready()
+			
+		// reset all buttons to standard background
+		$('.output_lang_btn').css({"background":"#DDDDDD"});
+		$('.output_lang_btn').css({"font-weight":"normal"});
 	
-	// then set the selected button to be dark with bold text
-	$('#'+ lang + '_btn').css({"background":"#BEBEBE"});
-	$('#'+ lang + '_btn').css({"font-weight":"bold"});
+		// then set the selected button to be dark with bold text
+		$('#'+ lang + '_btn').css({"background":"#BEBEBE"});
+		$('#'+ lang + '_btn').css({"font-weight":"bold"});
+		
+		console.log("Output Lang was '" + outputlang + "' now '" + lang + "'");
 	
-	outputlang = lang;
+		outputlang = lang;
+	
+	
+	}
+	
 	
 }
 
@@ -407,9 +430,8 @@ function setDetail(detailFromButton){
 	$('#'+ detailFromButton + '_lod_btn').css({"background":"#BEBEBE"});
 	$('#'+ detailFromButton + '_lod_btn').css({"font-weight":"bold"});
 	
-	console.log("Detail was " + detail);
+	console.log("Detail was " + detail + " now " + detailFromButton);
 	detail = detailFromButton;
-	console.log("Detail now is " + detail);
 	
 		if(submitStage == "second"){
 			

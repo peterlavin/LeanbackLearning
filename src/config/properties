@@ -29,7 +29,8 @@ sscTimeoutValue=300000
 
 
 
-##### Details for the Speech Syntheses service
+
+##### Details for the Speech Syntheses service (user is peter)
 speechserviceIpAddress=10.63.0.5
 speechserviceUriPath=LeanbackLearning/service/synthesise
 speechserviceTimeoutValue=40000
