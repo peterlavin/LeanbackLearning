@@ -55,6 +55,7 @@
 
 <body>
 
+<div id="all_body">
 
    <div class="container-fluid" id="heading_topic">
        
@@ -73,7 +74,7 @@
       <form class="form-horizontal" role="form" id="topic_input">
         <div class="form-group">
           <div class="col-sm-10">
-            <input name="test" type="text" class="form-control" id="topics" placeholder="What do you want to learn about?">
+            <input name="test" type="text" class="form-control" id="topics" placeholder="What do you want to learn about?" oninput="validateInput()">
           </div>
         </div>
     </form>
@@ -117,7 +118,7 @@
 	
 	
 	<div class="row" id="continue">
-        <button type="button" class="btn btn-success" id="button_continue">Continue</button>
+        <button type="button" class="btn btn-success" id="button_continue">Continue <span class="glyphicon glyphicon-arrow-right"></span></button>
     </div>
     
     <div class="row" id="loader">
@@ -203,6 +204,8 @@
     
 <!--     Test code to show/hide the time feedback row of buttons, TODO remove -->
 
+<div id="testbuttons">
+
 <hr>
 <h6>Test code below here</h6>
     
@@ -234,11 +237,12 @@
 	
 	<button id="stopPlayer" type="button" OnClick="localStopAndReset()">Stop & Reset</button>
 	
+</div>
 	
 	
 	
 
-
+</div>
 
 
 

@@ -46,12 +46,15 @@ $(function() {
 	$(document).ready(function() {
 		
 		
+				// hide the test buttons, TODO remove when finished dev
+				$('#testbuttons').hide();
+		
 				// Set initial button visiblity as needed
 		        $('#play_button').hide();
 		        $('#pause_button').hide();
 		        $('#stop_button').hide();
 		        $('#loader').hide();
-		       // $('#startover').hide();
+		        $('#startover').hide();
 		    	$('#jp_container_1').hide();
 		    	$("#time_feedback").css("visibility", "hidden");
 		        
@@ -63,6 +66,9 @@ $(function() {
 				
 				/* var which 'knows' what stage (1 or 2) the selection and input process is at */
 				submitStage = 'first';
+				
+				// Disable the continue button (activated when a input is made)
+				$("#button_continue").attr("disabled", true);
 			
 				$('#button_continue').click(function(event) {
 					
@@ -169,6 +175,7 @@ $(function() {
 										
 										$('#loader').hide();
 										$('#continue').show();
+										$('#startover').show();
 										restoreDetailButtons();
 										
 										}
@@ -210,8 +217,6 @@ $(function() {
 						
 						var playlist = playlistAndDuration[1];
 												
-						
-					 	
 						thisPlayer = new jPlayerPlaylist({
 							jPlayer: "#jquery_jplayer_1",
 							cssSelectorAncestor: ""
@@ -244,16 +249,11 @@ $(function() {
 							}
 						});
 						
-						
-						
 						setUpProgressBar(retSeconds);
 						$('#loader').hide();
 						$('#play_button').show();
-						
-						
-						
-						
-						
+						$('#startover').show();
+							
 						}); //end of function(responseText) brace
 					
 					} // end of submitStage if, else if
@@ -265,6 +265,34 @@ $(function() {
 	}); // end of overall function which contains events
 
 
+
+
+function setContinueActive() {
+	
+	$("#button_continue").attr("disabled", false);
+	
+}
+
+function validateInput(){
+	
+	console.log("validateInput() fired");
+	
+	
+	// Validate 'topics' entered, it can't be empty or be just white spaces 
+	if (topics = $('#topics').val().trim() == "") {
+		
+		$("#button_continue").attr("disabled", true);
+				
+		document.getElementById('topics').value = "";
+		
+		document.getElementById('topics').placeholder = "What do you want to learn about?";
+		
+	}
+	else {
+		$("#button_continue").attr("disabled", false);
+	}
+	
+}
 
 
 
@@ -305,8 +333,9 @@ function localPlay() {
 	
 	$("#jquery_jplayer_1").jPlayer("play");
 	$('#play_button').hide();
+	$('#startover').hide();
 	$('#pause_button').show();
-	
+	$('#stop_button').show();
 	playing = true;
 	
 }
@@ -315,7 +344,9 @@ function localPause() {
 	
 	$("#jquery_jplayer_1").jPlayer("pause");
 	$('#play_button').show();
+	$('#startover').show();
 	$('#pause_button').hide();
+	$('#stop_button').hide();
 	
 	playing = false;
 }
@@ -336,8 +367,10 @@ function localStopAndReset(){
 	
 	// set up buttons for restarting TODO, add stop button when ready
 	$('#play_button').show();
+	$('#startover').show();
 	$('#pause_button').hide();
-		
+	$('#stop_button').hide();
+	
 	// reset progress bar to zero again
 	clearInterval(intervalTimer);
 		
@@ -492,7 +525,7 @@ function restoreDetailButtons(){
 }
 
 function greyTimeButtons(){
-	
+	// Selects all the children of the div and pushes 
 	var children = [];
 	$("#time_feedback_toolbar").children().each(function() {
 		children.push(this);
@@ -520,11 +553,13 @@ function toggleLoader(){
 		$('#loader').show();
 		$('#continue_1').hide();
 		$('#play_button').hide();
+		$('#startover').hide();
 	}
 	else{
 		$('#loader').hide();
 		$('#continue_1').hide();
 		$('#play_button').show();
+		$('#startover').show();
 	}
 }
 
@@ -587,19 +622,21 @@ function createTimeButtons(wcSec){
 
 function setTimeReqd(setVal) {
 	
-	// TODO use this to set the (global) time variable for sending to Servlet doGet() method
+	if(setVal != time){
 		
-	console.log("setTimeReqd called: " + setVal + ":");
-	
-	time = setVal;
-	
+		console.log("setTimeReqd called: " + setVal + ":");
+			
+		time = setVal;
+			
+		// reset all buttons to standart background
+		$('.timeButton').css({"background":"#DDDDDD"});
+		$('.timeButton').css({"font-weight":"normal"});
+		// then set the selected button to be dark with bold text
+		$('#'+setVal).css({"background":"#BEBEBE"});
+		$('#'+setVal).css({"font-weight":"bold"});
 		
-	// reset all buttons to standart background
-	$('.timeButton').css({"background":"#DDDDDD"});
-	$('.timeButton').css({"font-weight":"normal"});
-	// then set the selected button to be dark with bold text
-	$('#'+setVal).css({"background":"#BEBEBE"});
-	$('#'+setVal).css({"font-weight":"bold"});
+	}
+	
 }
 
 

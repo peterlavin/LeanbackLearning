@@ -8,21 +8,43 @@
 	
 }
 
+
+html {
+	
+	margin: 0 auto;
+	
+	min-width: 90%;
+	
+}
+
+#heading_topic {
+	
+	max-width: 90%;
+	min-width: 90%;
+
+	
+}
+
+
+
 #output_lang {
 	
 	padding: 10px 25px 25px 0px;
-
+	min-width: 40%;
 	
 }
 
 #level_of_detail {
 	
 	padding: 10px 25px 25px 0px;
+	min-width: 40%;
 	
 }
 
 #time_feedback{
+
 	padding: 10px 25px 25px 25px;
+	
 }
 
 
