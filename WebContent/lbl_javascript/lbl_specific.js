@@ -143,7 +143,8 @@ $(function() {
 										if (level_1_wcSec == 0) {
 											
 											// show message to user, i.e. there is nothing available, try something different
-											setErrorMsg("No presentation available for <span style='font-weight:bold;'>" + topics + "</span>, please try something else");
+											setErrorMsg("Error <span class=\"glyphicon glyphicon-alert\"></span> No presentation available for <span style='font-weight:bold;'>" +
+													topics + "</span>, please try another topic");
 											
 											$('#loader').hide();
 											$('#startover').show();
@@ -208,14 +209,37 @@ $(function() {
 								function(responseText) {
 									
 						console.log("Full returned...\n" + responseText);
-						//var playlist = [{"title":"Part 1 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_1.mp3"},{"title":"Part 2 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_2.mp3"},{"title":"Part 3 of 3","mp3":"http://localhost/lbl/audio/1241_BelfastCityJSONTest_en_Part_3.mp3"}];
 						
 						var playlistAndDuration = JSON.parse(responseText);
 						
 						var retSecondsObj = playlistAndDuration[0];
+						
 						retSeconds = retSecondsObj.seconds;
 						
 						var playlist = playlistAndDuration[1];
+
+						// Get URL of first part and check that there is actually some audio there to play
+						
+						var firstAudioPart = eval(playlistAndDuration[1]);
+						
+						var audioUrl = firstAudioPart[0].mp3; 
+						
+						console.log("\nFirst part... " + audioUrl);
+						
+						getAudioUrlRespCode(audioUrl);
+						
+						//console.log("Resp code: " + getAudioUrlRespCode(audioUrl));
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 												
 						thisPlayer = new jPlayerPlaylist({
 							jPlayer: "#jquery_jplayer_1",
@@ -273,10 +297,66 @@ function setContinueActive() {
 	
 }
 
+function getAudioUrlRespCode(url){
+	
+	
+	
+	
+	
+	
+	
+	  var httpRequest;
+	  
+
+	  if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+	      httpRequest = new XMLHttpRequest();
+	    } else if (window.ActiveXObject) { // IE
+	      try {
+	        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+	      } 
+	      catch (e) {
+	        try {
+	          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+	        } 
+	        catch (e) {}
+	      }
+	    }
+
+	    if (!httpRequest) {
+	      alert('Giving up :( Cannot create an XMLHTTP instance');
+	      return false;
+	    }
+	    httpRequest.onreadystatechange = alertContents(httpRequest);
+	    httpRequest.open('GET', url);
+	    httpRequest.send();
+	  
+
+}
+	  
+	  // support function for above...
+	  function alertContents(httpreq) {
+	    if (httpreq.readyState === 4) {
+	      if (httpreq.status === 200) {
+	        alert(httpreq.responseText);
+	      } else {
+	        alert('There was a problem with the request.');
+	      }
+	    }
+	  }
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
 function validateInput(){
-	
-	console.log("validateInput() fired");
-	
 	
 	// Validate 'topics' entered, it can't be empty or be just white spaces 
 	if (topics = $('#topics').val().trim() == "") {
@@ -400,7 +480,6 @@ function setErrorMsg(errorMessage){
 	// Custom padding to keep flow when buttons are replaced with an error message
 	$("#time_feedback_toolbar").css({"padding": "14px 0px 0px 14px"});
 	$("#time_feedback").append(errorMessage);
-	
 	$("#time_feedback").css("visibility", "visible");
 	
 }

@@ -126,7 +126,7 @@
     </div>
     
     <div class="row" id="startover">
-        <button type="button" class="btn btn-success" id="button_startover" OnClick="reload()" >Start Over</button>
+        <button type="button" class="btn btn-success" id="button_startover" OnClick="reload()" >Start Over <span class="glyphicon glyphicon-refresh"></span></button>
     </div>
     
 	</div>
