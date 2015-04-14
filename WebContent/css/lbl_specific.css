@@ -21,10 +21,27 @@ html {
 	
 	max-width: 90%;
 	min-width: 90%;
-
 	
 }
 
+#lbl_logo {
+	
+	padding: 15px 15px 15px 15px;
+	
+}
+
+#disconnect {
+
+	width: 100px;
+	height: 30px;
+}
+
+#logo_image {
+	
+	width: 125px;
+	height: 125px;
+	
+}
 
 
 #output_lang {
@@ -41,12 +58,33 @@ html {
 	
 }
 
+#continue_loader_play {
+	
+	padding: 10px 10px 10px 10px;
+	
+}
+
+
+#loader_image {
+
+	 width: 50px;
+	 height: 50px;
+	
+}
+
+#startover_pause_stop {
+
+	padding: 10px 10px 10px 10px;
+	
+}
+
+
+
 #time_feedback{
 
 	padding: 10px 25px 25px 25px;
 	
 }
-
 
 #gConnect {
 	
@@ -67,9 +105,6 @@ html {
 	padding: 120px 25px 25px 25px;
 }
 
-#continue_1{
-	padding: 28px 25px 25px 10px;
-}
 
 .lbl_input_btn{
 	padding: 10px 25px 25px 0px;
@@ -79,10 +114,10 @@ html {
 	padding: 0px 0px 0px 15px;
 }
 
-#sign_out_btm {
-/*   position: relative; */
-/*   top: 50%; */
-/*   transform: translateY(40%); */
+#sign_out_btn {
+	
+	padding: 50px 5px 5px 5px;
+	
 }
 
 #welcome_msg{

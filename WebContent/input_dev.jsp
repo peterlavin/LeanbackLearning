@@ -28,23 +28,12 @@
     	<!-- 		Own css file for local settings -->
   		<link rel="stylesheet" href="css/lbl_specific.css">
   		
-  		
-  		
-  		
-  		
-  		
-  		
-  		
+  		  		
 	  	<!--  The following four lines are related to JPlayer Playlists only -->
 		<link href="playlist/css/jPlayer.css" rel="stylesheet" type="text/css" />
 		<link href="playlist/skin/pink.flag/jplayer.pink.flag.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="playlist/js/jquery.jplayer.min.js"></script>
 		<script type="text/javascript" src="playlist/js/jplayer.playlist.min.js"></script>
-  		
-  		
-  		
-  		
-  		
   		
   		
   		
@@ -60,15 +49,15 @@
    <div class="container-fluid" id="heading_topic">
        
       <div class="col-xs-4" id="lbl_logo">
-       	<img src="images/logo_placeholder2.png" alt="Leanback learning" style="width:100px;height:50px">
+       	<input id="logo_image" type="image" src="images/LeanBackLearning_v2CROP.png" alt="Leanback learning" OnClick="reload()"/>
       </div>
       
       <div class="col-xs-4" id="welcome_msg">
       	  <div id="usermsg"></div>
       </div>
       
-      <div class="col-xs-4" id="sign_out_btm" >
-      	<input type="image" src="images/google_signout.png" height="30" width="100" name="saveForm" id="disconnect"/>
+      <div class="col-xs-4" id="sign_out_btn" >
+      	<input id="disconnect" type="image" src="images/google_signout.png" name="saveForm"/>
       </div>
     
       <form class="form-horizontal" role="form" id="topic_input">
@@ -98,36 +87,45 @@
 		</div>
 	
 	</div>
+	
 	<div class="col-xs-6">
 
-	<div class="row" id="play_button">
-		<input id="play_image" type="image" height="75" width="75" src="images/play_button.png" name="saveForm" OnClick="localPlay()"/>
-	</div>
+	<div id="continue_loader_play">
 	
-	<div class="row" id="pause_button">
-	    <input id="pauseButton" type="image" src="images/pause_button.png" height="75" width="75" OnClick="localPause()"/>
-	</div>
-	
-	
-	
-	<div class="row" id="stop_button">
-	    <input id="stopButton" type="image" src="images/stop_button.png" height="75" width="75" OnClick="localStopAndReset()"/>
-	</div>
-	
-	
-	
-	
-	<div class="row" id="continue">
-        <button type="button" class="btn btn-success" id="button_continue">Continue <span class="glyphicon glyphicon-arrow-right"></span></button>
-    </div>
+		<div class="row" id="continue">
+			<input id="continue_image" type="image" src="images/continue.png" height="50" width="50"/>
+<!--         	<button type="button" class="btn btn-success" id="button_continue">Continue <span class="glyphicon glyphicon-arrow-right"></span></button> -->
+    	</div>
+
+    	<div class="row" id="loader">
+	    	<img id="loader_image" src="images/ajax_loader_gray_256.gif">
+    	</div>
     
-    <div class="row" id="loader">
-	    <img src="images/ajax_loader_gray_256.gif" style="width:125px;height:125px">
-    </div>
-    
-    <div class="row" id="startover">
-        <button type="button" class="btn btn-success" id="button_startover" OnClick="reload()" >Start Over <span class="glyphicon glyphicon-refresh"></span></button>
-    </div>
+		<div class="row" id="play_button">
+			<input id="play_image" type="image" height="50" width="50" src="images/play_button.png" name="saveForm" OnClick="localPlay()"/>
+		</div>
+	
+		<div class="row" id="pause_button">
+		    <input id="pause_image" type="image" src="images/pause_button.png" height="50" width="50" OnClick="localPause()"/>
+		</div>
+		
+	</div>
+	
+	<div id="startover_pause_stop">
+	
+		<div class="row" id="stop_button">
+		    <input id="stop_image" type="image" src="images/stop_button.png" height="40" width="40" OnClick="localStopAndReset()"/>
+		</div>
+
+	    <div class="row" id="startover">
+	    	<input id="startover_image" type="image" src="images/startover.png" height="40" width="40" OnClick="reload()"/>
+<!-- 	        <button type="button" class="btn btn-success" id="button_startover" OnClick="reload()" >Start Over <span class="glyphicon glyphicon-refresh"></span></button> -->
+	    </div>
+		
+		
+			
+	</div>
+	    
     
 	</div>
 	</div>
@@ -235,8 +233,8 @@
 	
 	<button id="selectZero" type="button" OnClick="selectZero()">Select 0</button>
 	
-	<button id="stopPlayer" type="button" OnClick="localStopAndReset()">Stop & Reset</button>
-	
+	<button id="stopPlayer" type="button" OnClick="localStopAndReset()">Stop n Reset</button>
+		
 </div>
 	
 	

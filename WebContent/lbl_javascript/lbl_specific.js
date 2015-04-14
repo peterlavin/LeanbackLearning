@@ -68,9 +68,10 @@ $(function() {
 				submitStage = 'first';
 				
 				// Disable the continue button (activated when a input is made)
-				$("#button_continue").attr("disabled", true);
+//				$("#button_continue").attr("disabled", true);
+				setContinueDisabled();
 			
-				$('#button_continue').click(function(event) {
+				$('#continue_image').click(function(event) {
 					
 					///////////////////////////////////////////////////////////////////////////////////
 					/* **********************************************************************************
@@ -143,7 +144,7 @@ $(function() {
 										if (level_1_wcSec == 0) {
 											
 											// show message to user, i.e. there is nothing available, try something different
-											setErrorMsg("Error <span class=\"glyphicon glyphicon-alert\"></span> No presentation available for <span style='font-weight:bold;'>" +
+											setErrorMsg("Error: No presentation available for <span style='font-weight:bold;'>" +
 													topics + "</span>, please try another topic");
 											
 											$('#loader').hide();
@@ -226,7 +227,7 @@ $(function() {
 						
 						console.log("\nFirst part... " + audioUrl);
 						
-						getAudioUrlRespCode(audioUrl);
+						//getAudioUrlRespCode(audioUrl);
 						
 						//console.log("Resp code: " + getAudioUrlRespCode(audioUrl));
 						
@@ -293,56 +294,68 @@ $(function() {
 
 function setContinueActive() {
 	
-	$("#button_continue").attr("disabled", false);
+	$("#continue_image").attr("disabled", false);
+	$("#continue_image").css("opacity", "1.0");
+	
 	
 }
 
-function getAudioUrlRespCode(url){
+function setContinueDisabled() {
 	
+	$("#continue_image").attr("disabled", true);
+	$("#continue_image").css("opacity", "0.5");
 	
-	
-	
-	
-	
-	
-	  var httpRequest;
-	  
-
-	  if (window.XMLHttpRequest) { // Mozilla, Safari, ...
-	      httpRequest = new XMLHttpRequest();
-	    } else if (window.ActiveXObject) { // IE
-	      try {
-	        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
-	      } 
-	      catch (e) {
-	        try {
-	          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-	        } 
-	        catch (e) {}
-	      }
-	    }
-
-	    if (!httpRequest) {
-	      alert('Giving up :( Cannot create an XMLHTTP instance');
-	      return false;
-	    }
-	    httpRequest.onreadystatechange = alertContents(httpRequest);
-	    httpRequest.open('GET', url);
-	    httpRequest.send();
-	  
-
 }
+
+
+
+
+
+//function getAudioUrlRespCode(url){
+//	
+//	
+//	
+//	
+//	
+//	
+//	
+//	  var httpRequest;
+//	  
+//
+//	  if (window.XMLHttpRequest) { // Mozilla, Safari, ...
+//	      httpRequest = new XMLHttpRequest();
+//	    } else if (window.ActiveXObject) { // IE
+//	      try {
+//	        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
+//	      } 
+//	      catch (e) {
+//	        try {
+//	          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+//	        } 
+//	        catch (e) {}
+//	      }
+//	    }
+//
+//	    if (!httpRequest) {
+//	      alert('Giving up :( Cannot create an XMLHTTP instance');
+//	      return false;
+//	    }
+//	    httpRequest.onreadystatechange = alertContents(httpRequest);
+//	    httpRequest.open('GET', url);
+//	    httpRequest.send();
+//	  
+//}
 	  
 	  // support function for above...
-	  function alertContents(httpreq) {
-	    if (httpreq.readyState === 4) {
-	      if (httpreq.status === 200) {
-	        alert(httpreq.responseText);
-	      } else {
-	        alert('There was a problem with the request.');
-	      }
-	    }
-	  }
+//	  function alertContents(httpreq) {
+//	    if (httpreq.readyState === 4) {
+//	      if (httpreq.status === 200) {
+//	        alert(httpreq.responseText);
+//	      } else {
+//	        alert('There was a problem with the request.');
+//	      }
+//	    }
+//	  }
 
 	
 	
@@ -361,7 +374,8 @@ function validateInput(){
 	// Validate 'topics' entered, it can't be empty or be just white spaces 
 	if (topics = $('#topics').val().trim() == "") {
 		
-		$("#button_continue").attr("disabled", true);
+//		$("#button_continue").attr("disabled", true);
+		setContinueDisabled();
 				
 		document.getElementById('topics').value = "";
 		
@@ -369,7 +383,10 @@ function validateInput(){
 		
 	}
 	else {
-		$("#button_continue").attr("disabled", false);
+		
+//		$("#button_continue").attr("disabled", false);
+		setContinueActive();
+		
 	}
 	
 }
@@ -432,8 +449,6 @@ function localPause() {
 }
 
 function localStopAndReset(){
-	
-	console.log("localStopAndReset() called");
 	
 	$("#jquery_jplayer_1").jPlayer("stop");
 	
@@ -786,5 +801,53 @@ function togglePlayingStatus(){
 	}
 	
 }
+
+//////////// test for CORS
+
+function createCORSRequest(method, url) {
+	  var xhr = new XMLHttpRequest();
+	  if ("withCredentials" in xhr) {
+	    // XHR for Chrome/Firefox/Opera/Safari.
+	    xhr.open(method, url, true);
+	  } else if (typeof XDomainRequest != "undefined") {
+	    // XDomainRequest for IE.
+	    xhr = new XDomainRequest();
+	    xhr.open(method, url);
+	  } else {
+	    // CORS not supported.
+	    xhr = null;
+	  }
+	  return xhr;
+	}
+
+	// Helper method to parse the title tag from the response.
+	function getTitle(text) {
+	  return text.match('<title>(.*)?</title>')[1];
+	}
+
+	// Make the actual CORS request.
+	function makeCorsRequest() {
+	  // All HTML5 Rocks properties support CORS.
+	  var url = 'http://updates.html5rocks.com';
+
+	  var xhr = createCORSRequest('GET', url);
+	  if (!xhr) {
+	    alert('CORS not supported');
+	    return;
+	  }
+
+	  // Response handlers.
+	  xhr.onload = function() {
+	    var text = xhr.responseText;
+	    var title = getTitle(text);
+	    alert('Response from CORS request to ' + url + ': ' + title);
+	  };
+
+	  xhr.onerror = function() {
+	    alert('Woops, there was an error making the request.');
+	  };
+
+	  xhr.send();
+	}
 
 
