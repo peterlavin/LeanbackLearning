@@ -93,20 +93,20 @@
 	<div id="continue_loader_play">
 	
 		<div class="row" id="continue">
-			<input id="continue_image" type="image" src="images/continue.png" height="50" width="50"/>
+			<input class="button_image" id="continue_image" type="image" src="images/continue.png" height="50" width="50"/>
 <!--         	<button type="button" class="btn btn-success" id="button_continue">Continue <span class="glyphicon glyphicon-arrow-right"></span></button> -->
     	</div>
 
     	<div class="row" id="loader">
-	    	<img id="loader_image" src="images/ajax_loader_gray_256.gif">
+	    	<img class="button_image" id="loader_image" src="images/ajax_loader_gray_256.gif">
     	</div>
     
 		<div class="row" id="play_button">
-			<input id="play_image" type="image" height="50" width="50" src="images/play_button.png" name="saveForm" OnClick="localPlay()"/>
+			<input class="button_image" id="play_image" type="image" height="50" width="50" src="images/play_button.png" name="saveForm" OnClick="localPlay()"/>
 		</div>
 	
 		<div class="row" id="pause_button">
-		    <input id="pause_image" type="image" src="images/pause_button.png" height="50" width="50" OnClick="localPause()"/>
+		    <input class="button_image" id="pause_image" type="image" src="images/pause_button.png" height="50" width="50" OnClick="localPause()"/>
 		</div>
 		
 	</div>
@@ -114,11 +114,11 @@
 	<div id="startover_pause_stop">
 	
 		<div class="row" id="stop_button">
-		    <input id="stop_image" type="image" src="images/stop_button.png" height="40" width="40" OnClick="localStopAndReset()"/>
+		    <input class="button_image" id="stop_image" type="image" src="images/stop_button.png" height="40" width="40" OnClick="localStopAndReset()"/>
 		</div>
 
 	    <div class="row" id="startover">
-	    	<input id="startover_image" type="image" src="images/startover.png" height="40" width="40" OnClick="reload()"/>
+	    	<input class="button_image" id="startover_image" type="image" src="images/startover.png" height="40" width="40" OnClick="reload()"/>
 <!-- 	        <button type="button" class="btn btn-success" id="button_startover" OnClick="reload()" >Start Over <span class="glyphicon glyphicon-refresh"></span></button> -->
 	    </div>
 		
