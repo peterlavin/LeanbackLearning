@@ -46,6 +46,20 @@
 
 <div id="all_body">
 
+
+
+
+
+
+
+
+
+<!-- below here is coppied to index.jsp page -->
+
+
+
+
+
    <div class="container-fluid" id="heading_topic">
        
       <div class="col-xs-4" id="lbl_logo">
@@ -63,7 +77,7 @@
       <form class="form-horizontal" role="form" id="topic_input">
         <div class="form-group">
           <div class="col-sm-10">
-            <input name="test" type="text" class="form-control" id="topics" placeholder="What do you want to learn about?" oninput="validateInput()">
+            <input name="test" type="text" class="form-control" id="topics" placeholder="What do you want to learn about?" oninput="validateInput()" onkeypress="return startByEnter(event)">
           </div>
         </div>
     </form>
@@ -238,6 +252,8 @@
 </div>
 	
 	
+	
+<!-- 	above here goes to index.jsp -->
 	
 
 </div>

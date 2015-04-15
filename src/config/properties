@@ -4,14 +4,16 @@ debug=true
 
 ##### Sets out Windows and Linux file storage directories for audio files.
 audioFileStorageWindows=c:/inetpub/wwwroot/lbl/audio
-audioFileStorageLinux=/var/www/html/lbl/audio
+
+# IMPORTANT ##### This need /html/ for redhat machines, same for content #####
+audioFileStorageLinux=/var/www/lbl/audio
 audioFileExtension=mp3
 
 
 
 ##### Sets out Windows and Linux file storage directories for XML text content files.
 contentFileStorageWindows=c:/inetpub/wwwroot/lbl/content
-contentFileStorageLinux=/var/www/html/lbl/content
+contentFileStorageLinux=/var/html/lbl/content
 contentFileExtension=xml
 contentFilePrependix=meta
 
@@ -40,9 +42,10 @@ speechserviceTimeoutValue=40000
 ##### Details for hostname/IP address from which the created MP3 file will be served
 #mediaServerIP=134.226.48.38
 #mediaServerIP=lbl.scss.tcd.ie
-#mediaServerIP=lbltest.scss.tcd.ie
-mediaServerIP=localhost
+mediaServerIP=lbltest.scss.tcd.ie
+#mediaServerIP=localhost
 audioUrlPath=lbl/audio
+
 audioWebProto=http
 #audioWebProto=https
 

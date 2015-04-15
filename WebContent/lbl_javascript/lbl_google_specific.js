@@ -173,7 +173,7 @@ var helper = (function() {
 	        
 
 	        
-	        $('#profile').append($('<h5>Unique user ID: ' + profile.id + '</h5>'));
+	//        $('#profile').append($('<h5>Unique user ID: ' + profile.id + '</h5>'));
 	        
 	        // Sets the id variable
 	        idnum = profile.id;
@@ -182,7 +182,7 @@ var helper = (function() {
 	        
 //	      added PL
 	        $('#usermsg').empty();
-	        $('#usermsg').append($('<h4>Welcome ' + profile.displayName + '</h4>'));
+	        $('#usermsg').append($('<h5>Welcome ' + profile.displayName + '</h5>'));
 	        
 	        // Sets the name variable
 	        name = profile.displayName;

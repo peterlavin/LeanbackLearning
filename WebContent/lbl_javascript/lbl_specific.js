@@ -91,7 +91,7 @@ $(function() {
 						
 						// Validate 'topics' entered, it can't be empty or be just white spaces 
 						if (topics = $('#topics').val().trim() == "") {
-							alert("Please enter what you would like to learn about");
+							//alert("Please enter what you would like to learn about");
 							document.getElementById('topics').value = "";
 							document.getElementById('topics').placeholder = "What do you want to learn about?";
 							return false;
@@ -374,7 +374,6 @@ function validateInput(){
 	// Validate 'topics' entered, it can't be empty or be just white spaces 
 	if (topics = $('#topics').val().trim() == "") {
 		
-//		$("#button_continue").attr("disabled", true);
 		setContinueDisabled();
 				
 		document.getElementById('topics').value = "";
@@ -384,7 +383,6 @@ function validateInput(){
 	}
 	else {
 		
-//		$("#button_continue").attr("disabled", false);
 		setContinueActive();
 		
 	}
@@ -851,3 +849,20 @@ function createCORSRequest(method, url) {
 	}
 
 
+function startByEnter(ev){
+	
+		var unicode=ev.charCode? ev.charCode : ev.keyCode
+	
+		if(unicode === 13){
+			$('#continue_image').click();
+			
+			// need to call validation here also
+			validateInput()
+			
+			return false;
+		}
+		
+}
+	
+	
+	

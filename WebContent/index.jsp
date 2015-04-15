@@ -40,9 +40,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
     	<link rel="stylesheet" href="bootstrap/3.2.0/css/bootstrap.min.css">
     	
+    	<!--     	Places an icon in the browser tab -->
+    	<link rel="shortcut icon" href="images/favicon.ico" />
+    	
 		<!-- 		Own css file for local settings -->
   		<link rel="stylesheet" href="css/lbl_specific.css">
-
+  		
+  			  	<!--  The following four lines are related to JPlayer Playlists only -->
+		<link href="playlist/css/jPlayer.css" rel="stylesheet" type="text/css" />
+		<link href="playlist/skin/pink.flag/jplayer.pink.flag.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="playlist/js/jquery.jplayer.min.js"></script>
+		<script type="text/javascript" src="playlist/js/jplayer.playlist.min.js"></script>
+  		
 <!-- 	Page level configuration, added for button work -->
 <meta name="google-signin-clientid" content="1014444466376-781shj0dnkd1igkfv39scjto8bs1kkdk.apps.googleusercontent.com"/>
 <meta name="google-signin-scope" content="https://www.googleapis.com/auth/plus.login" />
@@ -74,20 +83,20 @@
  </script>
 
 <!--   		Needed until document.ready() is included -->
-  		<script type="text/javascript">
-	  		function setup(){
+<!--   		<script type="text/javascript"> -->
+<!-- // 	  		function setup(){ -->
   				
-  				$("#time_feedback").css("visibility", "hidden");
-  		        $('#play_button').hide();
+<!-- //   				$("#time_feedback").css("visibility", "hidden"); -->
+<!-- //   		        $('#play_button').hide(); -->
   			
-  			}
-  		</script>
+<!-- //   			} -->
+<!--   		</script> -->
 
 </head>
 
 
 
-<body onload="setup()">
+<body>
   
 <!--   Div which is hidden/shown when signin is successful -->
   <div id="authOps" style="display:none">
@@ -113,24 +122,24 @@
 
 
 
-    <div class="container-fluid" id="heading_topic">
+   <div class="container-fluid" id="heading_topic">
        
       <div class="col-xs-4" id="lbl_logo">
-       	<img src="images/logo_placeholder2.png" alt="Leanback learning" style="width:100px;height:50px">
+       	<input id="logo_image" type="image" src="images/LeanBackLearning_v2CROP.png" alt="Leanback learning" OnClick="reload()"/>
       </div>
       
       <div class="col-xs-4" id="welcome_msg">
       	  <div id="usermsg"></div>
       </div>
       
-      <div class="col-xs-4" id="sign_out_btm" >
-      	<input type="image" src="images/google_signout.png" height="30" width="100" name="saveForm" id="disconnect"/>
+      <div class="col-xs-4" id="sign_out_btn" >
+      	<input id="disconnect" type="image" src="images/google_signout.png" name="saveForm"/>
       </div>
     
       <form class="form-horizontal" role="form" id="topic_input">
         <div class="form-group">
           <div class="col-sm-10">
-            <input type="text" class="form-control" id="topics" placeholder="What do you want to learn about?">
+            <input name="test" type="text" class="form-control" id="topics" placeholder="What do you want to learn about?" oninput="validateInput()">
           </div>
         </div>
     </form>
@@ -146,6 +155,7 @@
 			<button class="btn output_lang_btn" id="en_btn" OnClick="setLanguage('en')">English</button>
 			<button class="btn output_lang_btn" id="de_btn" OnClick="setLanguage('de')">German</button>
 		</div>
+		
 	    <div class="row btn-toolbar" id="level_of_detail">  
 			<button class="btn level_of_detail_btn" id="1_lod_btn" OnClick="setDetail(1)">Overview</button>
 			<button class="btn level_of_detail_btn" id="2_lod_btn" OnClick="setDetail(2)">Normal</button>
@@ -153,19 +163,45 @@
 		</div>
 	
 	</div>
+	
 	<div class="col-xs-6">
 
-	<div class="row" id="play_button">
-		<input id="play_image" type="image" height="75" width="75" src="images/play_button.png" name="saveForm" OnClick="testToggle()"/>
+	<div id="continue_loader_play">
+	
+		<div class="row" id="continue">
+			<input class="button_image" id="continue_image" type="image" src="images/continue.png" height="50" width="50"/>
+<!--         	<button type="button" class="btn btn-success" id="button_continue">Continue <span class="glyphicon glyphicon-arrow-right"></span></button> -->
+    	</div>
+
+    	<div class="row" id="loader">
+	    	<img class="button_image" id="loader_image" src="images/ajax_loader_gray_256.gif">
+    	</div>
+    
+		<div class="row" id="play_button">
+			<input class="button_image" id="play_image" type="image" height="50" width="50" src="images/play_button.png" name="saveForm" OnClick="localPlay()"/>
+		</div>
+	
+		<div class="row" id="pause_button">
+		    <input class="button_image" id="pause_image" type="image" src="images/pause_button.png" height="50" width="50" OnClick="localPause()"/>
+		</div>
+		
 	</div>
 	
-	<div class="row" id="continue_1">
-        <button type="button" class="btn btn-success" OnClick="testToggle()">Continue</button>
-    </div>
-    
-    <div class="row" id="loader">
-	    <img src="images/ajax_loader_gray_256.gif" style="width:125px;height:125px">
-    </div>
+	<div id="startover_pause_stop">
+	
+		<div class="row" id="stop_button">
+		    <input class="button_image" id="stop_image" type="image" src="images/stop_button.png" height="40" width="40" OnClick="localStopAndReset()"/>
+		</div>
+
+	    <div class="row" id="startover">
+	    	<input class="button_image" id="startover_image" type="image" src="images/startover.png" height="40" width="40" OnClick="reload()"/>
+<!-- 	        <button type="button" class="btn btn-success" id="button_startover" OnClick="reload()" >Start Over <span class="glyphicon glyphicon-refresh"></span></button> -->
+	    </div>
+		
+		
+			
+	</div>
+	    
     
 	</div>
 	</div>
@@ -187,26 +223,90 @@
     </div>
     
     
+    
+    
+		
+		
+    
+    
+    
+    
+    
+    <!-- 	HTML required for the player (only the list is shown here) -->
+    <div id="container">
+	<div id="content_main">
+		<section>
+		<div id="jquery_jplayer_1" class="jp-jplayer"></div>
+		<div id="jp_container_1" class="jp-audio">
+			<div class="jp-type-playlist">
+				<div class="jp-playlist" id="playlist-part">
+					<ul>
+						<li></li>
+					</ul>
+				</div>
+				 <div class="jp-no-solution">
+					 <span>Update Required</span>
+					 To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+				 </div>
+			</div>
+		</div>
+      </section>
+	</div>
+</div>
+    
+    
+    		
+    		
+    		
+    		
+    	
+
+		
+    
+    
+    
+    
+    
+    
+    
+    
+    
 <!--     Test code to show/hide the time feedback row of buttons, TODO remove -->
+
+<div id="testbuttons">
 
 <hr>
 <h6>Test code below here</h6>
     
 <!--     <button id="hideTimeButton" type="button" OnClick="hideTimeButtons()">Hide/Show</button> -->
     <br>
-    <button type="button" OnClick="createButtons(399)">Create 399 s</button>
-    <button type="button" OnClick="createButtons(401)">Create 401 s</button>
-    <button type="button" OnClick="createButtons(699)">Create 699 s</button>
-    <button type="button" OnClick="createButtons(701)">Create 701 s</button>
-    <button type="button" OnClick="createButtons(1000)">Create 1000 s</button>
-    <button type="button" OnClick="createButtons(3000)">Create 3000 s</button>
-	<button type="button" OnClick="createButtons(10000)">Create 10K s</button>
+    <button type="button" OnClick="createTimeButtons(399)">Create 399 s</button>
+    <button type="button" OnClick="createTimeButtons(401)">Create 401 s</button>
+    <button type="button" OnClick="createTimeButtons(699)">Create 699 s</button>
+    <button type="button" OnClick="createTimeButtons(701)">Create 701 s</button>
+    <button type="button" OnClick="createTimeButtons(1000)">Create 1000 s</button>
+    <button type="button" OnClick="createTimeButtons(3000)">Create 3000 s</button>
+	<button type="button" OnClick="createTimeButtons(10000)">Create 10K s</button>
 	<br><br>
 	<button type="button" OnClick="toggleLoader()">Toggle Loader</button>
 	<button type="button" OnClick="toggleSubmitStage()">Toggle Sub Stg</button>
-	<button type="button" OnClick="setErrorMsg()">Test Msg</button>
+	<button type="button" OnClick="setErrorMsg('A test Error Message')">Test Msg</button>
 	
-	<button id="button_submit" type="button">doGet()</button>
+	<button id="button_continue" type="button">doGet()</button>
+	
+	<button type="button" OnClick="greyLanguageButtons();greyDetailButtons()">Test Grey</button>
+	
+	<button type="button" OnClick="restoreDetailButtons()">Restore</button>
+	
+	<button type="button" OnClick="greyTimeButtons()">Grey Time</button>
+	
+	<button id="hideButton" type="button" OnClick="togglePlayer()">Toggle JP View</button>
+	
+	<button id="selectZero" type="button" OnClick="selectZero()">Select 0</button>
+	
+	<button id="stopPlayer" type="button" OnClick="localStopAndReset()">Stop n Reset</button>
+		
+</div>
 
 
 
@@ -263,7 +363,7 @@
     
 <!--     Added by PL to allow an image to be used for login btn -->
    <div class="centered_button" id="logo_signin">
- 	 <input id="signinButton" type="image" src="images/blank_logo.png" name="saveForm" OnClick="gapi.auth.signIn()"/>
+ 	 <input id="signinButton" type="image" src="images/LeanBackLearning_v2CROP.png" height="200" width="200" name="saveForm" OnClick="gapi.auth.signIn()"/>
    </div>
 
     <button class="g-signin"
