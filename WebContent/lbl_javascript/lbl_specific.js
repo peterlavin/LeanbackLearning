@@ -854,13 +854,20 @@ function startByEnter(ev){
 		var unicode=ev.charCode? ev.charCode : ev.keyCode
 	
 		if(unicode === 13){
-			$('#continue_image').click();
+			
+			//$('#continue_image').click();
 			
 			// need to call validation here also
-			validateInput()
+			//validateInput()
 			
+			// cannot return 'false' here as it gets issued as the contents of the input box
 			return false;
+			//return $('#topics').val();
+			
 		}
+//		else {
+//			return false;
+//		}
 		
 }
 	
