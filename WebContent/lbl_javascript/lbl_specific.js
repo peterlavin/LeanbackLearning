@@ -79,13 +79,13 @@ $(function() {
 					 * TODO remove this when in index.jsp
 					 */
 					
-					if(typeof idnum == 'undefined'){
-						var idnum = '123456789'; 
-					}
-					
-					if(typeof name == 'undefined'){
-					    var name = 'Joe Soap'; 
-					}
+//					if(typeof idnum == 'undefined'){
+//						var idnum = '123456789'; 
+//					}
+//					
+//					if(typeof name == 'undefined'){
+//					    var name = 'Joe Soap'; 
+//					}
 					
 					if (submitStage == 'first') {
 						
@@ -108,6 +108,9 @@ $(function() {
 						// Show the loader and wait for a response from SSC
 						$('#loader').show();
 						$('#continue').hide();
+						
+						// Show the 'Start-Over' button in case of failures
+						$('#startover').show();
 					
 					console.log("button_continue was click wt:\n\nidnum: " + idnum + "\nname: " + name + "\ntopics: " + topics + "\ndet: " + detail + "\nlang: " + outputlang);
 					
