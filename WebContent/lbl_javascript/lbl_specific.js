@@ -79,13 +79,13 @@ $(function() {
 					 * TODO remove this when in index.jsp
 					 */
 					
-//					if(typeof idnum == 'undefined'){
-//						var idnum = '123456789'; 
-//					}
-//					
-//					if(typeof name == 'undefined'){
-//					    var name = 'Joe Soap'; 
-//					}
+					if(typeof idnum == 'undefined'){
+						var idnum = '123456789'; 
+					}
+					
+					if(typeof name == 'undefined'){
+					    var name = 'Joe Soap'; 
+					}
 					
 					if (submitStage == 'first') {
 						
