@@ -502,6 +502,8 @@ var tim = setInterval(checkTrans,100);
 						
 				if(arr.length == 1) // just one language, respond direct.
 				{
+
+				console.log("One lang available\n");
 				if(outputlang == "en"){
 				removeENnoeAscii(arr[0]);
 				}
@@ -532,10 +534,11 @@ var tim = setInterval(checkTrans,100);
 					// There will be no losses due to duplicate sentences in a single language
 					// presentation
 					
-			                for (var j = 0; i < d.length; j++) {
-                        		var slideText = d[j].toString();
+			                for (var j = 0; j < f.length; j++) {
+                        		var slideText = f[j].toString().trim();
 			                slideTextArr = slideText.split(" ");
-					console.log("DEBUG Pre (1 lang): " + slideText);	
+					//console.log("DEBUG Pre (1 lang): " + slideText);	
+					//console.log("Adding: " + slideTextArr.length);	
 		                        preMultiDocSumWC += slideTextArr.length;
     					}
 
@@ -598,9 +601,10 @@ var tim = setInterval(checkTrans,100);
 
                                         // Count the words after merging to detect losses due to 'near duplicate' sentences
                                         for (var i2 = 0; i2 < tst[1].length; i2++) {
-                                        var slideText = tst[1][i2].toString();
+                                        var slideText = tst[1][i2].toString().trim();
                                         slideTextArr = slideText.split(" ");
-					console.log("DEBUG Post (2 lang): " + slideText);
+					//console.log("DEBUG Post (2 lang): " + slideText);
+					//console.log("Adding: " + slideTextArr.length);
                                         postMultiDocSumWC += slideTextArr.length;
                                         }
 
@@ -641,10 +645,11 @@ var tim = setInterval(checkTrans,100);
 
 					// added PL MB
 	                		for (var i = 0; i < tt2[1].length; i++) {
-					var slideText = tt2[1][i].toString();
-					slideTextArr = slideText.split(" ");
-					console.log("DEBUG Pre (3 lang): " + slideText);
-					preMultiDocSumWC += slideTextArr.length;
+					   var slideText = tt2[1][i].toString().trim();
+					   slideTextArr = slideText.split(" ");
+					   //console.log("DEBUG Pre (3 lang): " + slideText);
+					   //console.log("Adding: " + slideTextArr.length);
+					   preMultiDocSumWC += slideTextArr.length;
 					}
 					
 					console.log("\npreMultiDocSumWC for arr.len=3 is: " + preMultiDocSumWC + "\n");
@@ -664,30 +669,52 @@ var tim = setInterval(checkTrans,100);
 
 
 	
-                                        // added PL MB
+                                        // added PL MB, counts the words after merging and removal of near duplicate sentences.
                                         for (var i2 = 0; i2 < finalArray.length; i2++) {
-                                        var slideText = finalArray[i2].toString();
-                                        slideTextArr = slideText.split(" ");
-					console.log("DEBUG Post (3 lang): " + slideText);
-                                        postMultiDocSumWC += slideTextArr.length;
+                                           var slideText = finalArray[i2].toString().trim();
+                                           slideTextArr = slideText.split(" ");
+					   //console.log("DEBUG Post (3 lang): " + slideText);
+					   //console.log("Adding: " + slideTextArr.length);
+                                           postMultiDocSumWC += slideTextArr.length;
                                         }
 
-
 					console.log("\npostMultiDocSumWC for arr.len=3 is: " + postMultiDocSumWC + "\n");
-
-
 
 					finalXML = createXML(finalArray);
 				}
 
 
-				// First, create the XML element to be inserted into the existing
+				// Now that all word counts are gathered, create a comma separated string
+				// of the languages of the available articles which made up the content
+				// for example, "en,fr,de"
+
+				var langString = "";
+				console.log("\nPrint of arr[]\n");
+				for(var a2 = 0; a2 < arr.length; a2++){
+					console.log("arr[" + a2 + "]");
+					if(a2==0){
+						langString = data;
+					}
+					else if(a2==1){
+						langString = langString + "," + toLang1;
+					}
+					else if(a2==2){
+						langString = langString + "," + toLang2;
+					}
+				}
+
+				console.log("\nlangString: " + langString + "\n");
+
+
+				// Next, create the XML element which will be inserted into the existing
 				// finalXML document
 
-				var metricsElm = new xmldoc.XmlDocument("<metrics>" +
+				var metricsElm = new xmldoc.XmlDocument(
+				"<metrics>" +
 				"<preMergeWC>" + preMultiDocSumWC + "</preMergeWC>" +
 				"<postMergeWC>" + postMultiDocSumWC + "</postMergeWC>" + 
 				"<langDetected>" + data + "</langDetected>" +
+				"<langsUsedInContent>" + langString + "</langsUsedInContent>" +
 				"</metrics>")	
 
 				// Then, extract the content from the existing finalXML doc
@@ -706,11 +733,6 @@ var tim = setInterval(checkTrans,100);
 				// Print for debug only
 				console.log(finalXMLwtMetrics.toString({pretty:true}) + "\n"); 
 
-
-
-
-
-				
 				res.set({ 'content-type': 'application/xml; charset=utf-8' })
 				//res.type('application/xml');
 
@@ -765,8 +787,22 @@ var tim = setInterval(checkTrans,100);
 });
 */
 
-app.listen(process.env.PORT || 9998);
-console.log("listening to port 9998"+"\n");
+
+console.log("Port arg pased was:... " + process.argv.slice(2));
+
+var portToUse = 9999;
+
+if(process.argv[2] == undefined) {
+  console.log("No arg found, using default val: " + portToUse);
+}
+else {
+ console.log("Port arg found... " + process.argv.slice(2));
+ portToUse = process.argv[2];
+}
+
+
+app.listen(process.env.PORT || portToUse);
+console.log("SSC with GLOBIC data Collection running\nlistening to port " + portToUse + "\n");
 
 function mergeSentences(array){
 var r = array;

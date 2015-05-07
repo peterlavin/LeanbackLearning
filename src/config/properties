@@ -7,9 +7,9 @@ debug=true
 # For redhat, to be confirmed
 #audioFileStorageLinux=/var/www/html/LBL/audio
 # for debian
-#audioFileStorageLinux=/var/www/lbl/audio
+audioFileStorageLinux=/var/www/lbl/audio
 # for debian dev laptop
-audioFileStorageLinux=/var/www/html/lbl/audio
+#audioFileStorageLinux=/var/www/html/lbl/audio
 
 audioFileExtension=mp3
 
@@ -21,9 +21,9 @@ contentFileStorageWindows=c:/inetpub/wwwroot/lbl/content
 # for Redhat, to be confirmed as working
 #contentFileStorageLinux=/var/html/LBL/content
 # for debian VM
-#contentFileStorageLinux=/var/www/lbl/content
+contentFileStorageLinux=/var/www/lbl/content
 # for debian dev laptop
-contentFileStorageLinux=/var/www/html/lbl/content
+#contentFileStorageLinux=/var/www/html/lbl/content
 contentFileExtension=xml
 contentFilePrependix=meta
 
@@ -56,8 +56,8 @@ speechserviceTimeoutValue=40000
 ##### Details for hostname/IP address from which the created MP3 file will be served
 #mediaServerIP=134.226.48.38
 #mediaServerIP=lbl.scss.tcd.ie
-mediaServerIP=localhost
-#mediaServerIP=lbltest.scss.tcd.ie
+#mediaServerIP=localhost
+mediaServerIP=lbltest.scss.tcd.ie
 audioUrlPath=lbl/audio
 
 audioWebProto=http
@@ -65,12 +65,13 @@ audioWebProto=http
 
 
 ##### Details for GLOBIC logging
-contentServerIP=134.226.48.38
+#contentServerIP=134.226.48.38
 #contentServerIP=localhost
+contentServerIP=lbltest.scss.tcd.ie
 contentUrlPath=lbl/content
 globicServerIP=phaedrus.scss.tcd.ie
 globicServerPath=CS3BC2/group6/tomcat/falcon/rest/linkedData/postGlobicData
-globiclog=false
+globiclog=true
 
 ##### Details for break-up of SSC XML file and Parts naming details
 initialSet=5
@@ -107,6 +108,7 @@ wordcountMultiple=2.4
 
 ################################################## Not used by Servlet, notes only ###############################
 #   URL for GLOBIC services
+#
 #   http://phaedrus.scss.tcd.ie/gls/globicLog/register/?componentName=leanback_learning&password=cngl1&partitionName=leanback_learning
 # 	globicUrl = "http://phaedrus.scss.tcd.ie/CS3BC2/group2/tomcat/Globic/rest/globic/postGlobicData";
 

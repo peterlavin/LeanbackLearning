@@ -45,36 +45,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import com.google.gson.Gson;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
@@ -84,6 +54,7 @@ import remoteservices.SearchSummAndCombine;
 import remoteservices.SpeechSynthesisParts;
 import storageutils.FileToDisk;
 import xmlutils.BalanceSentencesUtils;
+import xmlutils.GlobicMetricsToArrList;
 import databaseutils.DbaseEntry;
 
 /**
@@ -419,6 +390,11 @@ public class SequenceServlet extends HttpServlet {
 		Document sAndCxml = null;
 
 		String sAndCText = "";
+				
+		/* Create an arrayList containing the data which it will
+		* contain.
+		*/
+		ArrayList<String> dataArrayGlobic = new ArrayList<String>();
 
 		/*
 		 * At this point, if overallSuccess is true, proceed to prepare for and
@@ -481,6 +457,16 @@ public class SequenceServlet extends HttpServlet {
 					println("Valid XML returned from SearchAndCombine class"); 
 					}
 				
+				
+				
+				/*
+				 * Pass returned XML doc to class to convert the (GLOBIC) metrics
+				 * to an arrayList for insertion later to the meta...xml file
+				 */
+				
+				GlobicMetricsToArrList globArrList = new GlobicMetricsToArrList();
+				dataArrayGlobic = globArrList.metricsToArrList(dataArrayGlobic, sAndCxml, this.debug);
+				
 			}
 			else {
 				
@@ -519,6 +505,8 @@ public class SequenceServlet extends HttpServlet {
 		 * Proceed with processing the returned XML file
 		 * 
 		 * FIXME if at this point, the XML is valid, but contains 'no results found', it is still processed FIXME
+		 * 
+		 * FIXME TODO, in the 2nd version, if there are no results, the logic never gets this far
 		 */
 		
 		if (overallSuccess && sAndCText.toLowerCase().contains("no result found")) {
@@ -586,10 +574,8 @@ public class SequenceServlet extends HttpServlet {
 			 * is then stored to disk, available for GLOBIC to fetch it from
 			 * this location.
 			 * 
-			 * First, create an arrayList containing the data which it will
-			 * contain.
 			 */
-			ArrayList<String> dataArrayGlobic = new ArrayList<String>();
+
 
 			/*
 			 * Get audio file URL parts from properties
@@ -607,10 +593,16 @@ public class SequenceServlet extends HttpServlet {
 			if (this.debug) {
 				println("Content URL is... " + strContentUrl);
 			}
+			
+			/*
+			 * Add further data to the arrayList for GLOBIC loggin
+			 */
 			dataArrayGlobic.add("contenturl#######" + strContentUrl);
 			dataArrayGlobic.add("topics#######" + strTopics);
-			/////////// Depricated ////////////dataArrayGlobic.add("langentered#######" + strLangEntered);
+			/////////// Deprecated ////////////dataArrayGlobic.add("langentered#######" + strLangEntered);
 			dataArrayGlobic.add("outputlang#######" + strOutputLang);
+			
+				
 
 			/*
 			 * Convert this ArrayList<String> to XML, this approach is used
@@ -633,26 +625,7 @@ public class SequenceServlet extends HttpServlet {
 			}
 
 		}
-
-//		else { // catch all (other) failures with SSC service
-//			
-//			// FIXME, overallSuccess will already be false if the code steps in here
-//			overallSuccess = false;
-//			errorType = ErrorTypes.error_4;
-//
-//			writeErrorToResponse(response, errorType, prop);
-//
-//			if (this.debug) {
-//				println("Unrecongised String returned from SSC: "
-//						+ sAndCText);
-//			}
-//
-//		}
-
-		
-		
-		
-		
+	
 		
 		
 		
@@ -1099,16 +1072,9 @@ public class SequenceServlet extends HttpServlet {
 			 * sends it to GLOBIC.
 			 */
 			LogToGlobic ltg = new LogToGlobic(this.debug);
-			globicDataFetchSuccess = true; 
+//			globicDataFetchSuccess = true; 
 			
-			// TODO uncomment these lines
-			// TODO
-			// TODO
-			// TODO
-			// TODO
-			// TODO
-			
-			//ltg.logDataWithGlobic(strContentMetaUrl,prop);
+			globicDataFetchSuccess = ltg.logDataWithGlobic(strContentMetaUrl,prop);
 
 		}
 
