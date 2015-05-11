@@ -79,14 +79,6 @@ $(function() {
 					 * TODO remove this when in index.jsp
 					 */
 					
-					if(typeof idnum == 'undefined'){
-						var idnum = '123456789'; 
-					}
-					
-					if(typeof name == 'undefined'){
-					    var name = 'Joe Soap'; 
-					}
-					
 					if (submitStage == 'first') {
 						
 						// Validate 'topics' entered, it can't be empty or be just white spaces 
@@ -311,67 +303,6 @@ function setContinueDisabled() {
 }
 
 
-
-
-
-//function getAudioUrlRespCode(url){
-//	
-//	
-//	
-//	
-//	
-//	
-//	
-//	  var httpRequest;
-//	  
-//
-//	  if (window.XMLHttpRequest) { // Mozilla, Safari, ...
-//	      httpRequest = new XMLHttpRequest();
-//	    } else if (window.ActiveXObject) { // IE
-//	      try {
-//	        httpRequest = new ActiveXObject("Msxml2.XMLHTTP");
-//	      } 
-//	      catch (e) {
-//	        try {
-//	          httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-//	        } 
-//	        catch (e) {}
-//	      }
-//	    }
-//
-//	    if (!httpRequest) {
-//	      alert('Giving up :( Cannot create an XMLHTTP instance');
-//	      return false;
-//	    }
-//	    httpRequest.onreadystatechange = alertContents(httpRequest);
-//	    httpRequest.open('GET', url);
-//	    httpRequest.send();
-//	  
-//}
-	  
-	  // support function for above...
-//	  function alertContents(httpreq) {
-//	    if (httpreq.readyState === 4) {
-//	      if (httpreq.status === 200) {
-//	        alert(httpreq.responseText);
-//	      } else {
-//	        alert('There was a problem with the request.');
-//	      }
-//	    }
-//	  }
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
 function validateInput(){
 	
 	// Validate 'topics' entered, it can't be empty or be just white spaces 
@@ -391,9 +322,6 @@ function validateInput(){
 	}
 	
 }
-
-
-
 
 function setCurrentWcSec() {
 
@@ -689,7 +617,7 @@ function createTimeButtons(wcSec){
 	else if(wcSec < 3000) {
 		var step = (max - min)/4;
 		$('#time_feedback_toolbar').append('<button class="btn timeButton" id="5" OnClick="setTimeReqd(5)">' + Math.ceil(min/60) + ' min</button>');
-	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="24" OnClick="setTimeReqd(24)">' + Math.ceil((min + step)/60) + ' min</button>');
+	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="24" OnClick="setTimeReqd(24)">' + Math.ceil((min + step * 1)/60) + ' min</button>');
 	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="43" OnClick="setTimeReqd(43)">' + Math.ceil((min + step * 2)/60) + ' min</button>');
 	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="61" OnClick="setTimeReqd(61)">' + Math.ceil((min + step * 3)/60) + ' min</button>');
 		$('#time_feedback_toolbar').append('<button class="btn timeButton" id="80" OnClick="setTimeReqd(80)">' + Math.ceil(max/60) + ' min</button>');
@@ -700,7 +628,7 @@ function createTimeButtons(wcSec){
 	else {
 		var step = (max - min)/5;
 		$('#time_feedback_toolbar').append('<button class="btn timeButton" id="5" OnClick="setTimeReqd(5)">' + Math.ceil(min/60) + ' min</button>');
-	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="25" OnClick="setTimeReqd(25)">' + Math.ceil((min + step)/60) + ' min</button>');
+	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="25" OnClick="setTimeReqd(25)">' + Math.ceil((min + step * 1)/60) + ' min</button>');
 	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="35" OnClick="setTimeReqd(35)">' + Math.ceil((min + step * 2)/60) + ' min</button>');
 	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="50" OnClick="setTimeReqd(50)">' + Math.ceil((min + step * 3)/60) + ' min</button>');
 	 	$('#time_feedback_toolbar').append('<button class="btn timeButton" id="65" OnClick="setTimeReqd(65)">' + Math.ceil((min + step * 4)/60) + ' min</button>');
@@ -719,7 +647,7 @@ function setTimeReqd(setVal) {
 	
 	if(setVal != time){
 		
-		console.log("setTimeReqd called: " + setVal + ":");
+		console.log("setTimeReqd called: " + setVal);
 			
 		time = setVal;
 			

@@ -26,9 +26,8 @@ public class GlobicMetricsToArrList {
 		NodeList el = sAndCxml.getElementsByTagName("metrics");
 
 		/*
-		 * Firstly, it is necessary to check that there is a 'metrics' element
-		 * found. E.g. some old versions of SSC may not produce an XML file with
-		 * this data.
+		 * Firstly, it is necessary to check that there is an actual 'metrics' element
+		 * found. E.g. some old versions of SSC may not produce an XML file with this data.
 		 */
 
 		if (el.item(0) == null) {
@@ -38,18 +37,24 @@ public class GlobicMetricsToArrList {
 		} else {
 
 			/*
-			 * If metrics element is presenct, there will only ever be one
-			 * element named 'metrics'
+			 * If the 'metrics' element is present, there will only ever be one of them,
+			 * so use the first (0) item in that nodeList
 			 */
 			NodeList metrics = el.item(0).getChildNodes();
 
 			/*
-			 * Each childNode is a metric to be logged to GLOBIC
+			 * Each childNode is a metric to be logged to GLOBIC.
+			 * An all lower-case version of the node name is used in the arrayList.
+			 * 
+			 * A string of ####### is used as a separator
 			 */
 			for (int i = 0; i < metrics.getLength(); i++) {
 
 				Node node = metrics.item(i);
-
+				
+				/*
+				 * In case of corruption of the XML, check it is an element node
+				 */
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 
 					if (debug) {
@@ -60,11 +65,8 @@ public class GlobicMetricsToArrList {
 
 					dataArrayGlobic.add(node.getNodeName().toLowerCase()
 							+ "#######" + node.getTextContent());
-
 				}
-
 			}
-
 		}
 
 		return dataArrayGlobic;

@@ -9,14 +9,33 @@
 <script src="jplayer_javascript/jquery-2.0.0.js"></script>
 
 <!-- These need to be imported after jquery -->
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/heatmap.js"></script>
-<script src="http://code.highcharts.com/modules/treemap.js"></script>
+<script src="lbl_javascript/highcharts/highcharts.js"></script>
+<script src="lbl_javascript/highcharts/modules/heatmap.js"></script>
+<script src="lbl_javascript/highcharts/modules/treemap.js"></script>
 
 
 <link rel="stylesheet" href="css/treemap_specific.css">
 
 <script>
+
+
+// 0: Cork (city), 96
+// 1: History, 249
+// 2: Geography, 18
+// 3: Climate, 126
+// 4: Culture, 253
+// 5: Policy, 25
+// 6: Media - Broadcasting, 90
+// 7: Places of interest, 203
+// 8: Local government and politics, 112
+// 9: Economy - Retail, 71
+// 10: Transport - Air, 22
+// 11: Education, 72
+// 12: Sport, 13
+// 13: Demographics, 96
+
+
+
 
 $(function () {
     $('#container').highcharts({
@@ -24,35 +43,52 @@ $(function () {
             type: "treemap",
             layoutAlgorithm: 'squarified',
             data: [{
-                name: 'A',
-                value: 6
+                name: 'Introduction',
+                value: 96
             }, {
-                name: 'B',
-                value: 6
+                name: 'History',
+                value: 249
             }, {
-                name: 'C',
-                value: 4
+                name: 'Geography',
+                value: 18
             }, {
-                name: 'D',
-                value: 3
+                name: 'Climate',
+                value: 126
             }, {
-                name: 'E',
-                value: 2
+                name: 'Culture',
+                value: 253
             }, {
-                name: 'F',
-                value: 2
+                name: 'Media - Broadcasting',
+                value: 25
             }, {
-                name: 'G',
-                value: 1
+                name: 'Places of interest',
+                value: 90
+            }
+            , {
+                name: 'Local gov, politics',
+                value: 90
+            }, {
+                name: 'Economy - Retail',
+                value: 90
+            }, {
+                name: 'Transport - Air',
+                value: 90
+            }, {
+                name: 'Education',
+                value: 90
+            }, {
+                name: 'Sport',
+                value: 90
+            }, {
+                name: 'Demographics',
+                value: 90
             }]
         }],
         title: {
-            text: 'Highcharts Treemap'
+            text: 'Cork City'
         }
     });
 });
-
-
 
 </script>
 

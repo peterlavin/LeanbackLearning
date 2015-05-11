@@ -89,7 +89,7 @@ public class LogToGlobic {
             
             
             if(this.debug){
-            	println("GLOBIC URL target... " + globicUrl + query  + "<...>");
+            	println("GLOBIC URL target... " + globicUrl + query);
             }
             
             // Actually post the response...

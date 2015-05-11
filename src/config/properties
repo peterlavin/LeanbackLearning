@@ -69,8 +69,9 @@ audioWebProto=http
 #contentServerIP=localhost
 contentServerIP=lbltest.scss.tcd.ie
 contentUrlPath=lbl/content
-globicServerIP=phaedrus.scss.tcd.ie
-globicServerPath=CS3BC2/group6/tomcat/falcon/rest/linkedData/postGlobicData
+globicServerIP=phaedrus.scss.tcd.ie/CS3BC2/group6/tomcat
+# Latest ver from Leroy
+globicServerPath=falcon/rest/linkedData/postGlobicData
 globiclog=true
 
 ##### Details for break-up of SSC XML file and Parts naming details

@@ -34,6 +34,10 @@
 		<link href="playlist/skin/pink.flag/jplayer.pink.flag.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="playlist/js/jquery.jplayer.min.js"></script>
 		<script type="text/javascript" src="playlist/js/jplayer.playlist.min.js"></script>
+		
+		
+<!-- 		Added here to initialize idnum and name, not needed otherwise -->
+		<script type="text/javascript" src="lbl_javascript/lbl_google_specific.js"></script>
   		
   		
   		

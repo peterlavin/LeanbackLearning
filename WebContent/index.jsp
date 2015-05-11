@@ -82,16 +82,6 @@
  }
  </script>
 
-<!--   		Needed until document.ready() is included -->
-<!--   		<script type="text/javascript"> -->
-<!-- // 	  		function setup(){ -->
-  				
-<!-- //   				$("#time_feedback").css("visibility", "hidden"); -->
-<!-- //   		        $('#play_button').hide(); -->
-  			
-<!-- //   			} -->
-<!--   		</script> -->
-
 </head>
 
 
