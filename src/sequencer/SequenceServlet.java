@@ -157,55 +157,11 @@ public class SequenceServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/*
+		 * This (doGet) method is called from the UI of Leanback Learning when the
+		 * user has finalised their time and 'level of detail' preferences.
+		 * 
 		 * SuppressWarnings is added above as JSONObject cannot be parameterised 
 		 */
-		
-//		/*
-//		 * Dev code to mimic a playlist and word-count in a nested JSON
-//		 * Dev code to mimic a playlist and word-count in a nested JSON
-//		 * Dev code to mimic a playlist and word-count in a nested JSON
-//		 */
-//		int numberInPlaylist = 3;
-//		int overAllWordount = 181;
-//		int predictedSeconds = (int) (overAllWordount/2.6);
-//		
-//		println("predictedSeconds is: " + predictedSeconds);
-//		
-//		String audioNamingDetailsParts = "1241_BelfastCityJSONTest_en_Part_";
-//		
-//		JSONArray jsonArray = createPlaylistJson(numberInPlaylist,audioNamingDetailsParts, prop);
-//		
-//		JSONObject jsWC = new JSONObject();
-//		
-//		jsWC.put("wordcount", new Integer(predictedSeconds));
-//		
-//		JSONArray jsWCandPList = new JSONArray();
-//				
-//		jsWCandPList.add(0, jsWC);
-//		jsWCandPList.add(1, jsonArray);
-//				
-//		String json = new Gson().toJson(jsWCandPList);
-//		
-//		/*
-//		 * Write string to response
-//		 */
-//		response.setContentType("text/plain");
-//		response.setCharacterEncoding("UTF-8");
-//		response.getWriter().write(json);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		/*
@@ -472,6 +428,7 @@ public class SequenceServlet extends HttpServlet {
 				
 				overallSuccess = false;
 				errorType = ErrorTypes.error_4;
+				writeErrorToResponse(response, errorType, prop);
 				println("XML returned from SSC was INVALID\n" + sAndCText);
 				
 			}
@@ -495,6 +452,7 @@ public class SequenceServlet extends HttpServlet {
 			if(xmlWordCount == 0){
 				overallSuccess = false;
 				errorType = ErrorTypes.error_4;
+				writeErrorToResponse(response, errorType, prop);
 				println("XML returned from SSC contained no words/content");
 				
 			}
@@ -700,6 +658,7 @@ public class SequenceServlet extends HttpServlet {
 				 * to be processed, if not, abort using the overallSuccess boolean
 				 */
 				errorType = ErrorTypes.error_4;
+				writeErrorToResponse(response, errorType, prop);
 				overallSuccess = false;
 			}
 			
@@ -1155,7 +1114,12 @@ public class SequenceServlet extends HttpServlet {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		/*
+		 * This (doPost) method is called from the UI when the user first enters their
+		 * topic and their initial 'level of detail' preferences. It returns a short
+		 * XML file with three word-count values to the UI for generation of time
+		 * options for the user.
+		 */
 		
 		
 		/*
@@ -1736,13 +1700,9 @@ public class SequenceServlet extends HttpServlet {
 	private String createErrorJson(String errorType, Properties prop) {
 
 		/*
-		 * Get Strings from the properties file for the error type in arg Unused
-		 * strings here may be used later for audio error messages
-		 */
-		// String mediaServerIP = prop.getProperty("mediaServerIP");
-		// String urlPath = prop.getProperty("audioUrlPath");
-		// String audioFileExtension = prop.getProperty("audioFileExtension");
-
+		 * Get Strings from the properties file for the error type
+		*/
+		
 		String errorDetails = prop.getProperty(errorType);
 		String errorDetails_a = prop.getProperty(errorType + "a");
 
@@ -1750,25 +1710,26 @@ public class SequenceServlet extends HttpServlet {
 
 		/*
 		 * Create an JSONArray with the error feedback messages
+		 * in the same form as a normal playlist would be created
 		 */
 		JSONArray overallErrList = new JSONArray();
 
 		/*
 		 * Create a new object for each iteration
 		 */
-		JSONObject jsOne = new JSONObject();
+		JSONObject jsErrPlayList = new JSONObject();
 
 		/*
 		 * Populate this object with details
 		 */
 
-		jsOne.put("title", errorDetails);
-		jsOne.put("mp3", errorAudioName);
+		jsErrPlayList.put("title", errorDetails);
+		jsErrPlayList.put("mp3", errorAudioName);
 
 		/*
-		 * Add this object to the list
+		 * Add this object to the array
 		 */
-		overallErrList.add(jsOne);
+		overallErrList.add(jsErrPlayList);
 
 		/*
 		 * Create another new object for the second error message
@@ -1782,11 +1743,37 @@ public class SequenceServlet extends HttpServlet {
 		jsTwo.put("mp3", errorAudioName);
 
 		/*
-		 * Add this object to the list
+		 * Add this object to the array, this is now the equivalent
+		 * of a playlist with two items
 		 */
 		overallErrList.add(jsTwo);
+		
+		/*
+		 * Now create a 'seconds' object using a default val 
+		 * of 0 (zero) as there is an error. This 0 value is
+		 * used to detect a failure at the UI
+		 */
 
-		return overallErrList.toJSONString();
+		JSONObject jsWC = new JSONObject();
+		
+		jsWC.put("seconds", new Integer(0));
+		
+		JSONArray jsWCandPList = new JSONArray();
+				
+		/*
+		 * Now put the 'seconds,0' object and the 'errors' playlist into 
+		 * another array.
+		 */
+		jsWCandPList.add(0, jsWC);
+		jsWCandPList.add(1, overallErrList);
+		
+		/*
+		 * The JSON array returned here is in the same format as the usual
+		 * 'wordcoung + playlist" format. However, it contains failure information
+		 * which is displayed to the user.
+		 */
+			
+		return jsWCandPList.toJSONString();
 
 	}
 	

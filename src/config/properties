@@ -37,8 +37,8 @@ sAndCIpAddress=10.63.0.7
 sAndCServicePath=summariser
 
 ###### 9999 is for production, 9998 is for SSC testing
-#sAndCServicePort=9999
-sAndCServicePort=9998
+sAndCServicePort=9999
+#sAndCServicePort=9998
 sAndCServiceTestPath=check&1&2&3
 sAndCServiceWordCountPath=&null&null&null
 sscTimeoutValue=300000
@@ -87,7 +87,7 @@ error2=Database problem
 error2a=Please try again
 
 error3=No topics entered
-error3a=
+error3a=Please enter topics
 
 error4=Service problem
 error4a=SSC failure

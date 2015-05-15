@@ -38,13 +38,13 @@
 
 
 $(function () {
-    $('#container').highcharts({
+    $('#containerXX').highcharts({
         series: [{
             type: "treemap",
             layoutAlgorithm: 'squarified',
             data: [{
                 name: 'Introduction',
-                value: 96
+                value: 296
             }, {
                 name: 'History',
                 value: 249
@@ -59,29 +59,29 @@ $(function () {
                 value: 253
             }, {
                 name: 'Media - Broadcasting',
-                value: 25
+                value: 90
             }, {
                 name: 'Places of interest',
-                value: 90
+                value: 203
             }
             , {
                 name: 'Local gov, politics',
-                value: 90
+                value: 112
             }, {
                 name: 'Economy - Retail',
-                value: 90
+                value: 71
             }, {
                 name: 'Transport - Air',
-                value: 90
+                value: 22
             }, {
                 name: 'Education',
-                value: 90
+                value: 72
             }, {
                 name: 'Sport',
-                value: 90
+                value: 13
             }, {
                 name: 'Demographics',
-                value: 90
+                value: 96
             }]
         }],
         title: {
@@ -97,7 +97,7 @@ $(function () {
 </head>
 <body>
 
-<div id="container"></div>
+<div id="containerXX"></div>
 
 </body>
 </html>

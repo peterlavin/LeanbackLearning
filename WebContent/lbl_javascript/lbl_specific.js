@@ -208,10 +208,12 @@ $(function() {
 						
 						var playlistAndDuration = JSON.parse(responseText);
 						
+						// Get the first part of the JSON, the (estimated) seconds of the presentation
 						var retSecondsObj = playlistAndDuration[0];
 						
 						retSeconds = retSecondsObj.seconds;
 						
+						// Get the second part of the JSON, the actual playlist
 						var playlist = playlistAndDuration[1];
 
 						// Get URL of first part and check that there is actually some audio there to play
@@ -220,22 +222,28 @@ $(function() {
 						
 						var audioUrl = firstAudioPart[0].mp3; 
 						
+						// if retSeconds is 0, there was a problem, details
+						// of the failure are contained in the 'playlist' part
+						// of the JSON returned, this is displayed to the user
+						
+						if(retSeconds==0){
+							
+							var error_message = firstAudioPart[0].title;
+							var error_message_a = firstAudioPart[1].title;
+						
+							setErrorMsg(error_message + ", " + error_message_a);
+							
+							$('#loader').hide();
+							$('#startover').show();
+							$('#play_button').hide();
+							
+						}
+						
+						// if seconds is not 0, proceed to set up the media player
+						// and create the progress bar, etc.
+						else {
+						
 						console.log("\nFirst part... " + audioUrl);
-						
-						//getAudioUrlRespCode(audioUrl);
-						
-						//console.log("Resp code: " + getAudioUrlRespCode(audioUrl));
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
 												
 						thisPlayer = new jPlayerPlaylist({
 							jPlayer: "#jquery_jplayer_1",
@@ -273,6 +281,12 @@ $(function() {
 						$('#loader').hide();
 						$('#play_button').show();
 						$('#startover').show();
+						
+						
+						
+						
+						} // end of seconds == 0 if/else stm
+						
 							
 						}); //end of function(responseText) brace
 					
