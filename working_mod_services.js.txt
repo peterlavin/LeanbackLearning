@@ -60,6 +60,7 @@ var ti = new Date();
   
   var query = req.params.title;
   var time = req.params.time;
+//  var time = req.params.time/100;
   var detail = req.params.detail;
   var outputlang = req.params.outputlang;
 
@@ -392,7 +393,7 @@ tick++;
 }
 var level = 1;
 function createWorkersObj(lang){
-	time = (time / 100);
+///////////////////////////////// removed for bug fix time = (time / 100);
 
     
     if (detail >= 0 && detail <= 33) // third level
@@ -772,20 +773,7 @@ var tim = setInterval(checkTrans,100);
   }
 });// EO app.get()
 
-//var client = new MsTranslator({client_id:clientId, client_secret:clientSecret});
 
-/*app.get('/summariser/:title&:time&:detail&:outputlang', function(req, res) {
-  var langentered='en'; // make it english by default
-  var query = req.params.title;
-  var time = req.params.time;
-  var detail = req.params.detail;
-  var outputlang = req.params.outputlang;
-
- 
-
- 
-});
-*/
 
 
 console.log("Port arg pased was:... " + process.argv.slice(2));
@@ -909,7 +897,7 @@ function getWitkiWords(lang,title,index,cb){
 						}
 					}
 
-					if(t.indexOf("</b> may refer to:</p>") != -1||t.indexOf("commonly refers to") != -1||t.indexOf("</b> peut faire référence à :</p>") != -1||t.indexOf("peut faire r\u00e9f\u00e9rence \u00e0\u00a0:</p>") != -1||t.indexOf("</b> steht als Abkürzung für:</p>") != -1||t.indexOf("</b> steht als Abk\u00fcrzung f\u00fcr:</p>") != -1)
+					if(t.indexOf("</b> may refer to:</p>") != -1||t.indexOf("commonly refers to") != -1||t.indexOf("</b> peut faire rï¿½fï¿½rence ï¿½ :</p>") != -1||t.indexOf("peut faire r\u00e9f\u00e9rence \u00e0\u00a0:</p>") != -1||t.indexOf("</b> steht als Abkï¿½rzung fï¿½r:</p>") != -1||t.indexOf("</b> steht als Abk\u00fcrzung f\u00fcr:</p>") != -1)
 								{
 									
 										arr[index] = 0;

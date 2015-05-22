@@ -13,32 +13,16 @@
 <script src="lbl_javascript/highcharts/modules/heatmap.js"></script>
 <script src="lbl_javascript/highcharts/modules/treemap.js"></script>
 
-
 <link rel="stylesheet" href="css/treemap_specific.css">
+
+
+
+
 
 <script>
 
-
-// 0: Cork (city), 96
-// 1: History, 249
-// 2: Geography, 18
-// 3: Climate, 126
-// 4: Culture, 253
-// 5: Policy, 25
-// 6: Media - Broadcasting, 90
-// 7: Places of interest, 203
-// 8: Local government and politics, 112
-// 9: Economy - Retail, 71
-// 10: Transport - Air, 22
-// 11: Education, 72
-// 12: Sport, 13
-// 13: Demographics, 96
-
-
-
-
 $(function () {
-    $('#containerXX').highcharts({
+    $('#visualContainer').highcharts({
         series: [{
             type: "treemap",
             layoutAlgorithm: 'squarified',
@@ -86,7 +70,21 @@ $(function () {
         }],
         title: {
             text: 'Cork City'
+        },
+    plotOptions: {
+        series: {
+            cursor: 'pointer',
+            point: {
+                events: {
+                    click: function () {
+                    	
+                        alert('Category: ' + this.name);
+                        
+                    }
+                }
+            }
         }
+    },
     });
 });
 
@@ -97,7 +95,44 @@ $(function () {
 </head>
 <body>
 
-<div id="containerXX"></div>
+
+
+<div id="visualContainer"></div>
+
+
+
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+// This function specifies what is to be dragged using the setData
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+	// Prevents the default of not allowing an element to be dropped into another one
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+</script>
+
+
+<!-- the allowDrop(event) here allows data to be dropped on this div -->
+<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+<div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+<!-- This image is dragabble -->
+<img id="drag1" src="images/google_signout.png" draggable="true" ondragstart="drag(event)" width="135" height="50">
+
+</div>
+
+
+
+
 
 </body>
 </html>

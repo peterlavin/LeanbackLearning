@@ -47,7 +47,7 @@ $(function() {
 		
 		
 				// hide the test buttons, TODO remove when finished dev
-				$('#testbuttons').hide();
+				//$('#testbuttons').hide();
 		
 				// Set initial button visiblity as needed
 		        $('#play_button').hide();
@@ -56,7 +56,11 @@ $(function() {
 		        $('#loader').hide();
 		        $('#startover').hide();
 		    	$('#jp_container_1').hide();
-		    	$("#time_feedback").css("visibility", "hidden");
+//		    	$("#time_feedback").hide();
+		    	$("#visualContainer").hide();
+//		    	$("#time_feedback").css("visibility", "hidden");
+		    	
+		    	
 		        
 		        // Set language and detail buttons to default highlighting
 		  		$('#en_btn').css({"background":"#BEBEBE"});
@@ -519,6 +523,38 @@ function testToggle(){
 	
 	  $('#play_button').toggle();
 	  $('#continue_1').toggle();
+	
+}
+
+function toggleVisual(){
+	
+	if($('#visualContainer').is(":hidden")){
+
+		$("#visualContainer").toggle();
+				
+		// Set logo size to smaller size 
+		$("#logo_image").css({ 'height': "50px" });
+		$("#logo_image").css({ 'width': "50px" });
+		$('#lbl_logo').css({'padding':'15px 0px 0px 0px'});
+		
+	}
+	else{
+
+		$("#visualContainer").toggle();
+		
+		// Revert size of logo size to orig 
+		$("#logo_image").css({'height': "143px"});
+		$("#logo_image").css({'width': "143px"});
+		
+		$('#lbl_logo').css({'padding':'15px 15px 15px 15px'});
+		
+
+		
+	}
+	
+	$('#topic_input').toggle();
+	$('#lang_lod_play').toggle();
+	
 	
 }
 

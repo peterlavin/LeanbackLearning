@@ -1,7 +1,25 @@
 @CHARSET "UTF-8";
 
-#containerXX {
+#visualContainer {
 	min-width: 300px;
 	max-width: 600px;
-	margin: 0 auto;
+	height: 310px;
+	
+/* 	Aligns the treemap centered */
+	/* 	margin: 0 auto; */
 }
+
+
+#div1 {
+	width:150px;
+	height:70px;
+	padding:10px;
+	border:1px solid #aaaaaa;
+	}
+
+#div2 {
+	width:150px;
+	height:70px;
+	padding:10px;
+	border:1px solid #aaaaaa;
+	}

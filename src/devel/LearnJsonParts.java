@@ -178,8 +178,33 @@ public class LearnJsonParts {
 			println("\n\n" + prettyJsonErrString);
 			
 			println(overallErrList);
+			
+			
+			JSONArray visualDataErr = new JSONArray();
+			
+			
+			
+			// need this...    [{name: 'No data available',value: 1}]
+			
+			
+			
+			JSONObject visualDataErrObj = new JSONObject();
+			
+			/*
+			 * Populate this object with details for this iteration
+			 */
+			
+			visualDataErrObj.put("name", "No Data");
+			visualDataErrObj.put("value", 1);
+			
+			/*
+			 * Add this object to the list
+			 */
+			visualDataErr.add(visualDataErrObj);
 		
-		
+			
+			
+			println("\nVisual data error\n" + visualDataErr);
 		
 		
 		

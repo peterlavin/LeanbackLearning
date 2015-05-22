@@ -45,8 +45,8 @@ html {
 
 #logo_image {
 	
-	width: 125px;
-	height: 125px;
+	width: 143px;
+	height: 143px;
 	
 }
 
@@ -116,7 +116,7 @@ html {
 
 #sign_out_btn {
 	
-	padding: 50px 5px 5px 5px;
+	padding: 25px 5px 0px 5px;
 	
 }
 
@@ -127,5 +127,5 @@ html {
 }
 
 #heading_topic{
-	padding: 10px 0px 25px 0px;
+	padding: 0px 0px 0px 0px;
 }

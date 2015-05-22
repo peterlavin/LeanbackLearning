@@ -38,9 +38,16 @@
 		
 <!-- 		Added here to initialize idnum and name, not needed otherwise -->
 		<script type="text/javascript" src="lbl_javascript/lbl_google_specific.js"></script>
-  		
-  		
-  		
+		
+		
+		
+		<!-- Javascript and CSS files specific to Treemap visualisations -->
+		<script src="lbl_javascript/highcharts/highcharts.js"></script>
+		<script src="lbl_javascript/highcharts/modules/heatmap.js"></script>
+		<script src="lbl_javascript/highcharts/modules/treemap.js"></script>
+		<script src="lbl_javascript/highcharts/lbl_specific_highcharts.js"></script>
+		<link rel="stylesheet" href="css/treemap_specific.css">
+
 
 </head>
 
@@ -58,7 +65,8 @@
 
 
 
-<!-- below here is coppied to index.jsp page -->
+<!-- below here is copied to index.jsp page -->
+
 
 
 
@@ -81,8 +89,7 @@
       <form class="form-horizontal" role="form" id="topic_input">
         <div class="form-group">
           <div class="col-sm-10">
-            <input name="test" type="text" class="form-control" id="topics" placeholder="What do you want to learn about?"
-            oninput="validateInput()" onkeypress="return startByEnter(event)">
+            <input name="test" type="text" class="form-control" id="topics" placeholder="What do you want to learn about?" oninput="validateInput()">
           </div>
         </div>
     </form>
@@ -138,7 +145,6 @@
 
 	    <div class="row" id="startover">
 	    	<input class="button_image" id="startover_image" type="image" src="images/startover.png" height="40" width="40" OnClick="reload()"/>
-<!-- 	        <button type="button" class="btn btn-success" id="button_startover" OnClick="reload()" >Start Over <span class="glyphicon glyphicon-refresh"></span></button> -->
 	    </div>
 		
 		
@@ -148,32 +154,43 @@
     
 	</div>
 	</div>
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     
-    <div class="container-fluid">
-	
-	
-	<div class="row" id="time_feedback">
+    <div class="container-fluid" id="time_feedback">
 	
 		<div class="btn-toolbar" id="time_feedback_toolbar">
 		  
 <!-- 		  Dummy placeholder button to maintain space on page until ready, this is hidden -->
-			<button class="btn">0</button>
+<!-- 			<button class="btn">0</button> -->
 
 		</div>
-	
-	</div>
 	
     </div>
     
     
+    <!-- 	Treemap here -->
+	
+	<div id="visualContainer"></div>
     
     
-		
-		
     
     
     
     
+   
     
     <!-- 	HTML required for the player (only the list is shown here) -->
     <div id="container">
@@ -197,26 +214,7 @@
 	</div>
 </div>
     
-    
-    		
-    		
-    		
-    		
-    	
-<!-- 		<div class="container"> -->
-<!--   		<div id="progresslabel"><h1></h1></div> -->
-<!--   		<div class="progress"> -->
-<!--     			<div id="progressvalue" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"></div> -->
-<!--   			</div> -->
-<!-- 		</div> -->
-		
-    
-    
-    
-    
-    
-    
-    
+      
     
     
 <!--     Test code to show/hide the time feedback row of buttons, TODO remove -->
@@ -253,9 +251,31 @@
 	<button id="selectZero" type="button" OnClick="selectZero()">Select 0</button>
 	
 	<button id="stopPlayer" type="button" OnClick="localStopAndReset()">Stop n Reset</button>
+	
+	<button id="toggleVisual" type="button" OnClick="toggleVisual()">Toggle Visual</button>
+	
 		
 </div>
-	
+
+
+<!-- 	end of Lbl html in authOps div ---------------------------------------------------------- -->
+
+<hr>
+
+<!-- 		Not needed (for now) -->
+<!--     <h2>User's profile information</h2> -->
+    <div id="profile"></div>
+    
+
+<!-- 		Not needed (for now) -->
+<!--     <h2>User's friends that are visible to this app</h2> -->
+    <div id="visiblePeople"></div>
+
+<!-- 		Not needed (for now) -->
+<!--     <h2>Authentication Logs</h2> -->
+    <pre id="authResult"></pre>
+    
+    
 	
 	
 <!-- 	above here goes to index.jsp -->

@@ -91,26 +91,11 @@
 <!--   Div which is hidden/shown when signin is successful -->
   <div id="authOps" style="display:none">
   
+  
+  
+  
+  
 <!--   Put all lbl stuff in here -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
    <div class="container-fluid" id="heading_topic">
        
@@ -211,16 +196,7 @@
 	</div>
 	
     </div>
-    
-    
-    
-    
-		
-		
-    
-    
-    
-    
+   
     
     <!-- 	HTML required for the player (only the list is shown here) -->
     <div id="container">
@@ -244,21 +220,7 @@
 	</div>
 </div>
     
-    
-    		
-    		
-    		
-    		
-    	
-
-		
-    
-    
-    
-    
-    
-    
-    
+      
     
     
 <!--     Test code to show/hide the time feedback row of buttons, TODO remove -->
@@ -299,31 +261,6 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- 	end of Lbl html in authOps div ---------------------------------------------------------- -->
 
 <hr>
@@ -340,6 +277,10 @@
 <!-- 		Not needed (for now) -->
 <!--     <h2>Authentication Logs</h2> -->
     <pre id="authResult"></pre>
+    
+    
+    
+    
     
 <!--   End of authOps div, shown/hidden by successful login/logout -->
   </div> 

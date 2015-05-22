@@ -17,7 +17,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -55,6 +54,7 @@ import remoteservices.SpeechSynthesisParts;
 import storageutils.FileToDisk;
 import xmlutils.BalanceSentencesUtils;
 import xmlutils.GlobicMetricsToArrList;
+import xmlutils.visualDataToJSON;
 import databaseutils.DbaseEntry;
 
 /**
@@ -150,7 +150,10 @@ public class SequenceServlet extends HttpServlet {
 		println("Debug mode is set to '" + debug + "' in init()");
 				
 	}
-
+	
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -307,23 +310,6 @@ public class SequenceServlet extends HttpServlet {
 		}
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
 		// /////////////////////////////////////////////////
 		//
 		// CALL THE SEARCH, SUMMARISE & COMBINE SERVICE
@@ -346,6 +332,7 @@ public class SequenceServlet extends HttpServlet {
 		Document sAndCxml = null;
 
 		String sAndCText = "";
+		JSONArray visDataArrayJs = null;
 				
 		/* Create an arrayList containing the data which it will
 		* contain.
@@ -422,6 +409,17 @@ public class SequenceServlet extends HttpServlet {
 				
 				GlobicMetricsToArrList globArrList = new GlobicMetricsToArrList();
 				dataArrayGlobic = globArrList.metricsToArrList(dataArrayGlobic, sAndCxml, this.debug);
+				
+				/*
+				 * Now pass the same XML file to a class to convert the visual data
+				 * to a JSON array for insertion to the JSON returned to the UI.
+				 * 
+				 * This JSONArray is added to the JSON array that is returned to 
+				 * the UI if there are no errors and overallSuccess stays true. 
+				 */
+				visualDataToJSON vdj = new visualDataToJSON();
+				visDataArrayJs =  vdj.convertXmlToJson(sAndCxml);
+				
 				
 			}
 			else {
@@ -793,10 +791,11 @@ public class SequenceServlet extends HttpServlet {
 			
 			jsWC.put("seconds", new Integer(predictedSeconds));
 			
-			JSONArray jsWCandPList = new JSONArray();
+			JSONArray returnedJsonArray = new JSONArray();
 					
-			jsWCandPList.add(0, jsWC);
-			jsWCandPList.add(1, jsonArrayPlist);
+			returnedJsonArray.add(0, jsWC);
+			returnedJsonArray.add(1, jsonArrayPlist);
+			returnedJsonArray.add(2, visDataArrayJs);
 			
 			/*
 			 * Create an ArrayList which contains the required output language
@@ -926,7 +925,7 @@ public class SequenceServlet extends HttpServlet {
 				println("Writing (first part) response for: "
 						+ audioNamingDetailsParts + partNumberOne + "\n");
 
-				String json = new Gson().toJson(jsWCandPList);
+				String json = new Gson().toJson(returnedJsonArray);
 				response.setContentType("text/plain");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(json);
@@ -1348,6 +1347,7 @@ public class SequenceServlet extends HttpServlet {
 		}
 	}
 	
+
 	/*
 	 * Method which receives a string and returns a boolean depending of whether
 	 * the string converts to an XML document.
@@ -1717,36 +1717,36 @@ public class SequenceServlet extends HttpServlet {
 		/*
 		 * Create a new object for each iteration
 		 */
-		JSONObject jsErrPlayList = new JSONObject();
+		JSONObject jsErrPlaylistItemOne = new JSONObject();
 
 		/*
 		 * Populate this object with details
 		 */
 
-		jsErrPlayList.put("title", errorDetails);
-		jsErrPlayList.put("mp3", errorAudioName);
+		jsErrPlaylistItemOne.put("title", errorDetails);
+		jsErrPlaylistItemOne.put("mp3", errorAudioName);
 
 		/*
 		 * Add this object to the array
 		 */
-		overallErrList.add(jsErrPlayList);
+		overallErrList.add(jsErrPlaylistItemOne);
 
 		/*
 		 * Create another new object for the second error message
 		 */
-		JSONObject jsTwo = new JSONObject();
+		JSONObject jsErrPlaylistItemTwo = new JSONObject();
 
 		/*
 		 * Populate this object with details
 		 */
-		jsTwo.put("title", errorDetails_a);
-		jsTwo.put("mp3", errorAudioName);
+		jsErrPlaylistItemTwo.put("title", errorDetails_a);
+		jsErrPlaylistItemTwo.put("mp3", errorAudioName);
 
 		/*
 		 * Add this object to the array, this is now the equivalent
 		 * of a playlist with two items
 		 */
-		overallErrList.add(jsTwo);
+		overallErrList.add(jsErrPlaylistItemTwo);
 		
 		/*
 		 * Now create a 'seconds' object using a default val 
@@ -1754,26 +1754,51 @@ public class SequenceServlet extends HttpServlet {
 		 * used to detect a failure at the UI
 		 */
 
-		JSONObject jsWC = new JSONObject();
+		JSONObject jsWcErrorValue = new JSONObject();
 		
-		jsWC.put("seconds", new Integer(0));
+		jsWcErrorValue.put("seconds", new Integer(0));
 		
-		JSONArray jsWCandPList = new JSONArray();
+		JSONArray returnedJsonArray = new JSONArray();
 				
 		/*
 		 * Now put the 'seconds,0' object and the 'errors' playlist into 
 		 * another array.
 		 */
-		jsWCandPList.add(0, jsWC);
-		jsWCandPList.add(1, overallErrList);
+		returnedJsonArray.add(0, jsWcErrorValue);
+		returnedJsonArray.add(1, overallErrList);
 		
+		/*
+		 * Finally, create a mock visual data array which contains 
+		 * 'No data' and '0' values.
+		 */
+		
+		JSONArray visualDataErrArr = new JSONArray();
+		
+		// need this...    [{name: 'No data available',value: 1}]
+
+		JSONObject visualDataErrObj = new JSONObject();
+		
+		/*
+		 * Populate this object with details for this iteration
+		 */
+		
+		visualDataErrObj.put("name", "No Data");
+		visualDataErrObj.put("value", 1);
+		
+		/*
+		 * Add this object to the list
+		 */
+		visualDataErrArr.add(visualDataErrObj);
+		
+		returnedJsonArray.add(2, visualDataErrArr);
+				
 		/*
 		 * The JSON array returned here is in the same format as the usual
 		 * 'wordcoung + playlist" format. However, it contains failure information
 		 * which is displayed to the user.
 		 */
 			
-		return jsWCandPList.toJSONString();
+		return returnedJsonArray.toJSONString();
 
 	}
 	
