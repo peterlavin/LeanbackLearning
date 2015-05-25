@@ -41,12 +41,14 @@
 		
 		
 		
-		<!-- Javascript and CSS files specific to Treemap visualisations -->
+		<!-- CSS file specific to Treemap visualisations -->
+		<link rel="stylesheet" href="css/treemap_specific.css">
+
+		<!-- Javascript file specific to Treemap visualisations -->
 		<script src="lbl_javascript/highcharts/highcharts.js"></script>
 		<script src="lbl_javascript/highcharts/modules/heatmap.js"></script>
 		<script src="lbl_javascript/highcharts/modules/treemap.js"></script>
-		<script src="lbl_javascript/highcharts/lbl_specific_highcharts.js"></script>
-		<link rel="stylesheet" href="css/treemap_specific.css">
+<!-- 		<script src="lbl_javascript/highcharts/lbl_specific_highcharts.js"></script> -->
 
 
 </head>

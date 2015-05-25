@@ -210,21 +210,31 @@ $(function() {
 									
 						console.log("Full returned...\n" + responseText);
 						
-						var playlistAndDuration = JSON.parse(responseText);
+						var returnedJsonArray = JSON.parse(responseText);
 						
 						// Get the first part of the JSON, the (estimated) seconds of the presentation
-						var retSecondsObj = playlistAndDuration[0];
+						var retSecondsObj = returnedJsonArray[0];
 						
 						retSeconds = retSecondsObj.seconds;
 						
 						// Get the second part of the JSON, the actual playlist
-						var playlist = playlistAndDuration[1];
-
+						var playlist = returnedJsonArray[1];
+						
+						// Get the third part of the JSON, the visual data for the Treemap
+						// This is now available to create the Treemap
+						var visualData = returnedJsonArray[2];
+						
+						// Some debug testing...
+						var firstVisualPart = eval(returnedJsonArray[2])
+						
+						console.log("Sample (first) visual data... " + firstVisualPart[0].name);
+						
 						// Get URL of first part and check that there is actually some audio there to play
 						
-						var firstAudioPart = eval(playlistAndDuration[1]);
+						var firstAudioPart = eval(returnedJsonArray[1]);
 						
 						var audioUrl = firstAudioPart[0].mp3; 
+						console.log("\nFirst audio URL... " + audioUrl);
 						
 						// if retSeconds is 0, there was a problem, details
 						// of the failure are contained in the 'playlist' part
@@ -241,13 +251,14 @@ $(function() {
 							$('#startover').show();
 							$('#play_button').hide();
 							
+							// TODO, hide the visualisation toggle buttons on the UI (if visible)
+							
 						}
 						
 						// if seconds is not 0, proceed to set up the media player
 						// and create the progress bar, etc.
 						else {
 						
-						console.log("\nFirst part... " + audioUrl);
 												
 						thisPlayer = new jPlayerPlaylist({
 							jPlayer: "#jquery_jplayer_1",
@@ -285,10 +296,117 @@ $(function() {
 						$('#loader').hide();
 						$('#play_button').show();
 						$('#startover').show();
+
+						//////////////////// start of modified code
+						
+						// Now that the Jplayer is in place, create the visualation div
+						
+						// array from returned JSON... visualData
+						
+				    
+					    $('#visualContainer').highcharts({
+				    	    series: [{
+				            type: "treemap",
+				            layoutAlgorithm: 'squarified', 
+				            data: visualData
+					        }],
+					        title: {
+					            text: 'Cork City'
+					        },
+					    plotOptions: {
+					    	series: {
+					        	dataLabels:{overflow:'none', crop:true, enabled:true},
+					            cursor: 'pointer',
+					            point: {
+					                events: {
+					                    click: function () {
+					                    	
+					                        alert('Category: ' + this.name);
+					                        
+					                    }
+					                }
+					            }
+					        }
+					    },
+					    });
+				            
+				            
+				            
+				            
+//				            data: [{
+//				                name: 'TEST DATA',
+//				                value: 296
+//				            }, {
+//				                name: 'History',
+//				                value: 249
+//				            }, {
+//				                name: 'Geography',
+//				                value: 18
+//				            }, {
+//				                name: 'Climate',
+//				                value: 126
+//				            }, {
+//				                name: 'Culture',
+//				                value: 253
+//				            }, {
+//				                name: 'Media - Broadcasting',
+//				                value: 90
+//				            }, {
+//				                name: 'Places of interest',
+//				                value: 203
+//				            }
+//				            , {
+//				                name: 'Local gov, politics',
+//				                value: 112
+//				            }, {
+//				                name: 'Economy - Retail',
+//				                value: 71
+//				            }, {
+//				                name: 'Transport - Air',
+//				                value: 22
+//				            }, {
+//				                name: 'Education',
+//				                value: 72
+//				            }, {
+//				                name: 'Sport',
+//				                value: 13
+//				            }, {
+//				                name: 'Demographics',
+//				                value: 96
+//				            }]
+				    	    
+				    	    
+
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
+				    
 						
 						
 						
 						
+						
+						
+						
+						////////////////////// restart of orig code
 						} // end of seconds == 0 if/else stm
 						
 							
@@ -554,7 +672,6 @@ function toggleVisual(){
 	
 	$('#topic_input').toggle();
 	$('#lang_lod_play').toggle();
-	
 	
 }
 

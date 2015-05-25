@@ -739,7 +739,7 @@
         },
         credits: {
             enabled: !0,
-            text: "Highcharts.com",
+            text: "",
             href: "http://www.highcharts.com",
             position: {
                 align: "right",

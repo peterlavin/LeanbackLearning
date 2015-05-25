@@ -418,7 +418,7 @@ public class SequenceServlet extends HttpServlet {
 				 * the UI if there are no errors and overallSuccess stays true. 
 				 */
 				visualDataToJSON vdj = new visualDataToJSON();
-				visDataArrayJs =  vdj.convertXmlToJson(sAndCxml);
+				visDataArrayJs =  vdj.convertXmlToJson(sAndCxml, debug);
 				
 				
 			}

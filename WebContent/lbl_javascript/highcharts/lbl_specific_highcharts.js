@@ -3,6 +3,8 @@
  */
 
 $(function () {
+	
+	
     $('#visualContainer').highcharts({
     	    series: [{
             type: "treemap",
@@ -68,4 +70,8 @@ $(function () {
         }
     },
     });
+    
+    
+    
+    
 });
