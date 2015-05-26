@@ -59,8 +59,8 @@ var ti = new Date();
  var langentered='en'; // make it english by default
   
   var query = req.params.title;
-  var time = req.params.time;
-//  var time = req.params.time/100;
+//  var time = req.params.time/100; //////////////mostafa 1
+  var time = req.params.time; ////////////// orig line
   var detail = req.params.detail;
   var outputlang = req.params.outputlang;
 
@@ -199,6 +199,7 @@ function check(){
   
   }
   else{ // continue on
+  time = time/100;
   console.log("second case");
    var dummyCounter = 0;
   var firstLang = "en",firstInd = 0;
@@ -393,7 +394,7 @@ tick++;
 }
 var level = 1;
 function createWorkersObj(lang){
-///////////////////////////////// removed for bug fix time = (time / 100);
+	// time = (time / 100);  // mostafa 2 (orig suggested fix)
 
     
     if (detail >= 0 && detail <= 33) // third level
@@ -581,7 +582,7 @@ var tim = setInterval(checkTrans,100);
 		                    	for (var i = 0; i < tt[1].length; i++) {
         	        	    	var slideText = tt[1][i].toString();
                 		    	slideTextArr = slideText.split(" ");
-					console.log("DEBUG Pre (2 lang): " + slideText);
+					//console.log("DEBUG Pre (2 lang): " + slideText);
 		                    	preMultiDocSumWC += slideTextArr.length;
 					}
 					
@@ -635,11 +636,13 @@ var tim = setInterval(checkTrans,100);
 
 
 
-					
-		                    	//for (var i = 0; i < tt2[0].length; i++) {
-        	        	    	//var text = tt2[0][i];
-                		    	//console.log("tt2[0]: " + text);
-					//}
+                                        console.log("Print of tt2[0], contains sections headings. tt2 len is: " + tt2.length  + "\n");
+                                        for (var i = 0; i < tt2[0].length; i++) {
+                                        	var sectionTitle = tt2[0][i];
+	                                        var sectionContent = tt2[1][i];
+        	                                console.log(i + ": " + sectionTitle + ", " + sectionContent.split(" ").length);
+                                        }
+                                        console.log();
 
 
 
@@ -684,6 +687,23 @@ var tim = setInterval(checkTrans,100);
 					finalXML = createXML(finalArray);
 				}
 
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 
 				// Now that all word counts are gathered, create a comma separated string
 				// of the languages of the available articles which made up the content
@@ -716,7 +736,25 @@ var tim = setInterval(checkTrans,100);
 				"<postMergeWC>" + postMultiDocSumWC + "</postMergeWC>" + 
 				"<langDetected>" + data + "</langDetected>" +
 				"<langsUsedInContent>" + langString + "</langsUsedInContent>" +
-				"</metrics>")	
+				"</metrics>")
+
+				// Next, convert the 'section' array (of arrays) to an XML string
+				// for insertion to the final returned XML
+				
+				var sectionsXmlStr = "<visual>"
+
+				for (var i = 0; i < tt2[0].length; i++) {
+                			var sectionTitle = tt2[0][i];
+					var sectionContent = tt2[1][i];
+					sectionsXmlStr += "<section><name>" + sectionTitle + "</name><value>" + sectionContent.split(" ").length + "</value></section>"
+                		}
+
+			        sectionsXmlStr += "</visual>";
+
+	
+				// Convert this XML like string to an XML document
+				var visualData = new xmldoc.XmlDocument(sectionsXmlStr);
+
 
 				// Then, extract the content from the existing finalXML doc
 				
@@ -728,7 +766,7 @@ var tim = setInterval(checkTrans,100);
 				
 				var finalXMLwtMetrics = new xmldoc.XmlDocument("<?xml version='1.0' encoding='UTF-8' standalone='no'?>" +
 				"<presentation>" +
-				content + metricsElm +  // plus any other elements needed
+				content + metricsElm + visualData + // plus any other elements needed
 				"</presentation>");
 
 				// Print for debug only
@@ -773,6 +811,7 @@ var tim = setInterval(checkTrans,100);
   }
 });// EO app.get()
 
+//var client = new MsTranslator({client_id:clientId, client_secret:clientSecret});
 
 
 
@@ -952,4 +991,25 @@ function removeENnoeAscii(ar){
 		console.log("ITEM:"+item);
 	
 
+}
+
+
+// Method to convert an array of arrays with section headings and data
+// to an XML string of sections and their wordcounts in separate elements
+function convertSectionsToXmlStr(tt2) {
+	
+	var sectionsXmlStr = "<visual>"
+
+		for (var i = 0; i < tt2[0].length; i++) {
+		    var sectionTitle = tt2[0][i];
+		    var sectionContent = tt2[1][i];
+		    
+		    sectionsXmlStr += "<section><name>" + sectionTitle + "</name><value>" + sectionContent.split(" ").length + "</value></section>"
+		    
+		}
+	
+	sectionsXmlStr += "</visual>";
+		
+	return sectionsXmlStr;
+	
 }

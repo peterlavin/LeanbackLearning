@@ -220,14 +220,18 @@ $(function() {
 						// Get the second part of the JSON, the actual playlist
 						var playlist = returnedJsonArray[1];
 						
-						// Get the third part of the JSON, the visual data for the Treemap
-						// This is now available to create the Treemap
-						var visualData = returnedJsonArray[2];
 						
-						// Some debug testing...
-						var firstVisualPart = eval(returnedJsonArray[2])
+						// vis debug code was here
 						
-						console.log("Sample (first) visual data... " + firstVisualPart[0].name);
+						
+						
+
+					
+						
+						
+						
+						
+						
 						
 						// Get URL of first part and check that there is actually some audio there to play
 						
@@ -300,8 +304,36 @@ $(function() {
 						//////////////////// start of modified code
 						
 						// Now that the Jplayer is in place, create the visualation div
-						
 						// array from returned JSON... visualData
+						
+						
+						
+						
+						
+						
+						// Get the third part of the JSON, the visual data for the Treemap
+						// This is now available to create the Treemap
+						var visualData = returnedJsonArray[2];
+						
+						if(visualData){
+							// Some debug testing...
+							var firstVisualPart = eval(returnedJsonArray[2])
+							console.log("Sample (first) visual data... " + firstVisualPart[0].name);
+						}
+						else {
+							console.log("No visual data found");
+							visualData = "[{\'name\': \'No Data\',\'value\': 0}]";
+						}
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 						
 				    
 					    $('#visualContainer').highcharts({
@@ -311,7 +343,7 @@ $(function() {
 				            data: visualData
 					        }],
 					        title: {
-					            text: 'Cork City'
+					            text: topics
 					        },
 					    plotOptions: {
 					    	series: {
@@ -329,84 +361,7 @@ $(function() {
 					        }
 					    },
 					    });
-				            
-				            
-				            
-				            
-//				            data: [{
-//				                name: 'TEST DATA',
-//				                value: 296
-//				            }, {
-//				                name: 'History',
-//				                value: 249
-//				            }, {
-//				                name: 'Geography',
-//				                value: 18
-//				            }, {
-//				                name: 'Climate',
-//				                value: 126
-//				            }, {
-//				                name: 'Culture',
-//				                value: 253
-//				            }, {
-//				                name: 'Media - Broadcasting',
-//				                value: 90
-//				            }, {
-//				                name: 'Places of interest',
-//				                value: 203
-//				            }
-//				            , {
-//				                name: 'Local gov, politics',
-//				                value: 112
-//				            }, {
-//				                name: 'Economy - Retail',
-//				                value: 71
-//				            }, {
-//				                name: 'Transport - Air',
-//				                value: 22
-//				            }, {
-//				                name: 'Education',
-//				                value: 72
-//				            }, {
-//				                name: 'Sport',
-//				                value: 13
-//				            }, {
-//				                name: 'Demographics',
-//				                value: 96
-//				            }]
-				    	    
-				    	    
 
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-						
-						
-						
-						
-						
-						
-						
-						////////////////////// restart of orig code
 						} // end of seconds == 0 if/else stm
 						
 							
@@ -672,6 +627,13 @@ function toggleVisual(){
 	
 	$('#topic_input').toggle();
 	$('#lang_lod_play').toggle();
+	
+	// (Hack alert!!!) need to reset/refresh the css settings
+	// to get the width to be correct DIDN'T WORK
+//	$('#visualContainer').css({'min-width':'300px'});
+//	$('#visualContainer').css({'max-width':'600px'});
+//	$('#visualContainer').css({'height':'310px'});
+	
 	
 }
 
