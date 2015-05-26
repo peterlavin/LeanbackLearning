@@ -304,36 +304,24 @@ $(function() {
 						//////////////////// start of modified code
 						
 						// Now that the Jplayer is in place, create the visualation div
-						// array from returned JSON... visualData
-						
-						
-						
-						
-						
-						
-						// Get the third part of the JSON, the visual data for the Treemap
-						// This is now available to create the Treemap
+
+						// Get the visual data array from the 'array of arrays' returned
 						var visualData = returnedJsonArray[2];
 						
+						
+						// Some debug testing...
 						if(visualData){
-							// Some debug testing...
 							var firstVisualPart = eval(returnedJsonArray[2])
 							console.log("Sample (first) visual data... " + firstVisualPart[0].name);
 						}
 						else {
+							// If no visual data is available, this logic is used
 							console.log("No visual data found");
 							visualData = "[{\'name\': \'No Data\',\'value\': 0}]";
 						}
 						
-						
-						
-						
-						
-						
-						
-						
-						
-						
+						// Capitalise the first word of 'topics' for heading of the Treemap
+						var capitalisedTopics = topics.charAt(0).toUpperCase() + topics.slice(1);
 						
 				    
 					    $('#visualContainer').highcharts({
@@ -343,7 +331,7 @@ $(function() {
 				            data: visualData
 					        }],
 					        title: {
-					            text: topics
+					            text: capitalisedTopics
 					        },
 					    plotOptions: {
 					    	series: {
