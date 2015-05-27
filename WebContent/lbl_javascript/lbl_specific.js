@@ -27,18 +27,13 @@ var time;
 
 var currentWcSec = 0;
 var obj;
-
 var playing = false;
 
 // set here when returned from the doPost() call, passed again to doGet() method for use there.
 var jobID;
-
 var retSeconds;
-
 var thisPlayer;
-
 var intervalTimer;
-
 var lastEndedValue = 0;
 
 $(function() {
@@ -222,14 +217,6 @@ $(function() {
 						
 						
 						// vis debug code was here
-						
-						
-						
-
-					
-						
-						
-						
 						
 						
 						
