@@ -37,7 +37,11 @@ public class TreemapSessionManager extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//String strTest = request.getParameter("test").trim();
+		if(request.getParameter("add") != null) {
+			
+			
+			
+		}
 		
 		Map<String, String[]> map = request.getParameterMap();
 		
@@ -56,14 +60,14 @@ public class TreemapSessionManager extends HttpServlet {
 
         HttpSession session = request.getSession();
         
-        String origSess = (String) session.getAttribute("user");
+      //  String origSess = (String) session.getAttribute("user");
         
         //session.setAttribute("user", origSess + ", " + strTest);
 
         //setting session to expiry in 30 mins
         session.setMaxInactiveInterval(30*60);
         
-        String newSess = (String) session.getAttribute("user");
+     //   String newSess = (String) session.getAttribute("user");
         
 //    	System.out.println("Session now is: " + newSess);
 //    	System.out.println(session.getId());
@@ -74,7 +78,7 @@ public class TreemapSessionManager extends HttpServlet {
 		 */
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(newSess);
+		response.getWriter().write("");
 		
 	}
 

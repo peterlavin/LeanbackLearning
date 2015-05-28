@@ -96,6 +96,8 @@ $(function () {
                 events: {
                     click: function () {
                     	
+                    	console.log(title.text);
+                    	
                     	addItemToSession(this.name);
                         
                     }
@@ -110,14 +112,15 @@ $(function () {
 
 <script>
 
-function addItemToSession(item) {
+function addItemToSession(article, section) {
 	
    // alert('Now added: ' + passedName);
     
+   	console.log(article + ", " + section);
     
 	$.post('TreemapSessionManager', {
 		
-						add : item
+						add : article + ", " + section						
 											
 					},
 					function(responseText) {

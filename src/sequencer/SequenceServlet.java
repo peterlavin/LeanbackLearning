@@ -53,6 +53,7 @@ import remoteservices.SearchSummAndCombine;
 import remoteservices.SpeechSynthesisParts;
 import storageutils.FileToDisk;
 import xmlutils.BalanceSentencesUtils;
+import xmlutils.GetVisualDataTitleFromXML;
 import xmlutils.GlobicMetricsToArrList;
 import xmlutils.visualDataToJSON;
 import databaseutils.DbaseEntry;
@@ -419,6 +420,11 @@ public class SequenceServlet extends HttpServlet {
 				 */
 				visualDataToJSON vdj = new visualDataToJSON();
 				visDataArrayJs =  vdj.convertXmlToJson(sAndCxml, debug);
+				
+				
+				GetVisualDataTitleFromXML gvdt = new GetVisualDataTitleFromXML();
+				
+				gvdt.getTitleFromXml(sAndCxml, debug);
 				
 				
 			}

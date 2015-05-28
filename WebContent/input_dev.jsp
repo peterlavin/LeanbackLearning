@@ -54,6 +54,8 @@
 		<script src="lbl_javascript/highcharts/highcharts.js"></script>
 		<script src="lbl_javascript/highcharts/modules/heatmap.js"></script>
 		<script src="lbl_javascript/highcharts/modules/treemap.js"></script>
+		
+		
 <!-- 		<script src="lbl_javascript/highcharts/lbl_specific_highcharts.js"></script> -->
 
 
@@ -64,8 +66,18 @@
 <body>
 
 <!--  Top bar with Sign Out button -->
+
+
+
+
+
+
+
+
+
+
 <div class="row">
-      <div class="tex-right" id="welcome_msg">
+      <div class="text-center" id="welcome_msg">
       	  <div id="usermsg"></div>
       </div>
       <div class="text-right" id="sign_out_btn" >
@@ -213,21 +225,7 @@
 </div>
 
 
-<!-- 	end of Lbl html in authOps div ---------------------------------------------------------- -->
-
-<!-- 		Not needed (for now) -->
-<!--     <h2>User's profile information</h2> -->
-<!--    <div id="profile"></div>
-    
-
-<!-- 		Not needed (for now) -->
-<!--     <h2>User's friends that are visible to this app</h2> -->
-<!--    <div id="visiblePeople"></div>
-
-<!-- 		Not needed (for now) -->
-<!--     <h2>Authentication Logs</h2> -->
-<!--    <pre id="authResult"></pre> -->
-    
+ 
     
 	
 	
