@@ -53,20 +53,16 @@ $(function() {
 		        $('#play_button').hide();
 		        $('#pause_button').hide();
 		        $('#stop_button').hide();
-		        $('#loader').hide();
 		        $('#startover').hide();
 		    	$('#jp_container_1').hide();
 //		    	$("#time_feedback").hide();
-		    	$("#visualContainer").hide();
 //		    	$("#time_feedback").css("visibility", "hidden");
 		    	
 		    	
 		        
 		        // Set language and detail buttons to default highlighting
-		  		$('#en_btn').css({"background":"#BEBEBE"});
-				$('#en_btn').css({"font-weight":"bold"});
-				$('#2_lod_btn').css({"background":"#BEBEBE"});
-				$('#2_lod_btn').css({"font-weight":"bold"});
+		  		$('#en_btn').addClass("output_lang_btn_active");
+				$('#2_lod_btn').addClass("output_lang_btn_active");
 				
 				/* var which 'knows' what stage (1 or 2) the selection and input process is at */
 				submitStage = 'first';
@@ -102,8 +98,9 @@ $(function() {
 						greyDetailButtons();
 						
 						// Show the loader and wait for a response from SSC
-						$('#loader').show();
-						$('#continue').hide();
+						$('#logo_image').addClass("logo_image_moving");
+						$('#logo_image').removeClass("logo_image");
+						setContinueDisabled();
 						
 						// Show the 'Start-Over' button in case of failures
 						$('#startover').show();
@@ -146,7 +143,8 @@ $(function() {
 											setErrorMsg("Error: No presentation available for <span style='font-weight:bold;'>" +
 													topics + "</span>, please try another topic");
 											
-											$('#loader').hide();
+											$('#logo_image').removeClass("logo_image_moving");
+											$('#logo_image').addClass("logo_image");
 											$('#startover').show();
 											
 										}
@@ -156,7 +154,8 @@ $(function() {
 											
 											setErrorMsg("SSC failure for: " + topics);
 											
-											$('#loader').hide();
+											$('#logo_image').removeClass("logo_image_moving");
+											$('#logo_image').addClass("logo_image");
 											$('#startover').show();
 											
 										}
@@ -174,8 +173,9 @@ $(function() {
 										
 										createTimeButtons(currentWcSec);
 										
-										$('#loader').hide();
-										$('#continue').show();
+										$('#logo_image').removeClass("logo_image_moving");
+										$('#logo_image').addClass("logo_image");
+										setContinueActive();
 										$('#startover').show();
 										restoreDetailButtons();
 										
@@ -192,9 +192,10 @@ $(function() {
 						
 						greyTimeButtons();
 						
-						$('#loader').show();
+						$('#logo_image').removeClass("logo_image");
+						$('#logo_image').addClass("logo_image_moving");
 						
-						$('#continue').hide();
+						setContinueDisabled();
 						
 						$.get('SequenceServlet',
 								{
@@ -247,7 +248,8 @@ $(function() {
 						
 							setErrorMsg(error_message + ", " + error_message_a);
 							
-							$('#loader').hide();
+							$('#logo_image').removeClass("logo_image_moving");
+							$('#logo_image').addClass("logo_image");
 							$('#startover').show();
 							$('#play_button').hide();
 							
@@ -292,17 +294,11 @@ $(function() {
 							}
 						});
 						
-						setUpProgressBar(retSeconds);
-						$('#loader').hide();
-						$('#play_button').show();
-						$('#startover').show();
-
 						//////////////////// start of modified code
 						
 						// Now that the Jplayer is in place, create the visualation div
 						
 						// array from returned JSON... visualData
-						
 				    
 					    $('#visualContainer').highcharts({
 				    	    series: [{
@@ -330,8 +326,23 @@ $(function() {
 					    },
 					    });
 				            
-				            
-				            
+						$("#playerProgressBar").css("display", "inline");
+						$('#logo_image').removeClass("logo_image_moving");
+						$('#logo_image').addClass("logo_image");
+						$('#continue_image').css("display", "none");
+						$('#startover').removeClass("btn-reset");
+						$('#startover').addClass("btn-reset-alone");
+						$('#play_button').css("display", "inline");
+						$('#pause_button').css("display", "none");
+						$('#stop_button').css("display", "none");
+						$('#lang_lod_play').css("display", "none");
+						$('#detail_buttons').css("display", "none");
+						$('#time_feedback').css("display", "none");
+						$('#previsualContainer').css("display", "inline-block");
+						$('#visualContainer').css("display", "inline-block");
+						$('#continue_loader_play').css("display", "inline");
+						setUpProgressBar(retSeconds);
+						
 				            
 //				            data: [{
 //				                name: 'TEST DATA',
@@ -494,10 +505,9 @@ function togglePlayer(){
 function localPlay() {
 	
 	$("#jquery_jplayer_1").jPlayer("play");
-	$('#play_button').hide();
-	$('#startover').hide();
-	$('#pause_button').show();
-	$('#stop_button').show();
+	$('#play_button').css("display", "none");
+	$('#pause_button').css("display", "inline");
+	$('#stop_button').css("display", "inline");
 	playing = true;
 	
 }
@@ -505,10 +515,9 @@ function localPlay() {
 function localPause() {
 	
 	$("#jquery_jplayer_1").jPlayer("pause");
-	$('#play_button').show();
-	$('#startover').show();
-	$('#pause_button').hide();
-	$('#stop_button').hide();
+	$('#play_button').css("display", "inline");
+	$('#pause_button').css("display", "none");
+	$('#stop_button').css("display", "none");
 	
 	playing = false;
 }
@@ -526,10 +535,9 @@ function localStopAndReset(){
 	playing = false;
 	
 	// set up buttons for restarting TODO, add stop button when ready
-	$('#play_button').show();
-	$('#startover').show();
-	$('#pause_button').hide();
-	$('#stop_button').hide();
+	$('#play_button').css("display", "inline");
+	$('#pause_button').css("display", "none");
+	$('#stop_button').css("display", "none");
 	
 	// reset progress bar to zero again
 	clearInterval(intervalTimer);
@@ -554,13 +562,8 @@ function testFn() {
 
 function setErrorMsg(errorMessage){
 	
-	$("#time_feedback").empty();
-	$("#time_feedback").append('<div class="btn-toolbar" id="time_feedback_toolbar"></div>');
-	
-	// Custom padding to keep flow when buttons are replaced with an error message
-	$("#time_feedback_toolbar").css({"padding": "14px 0px 0px 14px"});
-	$("#time_feedback").append(errorMessage);
-	$("#time_feedback").css("visibility", "visible");
+	$("#error_msg").append(errorMessage);
+	$("#error_msg").css("display", "inline");
 	
 }
 
@@ -588,12 +591,12 @@ function setLanguage(lang){
 		// TODO set the language variable here, should also have a default set in doc.ready()
 			
 		// reset all buttons to standard background
-		$('.output_lang_btn').css({"background":"#DDDDDD"});
-		$('.output_lang_btn').css({"font-weight":"normal"});
+		$('#'+ outputlang + '_btn').addClass("output_lang_btn");
+		$('#'+ outputlang + '_btn').removeClass("output_lang_btn_active");
 	
 		// then set the selected button to be dark with bold text
-		$('#'+ lang + '_btn').css({"background":"#BEBEBE"});
-		$('#'+ lang + '_btn').css({"font-weight":"bold"});
+		$('#'+ lang + '_btn').addClass("output_lang_btn_active");
+		$('#'+ lang + '_btn').removeClass("output_lang_btn");
 		
 		console.log("Output Lang was '" + outputlang + "' now '" + lang + "'");
 	
@@ -615,12 +618,12 @@ function setDetail(detailFromButton){
 	if(detailFromButton != detail){
 	
 	// reset all buttons to standard background
-	$('.level_of_detail_btn').css({"background":"#DDDDDD"});
-	$('.level_of_detail_btn').css({"font-weight":"normal"});
+	$('#'+ detail + '_lod_btn').addClass("output_lang_btn");
+	$('#'+ detail + '_lod_btn').removeClass("output_lang_btn_active");
 	
 	// then set the selected button to be dark with bold text
-	$('#'+ detailFromButton + '_lod_btn').css({"background":"#BEBEBE"});
-	$('#'+ detailFromButton + '_lod_btn').css({"font-weight":"bold"});
+	$('#'+ detailFromButton + '_lod_btn').addClass("output_lang_btn_active");
+	$('#'+ detailFromButton + '_lod_btn').removeClass("output_lang_btn");
 	
 	console.log("Detail was " + detail + " now " + detailFromButton);
 	detail = detailFromButton;
@@ -641,37 +644,6 @@ function testToggle(){
 	
 	  $('#play_button').toggle();
 	  $('#continue_1').toggle();
-	
-}
-
-function toggleVisual(){
-	
-	if($('#visualContainer').is(":hidden")){
-
-		$("#visualContainer").toggle();
-				
-		// Set logo size to smaller size 
-		$("#logo_image").css({ 'height': "50px" });
-		$("#logo_image").css({ 'width': "50px" });
-		$('#lbl_logo').css({'padding':'15px 0px 0px 0px'});
-		
-	}
-	else{
-
-		$("#visualContainer").toggle();
-		
-		// Revert size of logo size to orig 
-		$("#logo_image").css({'height': "143px"});
-		$("#logo_image").css({'width': "143px"});
-		
-		$('#lbl_logo').css({'padding':'15px 15px 15px 15px'});
-		
-
-		
-	}
-	
-	$('#topic_input').toggle();
-	$('#lang_lod_play').toggle();
 	
 }
 
@@ -737,22 +709,6 @@ function hideTimeButtons(){
 	
 }
 
-function toggleLoader(){
-
-	if($('#loader').is(":hidden")){
-		$('#loader').show();
-		$('#continue_1').hide();
-		$('#play_button').hide();
-		$('#startover').hide();
-	}
-	else{
-		$('#loader').hide();
-		$('#continue_1').hide();
-		$('#play_button').show();
-		$('#startover').show();
-	}
-}
-
 function createTimeButtons(wcSec){
 	
 	console.log('Ss now: ' + submitStage + ', wcSec use for time buttons is: ' + wcSec);
@@ -762,8 +718,7 @@ function createTimeButtons(wcSec){
 
 // 	Empty the div of its placeholder, append a bootstrap div
 	$("#time_feedback").empty();
-	$("#time_feedback").append('<div class="btn-toolbar" id="time_feedback_toolbar"></div>');
-	$("#time_feedback_toolbar").css({"padding": "0px 05px 0px 5px"});
+	$("#time_feedback").append('<div class="col-sm-6 col-sm-offset-2 text-left" id="time_feedback_toolbar"></div>');
 	
 	if(wcSec < 400){
 
@@ -779,7 +734,6 @@ function createTimeButtons(wcSec){
 		$('#time_feedback_toolbar').append('<button class="btn timeButton" id="80" OnClick="setTimeReqd(80)">' + Math.ceil(max/60) + ' min</button>');
 		
 		setTimeReqd(43);
-		
 	}
 	else if(wcSec < 3000) {
 		var step = (max - min)/4;
@@ -802,29 +756,28 @@ function createTimeButtons(wcSec){
 		$('#time_feedback_toolbar').append('<button class="btn timeButton" id="80" OnClick="setTimeReqd(80)">' + Math.ceil(max/60) + ' min</button>');
 		
 		setTimeReqd(35);
-		
 	}
 	
 // 	Finally, set the div as visible (hidden from page load/ready)
-	$("#time_feedback").css("visibility", "visible");
-
+	$("#time_feedback").css("display", "block");
+	$("#detail_buttons").css("display", "block");
 }
 
 function setTimeReqd(setVal) {
 	
+	console.log("TIME: " + time);
 	if(setVal != time){
 		
 		console.log("setTimeReqd called: " + setVal);
-			
-		time = setVal;
-			
+
 		// reset all buttons to standart background
-		$('.timeButton').css({"background":"#DDDDDD"});
-		$('.timeButton').css({"font-weight":"normal"});
+		$('#'+time).addClass("timeButton");
+		$('#'+time).removeClass("timeButton_active");
+		time = setVal;
+
 		// then set the selected button to be dark with bold text
-		$('#'+setVal).css({"background":"#BEBEBE"});
-		$('#'+setVal).css({"font-weight":"bold"});
-		
+		$('#'+setVal).addClass("timeButton_active");
+		$('#'+setVal).removeClass("timeButton");
 	}
 	
 }
@@ -835,12 +788,12 @@ function setUpProgressBar(duration) {
 	
 	// Firstly, create the progress bar in the time_feedback div
 	
-	$("#time_feedback").empty();
+	$("#playerProgressBar").empty();
 	
-	$("#time_feedback").append('<div class="container"><div id="progresslabel"><h1></h1></div>' + 
+	$("#playerProgressBar").append('<div id="progresslabel"><h1></h1></div>' + 
 			'<div class="progress">' +
 			'<div id="progressvalue" class="progress-bar" role="progressbar" + aria-valuenow="0" aria-' +
-			'valuemin="0" aria-valuemax="100" style="width:0%"></div></div></div>');
+			'valuemin="0" aria-valuemax="100" style="width:0%"></div></div>');
 	
 	
 	// initialise times for progress  bar
