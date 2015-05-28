@@ -334,6 +334,12 @@ public class SequenceServlet extends HttpServlet {
 
 		String sAndCText = "";
 		JSONArray visDataArrayJs = null;
+		/*
+		 * String title is extracted from the visual element
+		 * in the sAndCxml from SSC and passed to the UI in
+		 * the returned JSON array for use in the Treemap.
+		 */
+		String title = "";
 				
 		/* Create an arrayList containing the data which it will
 		* contain.
@@ -424,7 +430,7 @@ public class SequenceServlet extends HttpServlet {
 				
 				GetVisualDataTitleFromXML gvdt = new GetVisualDataTitleFromXML();
 				
-				gvdt.getTitleFromXml(sAndCxml, debug);
+				title = gvdt.getTitleFromXml(sAndCxml, debug);
 				
 				
 			}
@@ -799,9 +805,15 @@ public class SequenceServlet extends HttpServlet {
 			
 			JSONArray returnedJsonArray = new JSONArray();
 					
+			JSONObject jsTitle = new JSONObject();
+			
+			jsTitle.put("title", title);
+
 			returnedJsonArray.add(0, jsWC);
 			returnedJsonArray.add(1, jsonArrayPlist);
 			returnedJsonArray.add(2, visDataArrayJs);
+			returnedJsonArray.add(3, jsTitle);
+			
 			
 			/*
 			 * Create an ArrayList which contains the required output language

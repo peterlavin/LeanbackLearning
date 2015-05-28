@@ -27,7 +27,7 @@ public class visualDataToJSON {
 			 * Get the 'visual' element from the XML
 			 */
 			
-			NodeList el = sAndCxml.getElementsByTagName("visual");
+			NodeList ndl = sAndCxml.getElementsByTagName("visual");
 
 			/*
 			 * Firstly, it is necessary to check that there is an actual 'metrics' element
@@ -41,7 +41,7 @@ public class visualDataToJSON {
 			
 			JSONArray visualDataArray = new JSONArray();
 			
-			if (el.item(0) == null) {
+			if (ndl.item(0) == null) {
 				
 				System.out.println("\nNo 'visual' element found in SSC XML\n");
 				
@@ -56,14 +56,14 @@ public class visualDataToJSON {
 				NodeList secNodeList = sAndCxml.getElementsByTagName("section");
 				
 				
-				for(int visualNlIndex = 0;visualNlIndex < secNodeList.getLength();visualNlIndex++){
+				for(int i = 0; i < secNodeList.getLength(); i++){
 					
-					NodeList nodeList = secNodeList.item(visualNlIndex).getChildNodes();
+					NodeList nodeList = secNodeList.item(i).getChildNodes();
 					
 					
 					// each child node has 5 elements, 1 and 3 have the actual content.
 					// Also checking for random nodes called 'section' which are not in 'visual'
-					if (nodeList instanceof Element && secNodeList.item(visualNlIndex).getParentNode().getNodeName()=="visual" ){
+					if (nodeList instanceof Element && secNodeList.item(i).getParentNode().getNodeName()=="visual" ){
 						
 						JSONObject nameValuePair = new JSONObject();
 						
