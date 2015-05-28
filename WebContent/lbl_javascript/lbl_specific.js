@@ -27,18 +27,13 @@ var time;
 
 var currentWcSec = 0;
 var obj;
-
 var playing = false;
 
 // set here when returned from the doPost() call, passed again to doGet() method for use there.
 var jobID;
-
 var retSeconds;
-
 var thisPlayer;
-
 var intervalTimer;
-
 var lastEndedValue = 0;
 
 $(function() {
@@ -221,14 +216,10 @@ $(function() {
 						// Get the second part of the JSON, the actual playlist
 						var playlist = returnedJsonArray[1];
 						
-						// Get the third part of the JSON, the visual data for the Treemap
-						// This is now available to create the Treemap
-						var visualData = returnedJsonArray[2];
 						
-						// Some debug testing...
-						var firstVisualPart = eval(returnedJsonArray[2])
+						// vis debug code was here
 						
-						console.log("Sample (first) visual data... " + firstVisualPart[0].name);
+						
 						
 						// Get URL of first part and check that there is actually some audio there to play
 						
@@ -297,8 +288,26 @@ $(function() {
 						//////////////////// start of modified code
 						
 						// Now that the Jplayer is in place, create the visualation div
+
+						// Get the visual data array from the 'array of arrays' returned
+						var visualData = returnedJsonArray[2];
+						
+						
+						// Some debug testing...
+						if(visualData){
+							var firstVisualPart = eval(returnedJsonArray[2])
+							console.log("Sample (first) visual data... " + firstVisualPart[0].name);
+						}
+						else {
+							// If no visual data is available, this logic is used
+							console.log("No visual data found");
+							visualData = "[{\'name\': \'No Data\',\'value\': 0}]";
+						}
 						
 						// array from returned JSON... visualData
+						// Capitalise the first word of 'topics' for heading of the Treemap
+						var capitalisedTopics = topics.charAt(0).toUpperCase() + topics.slice(1);
+						
 				    
 					    $('#visualContainer').highcharts({
 				    	    series: [{
@@ -307,7 +316,7 @@ $(function() {
 				            data: visualData
 					        }],
 					        title: {
-					            text: 'Cork City'
+					            text: capitalisedTopics
 					        },
 					    plotOptions: {
 					    	series: {
@@ -388,36 +397,6 @@ $(function() {
 				    	    
 				    	    
 
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-				    
-						
-						
-						
-						
-						
-						
-						
-						////////////////////// restart of orig code
 						} // end of seconds == 0 if/else stm
 						
 							
@@ -644,6 +623,44 @@ function testToggle(){
 	
 	  $('#play_button').toggle();
 	  $('#continue_1').toggle();
+	
+}
+
+function toggleVisual(){
+	
+	if($('#visualContainer').is(":hidden")){
+
+		$("#visualContainer").toggle();
+				
+		// Set logo size to smaller size 
+		$("#logo_image").css({ 'height': "50px" });
+		$("#logo_image").css({ 'width': "50px" });
+		$('#lbl_logo').css({'padding':'15px 0px 0px 0px'});
+		
+	}
+	else{
+
+		$("#visualContainer").toggle();
+		
+		// Revert size of logo size to orig 
+		$("#logo_image").css({'height': "143px"});
+		$("#logo_image").css({'width': "143px"});
+		
+		$('#lbl_logo').css({'padding':'15px 15px 15px 15px'});
+		
+
+		
+	}
+	
+	$('#topic_input').toggle();
+	$('#lang_lod_play').toggle();
+	
+	// (Hack alert!!!) need to reset/refresh the css settings
+	// to get the width to be correct DIDN'T WORK
+//	$('#visualContainer').css({'min-width':'300px'});
+//	$('#visualContainer').css({'max-width':'600px'});
+//	$('#visualContainer').css({'height':'310px'});
+	
 	
 }
 
