@@ -116,7 +116,7 @@
 <!--   Put all lbl stuff in here -->
 
 <div class="row">
-      <div class="text-center" id="welcome_msg">
+      <div class="text-center col-sm-4 col-sm-offset-4" id="welcome_msg">
       	  <div id="usermsg"></div>
       </div>
       <div class="text-right" id="sign_out_btn" >
@@ -274,20 +274,20 @@
 
 <!-- 	end of Lbl html in authOps div ---------------------------------------------------------- -->
 
-<hr>
+<!-- <hr> -->
 
 <!-- 		Not needed (for now) -->
 <!--     <h2>User's profile information</h2> -->
-    <div id="profile"></div>
+<!--     <div id="profile"></div> -->
     
 
 <!-- 		Not needed (for now) -->
 <!--     <h2>User's friends that are visible to this app</h2> -->
-    <div id="visiblePeople"></div>
+<!--     <div id="visiblePeople"></div> -->
 
 <!-- 		Not needed (for now) -->
 <!--     <h2>Authentication Logs</h2> -->
-    <pre id="authResult"></pre>
+<!--     <pre id="authResult"></pre> -->
     
     
     
@@ -305,7 +305,7 @@
     
 <!--     Added by PL to allow an image to be used for login btn -->
    <div class="centered_button" id="logo_signin">
- 	 <input id="signinButton" type="image" src="images/LeanBackLearning_v2CROP.png" height="200" width="200" name="saveForm" OnClick="gapi.auth.signIn()"/>
+ 	 <input id="signinButton" type="image" src="images/lbllogo.png" height="200" width="200" name="saveForm" OnClick="gapi.auth.signIn()"/>
    </div>
 
     <button class="g-signin"

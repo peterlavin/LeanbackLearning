@@ -35,6 +35,7 @@ var retSeconds;
 var thisPlayer;
 var intervalTimer;
 var lastEndedValue = 0;
+var titleFromVisualData = "";
 
 $(function() {
 
@@ -50,6 +51,7 @@ $(function() {
 		        $('#stop_button').hide();
 		        $('#startover').hide();
 		    	$('#jp_container_1').hide();
+		    	//$('#scrolltext').hide();
 //		    	$("#time_feedback").hide();
 //		    	$("#time_feedback").css("visibility", "hidden");
 		    	
@@ -292,7 +294,6 @@ $(function() {
 						// Get the visual data array from the 'array of arrays' returned
 						var visualData = returnedJsonArray[2];
 						
-						
 						// Some debug testing...
 						if(visualData){
 							var firstVisualPart = eval(returnedJsonArray[2])
@@ -303,12 +304,17 @@ $(function() {
 							console.log("No visual data found");
 							visualData = "[{\'name\': \'No Data\',\'value\': 0}]";
 						}
+
+						// Get the title used in SSC to add to session list
+						var visualTitleObj = returnedJsonArray[3];
 						
-						// array from returned JSON... visualData
-						// Capitalise the first word of 'topics' for heading of the Treemap
-						var capitalisedTopics = topics.charAt(0).toUpperCase() + topics.slice(1);
+						// Parse 'title' and pass this to the treemap
+						titleFromVisualData = visualTitleObj.title; 
 						
-				    
+						console.log("Title from JSON found: " + titleFromVisualData);
+
+						// Set up the Treemap using the data extracted from the returned JSON array
+						 
 					    $('#visualContainer').highcharts({
 				    	    series: [{
 				            type: "treemap",
@@ -316,7 +322,7 @@ $(function() {
 				            data: visualData
 					        }],
 					        title: {
-					            text: capitalisedTopics
+					            text: titleFromVisualData
 					        },
 					    plotOptions: {
 					    	series: {
@@ -326,7 +332,9 @@ $(function() {
 					                events: {
 					                    click: function () {
 					                    	
-					                        alert('Category: ' + this.name);
+					                        //alert(titleFromVisualData + " : " + this.name + "\nhas been added to your presentation. ");
+					                    	addItemToSession(titleFromVisualData,this.name);
+					                        
 					                        
 					                    }
 					                }
@@ -334,6 +342,11 @@ $(function() {
 					        }
 					    },
 					    });
+					    
+					 //	$('#scrolltext').show();
+					    // Append 'clear list' and scroll text to visualContainer div
+					    $('#visualContainer').append("<div><marquee id='scrolltext' width='300' behavior='scroll' scrollamount='3' direction='left'></marquee></div>");
+					    
 				            
 						$("#playerProgressBar").css("display", "inline");
 						$('#logo_image').removeClass("logo_image_moving");
@@ -351,51 +364,6 @@ $(function() {
 						$('#visualContainer').css("display", "inline-block");
 						$('#continue_loader_play').css("display", "inline");
 						setUpProgressBar(retSeconds);
-						
-				            
-//				            data: [{
-//				                name: 'TEST DATA',
-//				                value: 296
-//				            }, {
-//				                name: 'History',
-//				                value: 249
-//				            }, {
-//				                name: 'Geography',
-//				                value: 18
-//				            }, {
-//				                name: 'Climate',
-//				                value: 126
-//				            }, {
-//				                name: 'Culture',
-//				                value: 253
-//				            }, {
-//				                name: 'Media - Broadcasting',
-//				                value: 90
-//				            }, {
-//				                name: 'Places of interest',
-//				                value: 203
-//				            }
-//				            , {
-//				                name: 'Local gov, politics',
-//				                value: 112
-//				            }, {
-//				                name: 'Economy - Retail',
-//				                value: 71
-//				            }, {
-//				                name: 'Transport - Air',
-//				                value: 22
-//				            }, {
-//				                name: 'Education',
-//				                value: 72
-//				            }, {
-//				                name: 'Sport',
-//				                value: 13
-//				            }, {
-//				                name: 'Demographics',
-//				                value: 96
-//				            }]
-				    	    
-				    	    
 
 						} // end of seconds == 0 if/else stm
 						
@@ -654,14 +622,7 @@ function toggleVisual(){
 	
 	$('#topic_input').toggle();
 	$('#lang_lod_play').toggle();
-	
-	// (Hack alert!!!) need to reset/refresh the css settings
-	// to get the width to be correct DIDN'T WORK
-//	$('#visualContainer').css({'min-width':'300px'});
-//	$('#visualContainer').css({'max-width':'600px'});
-//	$('#visualContainer').css({'height':'310px'});
-	
-	
+
 }
 
 function greyLanguageButtons(){
@@ -807,7 +768,7 @@ function setUpProgressBar(duration) {
 	
 	$("#playerProgressBar").empty();
 	
-	$("#playerProgressBar").append('<div id="progresslabel"><h1></h1></div>' + 
+	$("#playerProgressBar").append('<div id="progresslabel" style="margin-top: 30px;"><h1></h1></div>' + 
 			'<div class="progress">' +
 			'<div id="progressvalue" class="progress-bar" role="progressbar" + aria-valuenow="0" aria-' +
 			'valuemin="0" aria-valuemax="100" style="width:0%"></div></div>');
@@ -938,6 +899,28 @@ function startByEnter(ev){
 //		}
 		
 }
+
+function addItemToSession(article, section) {
+	
+	   // alert('Now added: ' + passedName);
+	    
+	   	console.log(article);
+	    
+//		$.post('TreemapSessionManager', {
+//			
+//							add : article						
+//												
+//						},
+//						function(responseText) {
+//							console.log(responseText);
+//						});
+		
+		
+	   	
+	   	
+		$('#scrolltext').append(article + ":" + section + " ");
+	    	
+	}
 	
 	
 	

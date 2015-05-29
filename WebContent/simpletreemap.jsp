@@ -96,8 +96,7 @@ $(function () {
                 events: {
                     click: function () {
                     	
-                    	console.log(title.text);
-                    	
+               	
                     	addItemToSession(this.name);
                         
                     }
@@ -116,16 +115,19 @@ function addItemToSession(article, section) {
 	
    // alert('Now added: ' + passedName);
     
-   	console.log(article + ", " + section);
+   	console.log(article);
     
 	$.post('TreemapSessionManager', {
 		
-						add : article + ", " + section						
+						add : article						
 											
 					},
 					function(responseText) {
 						console.log(responseText);
 					});
+	
+	// TODO, get up the session here and pop it into the scrolling text	
+	$('#scrolltext').html(article);
     	
 }
 
@@ -191,17 +193,16 @@ function drop(ev) {
 
 
 <!-- the allowDrop(event) here allows data to be dropped on this div -->
-<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
 
-<div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)">
+<!-- <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"> -->
 
 <!-- This image is dragabble -->
-<img id="drag1" src="images/google_signout.png" draggable="true" ondragstart="drag(event)" width="135" height="50">
+<!-- <img id="drag1" src="images/google_signout.png" draggable="true" ondragstart="drag(event)" width="135" height="50"> -->
 
-</div>
+<!-- </div> -->
 
-
-
+<div><marquee id="scrolltext" width="300" behavior="scroll" scrollamount="10" direction="left">Your scrolling text goes here</marquee></div>
 
 
 </body>

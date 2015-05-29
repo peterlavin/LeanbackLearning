@@ -77,8 +77,8 @@
 
 
 <div class="row">
-      <div class="text-center" id="welcome_msg">
-      	  <div id="usermsg"></div>
+      <div class="text-center col-sm-4 col-sm-offset-4" id="welcome_msg">
+      	  <div id="usermsg"><h5>Welkome Mr A User</h5></div>
       </div>
       <div class="text-right" id="sign_out_btn" >
       	<input id="disconnect" type="image" src="images/google_signout.png" name="saveForm"/>
@@ -115,7 +115,7 @@
  	    <!-- Centering visual container -->
 	  </div>
    	  <div class="col-sm-8 text-center" id="visualContainer" style="display: none;">
- 	    <!-- Treemap -->
+ 	    <!-- Treemap --> 
 	  </div>
 	</div>
 
