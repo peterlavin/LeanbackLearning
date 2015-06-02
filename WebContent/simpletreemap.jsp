@@ -24,6 +24,12 @@
 
 $(function () {
     $('#visualContainer').highcharts({
+    	
+    	tooltip: {
+            valueSuffix: ' words'
+        },
+    	
+    	
         series: [{
             type: "treemap",
             layoutAlgorithm: 'squarified',
@@ -107,6 +113,24 @@ $(function () {
     });
 });
 
+
+$(function () {
+    $('#container').highcharts({
+
+        tooltip: {
+            backgroundColor: '#FCFFC5'
+        },
+
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+
+        series: [{
+            data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+        }]
+    });
+});
+
 </script>
 
 <script>
@@ -127,7 +151,7 @@ function addItemToSession(article, section) {
 					});
 	
 	// TODO, get up the session here and pop it into the scrolling text	
-	$('#scrolltext').html(article);
+	$('#scrolltext').append(article + ", ");
     	
 }
 
@@ -154,6 +178,8 @@ function clearSession(){
 	function(responseText) {
 		console.log(responseText);
 	});
+	
+	$('#scrolltext').html("");
 
 }
 
@@ -168,7 +194,7 @@ function clearSession(){
 
 <div id="visualContainer"></div>
 
-<button id="getSessionBtm" type="button" OnClick="getSession()">Get Session</button>
+<!-- <button id="getSessionBtm" type="button" OnClick="getSession()">Get Session</button> -->
 <button id="clearSessionBtm" type="button" OnClick="clearSession()">Clear Session</button>
 
 
@@ -202,7 +228,7 @@ function drop(ev) {
 
 <!-- </div> -->
 
-<div><marquee id="scrolltext" width="300" behavior="scroll" scrollamount="10" direction="left">Your scrolling text goes here</marquee></div>
+<div><marquee id="scrolltext" width="300" behavior="scroll" scrollamount="3" direction="left"></marquee></div>
 
 
 </body>

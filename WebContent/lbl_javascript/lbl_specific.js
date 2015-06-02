@@ -176,6 +176,39 @@ $(function() {
 										$('#startover').show();
 										restoreDetailButtons();
 										
+											/*
+											 * Finally, deal with a scenario where the same amount of content
+											 * is available for two or all of the levels of detail.
+											 */
+											if (level_3_wcSec == level_2_wcSec && level_1_wcSec == level_2_wcSec) {
+											
+												console.log("All levels are equal");
+												// Disable 'Overview' and 'Detailed' buttons (2 and 3) as
+												// changing these now yields no extra content
+												$("#2_lod_btn").fadeTo(250, 0.6);
+												$("#2_lod_btn").attr("disabled", true);
+												
+												$("#3_lod_btn").fadeTo(250, 0.6);
+												$("#3_lod_btn").attr("disabled", true);
+												
+												
+											
+											}
+											else if (level_3_wcSec == level_2_wcSec) {
+											
+												console.log("Level 2 and 3 are equal");
+												// Disable 'Detailed' button (3) as selecting this yields no extra content
+												$("#3_lod_btn").fadeTo(250, 0.6);
+												$("#3_lod_btn").attr("disabled", true);
+											
+											}
+											else {
+											
+												// Do nothing except log to console
+												console.log("Content from all 3 levels is different");
+											
+											}
+										
 										}
 										
 									}); //end of function(responseText) brace			
@@ -316,6 +349,9 @@ $(function() {
 						// Set up the Treemap using the data extracted from the returned JSON array
 						 
 					    $('#visualContainer').highcharts({
+					    	tooltip: {
+					            valueSuffix: ' words'
+					        },
 				    	    series: [{
 				            type: "treemap",
 				            layoutAlgorithm: 'squarified', 
