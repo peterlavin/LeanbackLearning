@@ -145,9 +145,9 @@ $(function() {
 											$('#startover').show();
 											
 										}
-										else if (level_1_wcSec == "failure") {
+										else if (level_1_wcSec == "ssc_failure") {
 
-											console.log("\nFailure reported from doPost method for: " + topics);
+											console.log("\nSSC failure reported from doPost method for: " + topics);
 											
 											setErrorMsg("SSC failure for: " + topics);
 											
@@ -156,6 +156,19 @@ $(function() {
 											$('#startover').show();
 											
 										}
+										
+										else if (level_1_wcSec == "db_failure") {
+
+											console.log("\nDB failure reported from doPost method for: " + topics);
+											
+											setErrorMsg("Database error, please try again");
+											
+											$('#logo_image').removeClass("logo_image_moving");
+											$('#logo_image').addClass("logo_image");
+											$('#startover').show();
+											
+										}										
+										
 										else {
 											
 											console.log("\nSuccess reported from doPost method for: " + topics);
@@ -191,8 +204,6 @@ $(function() {
 												$("#3_lod_btn").fadeTo(250, 0.6);
 												$("#3_lod_btn").attr("disabled", true);
 												
-												
-											
 											}
 											else if (level_3_wcSec == level_2_wcSec) {
 											

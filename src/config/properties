@@ -22,7 +22,7 @@ contentFileStorageWindows=c:/inetpub/wwwroot/lbl/content
 #contentFileStorageLinux=/var/html/LBL/content
 # for debian VM
 contentFileStorageLinux=/var/www/lbl/content
-# for Llinux Mint (dev laptop)
+# for Linux Mint (dev laptop)
 ############contentFileStorageLinux=/var/www/html/lbl/content
 
 # Common audio variables

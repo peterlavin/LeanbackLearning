@@ -23,10 +23,10 @@
         
         maxIdle="4" 
         
-        maxConnectionAge = "86400"
+        maxConnectionAge = "3600"
         
         autoReconnect="true"
 
-        maxIdleTimeExcessConnections = "1800" />
+        maxIdleTimeExcessConnections = "3600" />
  
 </Context>

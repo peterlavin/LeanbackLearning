@@ -83,10 +83,7 @@ public class SequenceServlet extends HttpServlet {
 	// these will be moved to external class ? TODO
 	int initialSet;
 	int blockSize;
-	
-	
-	
-	
+		
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -161,6 +158,8 @@ public class SequenceServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/*
+		 * Second call to SSC
+		 * 
 		 * This (doGet) method is called from the UI of Leanback Learning when the
 		 * user has finalised their time and 'level of detail' preferences.
 		 * 
@@ -353,7 +352,7 @@ public class SequenceServlet extends HttpServlet {
 		if (overallSuccess) {
 
 			/*
-			 * integer variable used for word count of returned SSC XML document,
+			 * Integer variable used for word count of returned SSC XML document,
 			 * recorded in database if SSC part of job is successful
 			 */
 
@@ -427,9 +426,11 @@ public class SequenceServlet extends HttpServlet {
 				visualDataToJSON vdj = new visualDataToJSON();
 				visDataArrayJs =  vdj.convertXmlToJson(sAndCxml, debug);
 				
-				
+				/*
+				 * Get the title from the XL file, this is used in the JSON returned
+				 * to the UI 
+				 */
 				GetVisualDataTitleFromXML gvdt = new GetVisualDataTitleFromXML();
-				
 				title = gvdt.getTitleFromXml(sAndCxml, debug);
 				
 				
@@ -537,15 +538,13 @@ public class SequenceServlet extends HttpServlet {
 			globicStorageSuccess = ftd.storeContentFilesToDisk(sAndCxml,
 					contentNamingDetails, prop);
 
+			
+			
 			/*
 			 * Create an XML file which contains metadata for this job, this
 			 * is then stored to disk, available for GLOBIC to fetch it from
 			 * this location.
-			 * 
-			 */
-
-
-			/*
+			 *
 			 * Get audio file URL parts from properties
 			 */
 			String strContentServerIP = "";
@@ -567,10 +566,7 @@ public class SequenceServlet extends HttpServlet {
 			 */
 			dataArrayGlobic.add("contenturl#######" + strContentUrl);
 			dataArrayGlobic.add("topics#######" + strTopics);
-			/////////// Deprecated ////////////dataArrayGlobic.add("langentered#######" + strLangEntered);
 			dataArrayGlobic.add("outputlang#######" + strOutputLang);
-			
-				
 
 			/*
 			 * Convert this ArrayList<String> to XML, this approach is used
@@ -595,23 +591,13 @@ public class SequenceServlet extends HttpServlet {
 		}
 	
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		/*
+		 * At the end of the interaction with the SSC service, the database
+		 * is updated with the status of the SSC step
+		 */
 		
 		if(overallSuccess){
-			
 		
-			/*
-			 * At the end of the interaction with the SSC service, the database
-			 * is updated with the status of the SSC step
-			 */
 			try {
 	
 				/*
@@ -630,11 +616,11 @@ public class SequenceServlet extends HttpServlet {
 			
 		}
 		
-		// /////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////
 		//
 		// CONVERT THE RETURNED FROM SSC TO SPEECH AUDIO FILE(s)
 		//
-		// //////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////
 		
 		int numberOfBalSentences = 0;
 		
@@ -781,15 +767,17 @@ public class SequenceServlet extends HttpServlet {
 			JSONArray jsonArrayPlist = createPlaylistJson(numberInPlaylist,audioNamingDetailsParts, prop);
 			
 			/*
-			 * Create and popluate a JOSN for the word count of the original XML content
-			 * file retruned from SSC
+			 * Create and popluate a JSON for the word count of the original XML content
+			 * file retruned from SSC. This is used to estimate the number of seconds
+			 * in the presentation.
 			 */
-		
-			
 			String wcMultipleStr = prop.getProperty("wordcountMultiple");
 
 			float wcMultipleFloat = Float.parseFloat(wcMultipleStr);
 
+			/*
+			 * Calculate the predicted seconds using a constant multiple
+			 */
 			int predictedSeconds = (int) ((xmlWordCount / wcMultipleFloat));
 			
 			
@@ -1107,24 +1095,16 @@ public class SequenceServlet extends HttpServlet {
 		
 		if (overallSuccess) {
 
+			/*
+			 * This thread continues to run after the first piece of audio has been returned
+			 * and is playing.
+			 */
 			thr.start();
 		}
 
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 		
-	}
+	} // End of the doGet() method
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -1132,6 +1112,8 @@ public class SequenceServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/*
+		 * Initial (word-count call)
+		 * 
 		 * This (doPost) method is called from the UI when the user first enters their
 		 * topic and their initial 'level of detail' preferences. It returns a short
 		 * XML file with three word-count values to the UI for generation of time
@@ -1152,9 +1134,6 @@ public class SequenceServlet extends HttpServlet {
 		String strInitDetail = request.getParameter("init_detail");
 		String strOutputLang = request.getParameter("outputlang");
 		
-		/*
-		 * Check that the database is available and that the connection is 'awake'
-		 */
 		DbaseEntry dbe = new DbaseEntry(this.debug);
 		String responseJsStr = "";
 		
@@ -1170,14 +1149,46 @@ public class SequenceServlet extends HttpServlet {
 		dataForDB.add(strOutputLang);
 		
 		
+	
+		/*
+		 * First, try to carry out a transaction which can fail without causing
+		 * the job fail (i.e. a simple transaction which has no impact).
+		 */
 		try {
+			
+			if(this.debug){
+				
+				println("\n\nNew job...\nCarrying out a test/waking transaction on the DBase");
+				
+			}
+			
+			conn = dataSource.getConnection();
+			
+			dbe.WakeUpConnection(conn);
+						
+		} catch (Exception e2) {
+			
+			println(" -- Test/waking transaction threw an error - connection was asleep --");
+		
+			/*
+			 * Set jobId to -1 so it can be detected for error feedback. If the connection
+			 * was only asleep, jobId will re-assigned to a positive number in the next
+			 * stage 
+			 */
+			jobId = -1;
+						
+		}
+			
 			
 			/*
 			 * Create a DB entry for this job and get a new job ID number from the database
 			 */
+		try {
+			
 			conn = dataSource.getConnection();
+			
 			jobId = dbe.CreatInitialDbEntry(conn, dataForDB);
-
+						
 		} catch (Exception e1) {
 			
 			/*
@@ -1267,9 +1278,7 @@ public class SequenceServlet extends HttpServlet {
 				
 				responseJsStr = jsArray.toJSONString();
 				
-				/*
-				 * TODO, print pretty here to debug
-				 */
+
 
 			}
 			else {
@@ -1288,7 +1297,7 @@ public class SequenceServlet extends HttpServlet {
 				
 				JSONObject jsWc = new JSONObject();
 				
-				jsWc.put("level_1", "failure");
+				jsWc.put("level_1", "ssc_failure");
 				
 				
 				if(debug){
@@ -1322,7 +1331,7 @@ public class SequenceServlet extends HttpServlet {
 			
 			JSONObject jsSscFail = new JSONObject();
 			
-			jsSscFail.put("level_1", new String("failure"));
+			jsSscFail.put("level_1", new String("db_failure"));
 			
 			jsArray.add(jsJobIdFail);
 			jsArray.add(jsSscFail);

@@ -685,6 +685,50 @@ public class DbaseEntry {
 			System.out.println(obj[0]);
 		}
 	}
+
+
+	public void WakeUpConnection(Connection conn) {
+		
+		/*
+		 * Carry out a simple transaction on the database
+		 * to awake the connection.
+		 */
+		
+		
+		String selectVersionStm = "select version();";
+
+		Statement stm = null;
+		
+		try {
+
+			stm = conn.createStatement();
+			stm.executeQuery(selectVersionStm);
+			println(" == select version() run successfully ==");
+
+		} catch (SQLException e) {
+			
+			println(" == Error when running 'select version();', connection was asleep ==");
+			
+			e.printStackTrace();
+			
+		} finally {
+			try {
+				if(stm != null) {
+					stm.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if (conn != null){
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+						
+	}
 	
 	
 }

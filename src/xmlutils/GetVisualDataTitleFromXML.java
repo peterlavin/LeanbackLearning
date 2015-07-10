@@ -24,7 +24,7 @@ public class GetVisualDataTitleFromXML {
 	public String getTitleFromXml(Document sAndCxml, boolean debug) {
 
 		/*
-		 * Get the 'visual' element from the XML and initiate a string to return
+		 * Get the 'visual' element from the XML
 		 */
 		NodeList ndl = sAndCxml.getElementsByTagName("visual");
 		String title = "";
