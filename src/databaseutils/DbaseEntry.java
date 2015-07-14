@@ -708,8 +708,10 @@ public class DbaseEntry {
 		} catch (SQLException e) {
 			
 			println(" == Error when running 'select version();', connection was asleep ==");
+			println("Process should now continue");
 			
-			e.printStackTrace();
+			// comment this out to remove the stack print from the output
+//			e.printStackTrace();
 			
 		} finally {
 			try {
