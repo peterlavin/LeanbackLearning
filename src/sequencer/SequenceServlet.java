@@ -92,9 +92,7 @@ public class SequenceServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see Servlet#init(ServletConfig)
-	 */
+	
 	public void init(ServletConfig config) throws ServletException {
 
 		System.out.println("init() has been called in LeanbackLearning SequenceServlet");
@@ -472,12 +470,8 @@ public class SequenceServlet extends HttpServlet {
 			
 		/*
 		 * Proceed with processing the returned XML file
-		 * 
-		 * FIXME if at this point, the XML is valid, but contains 'no results found', it is still processed FIXME
-		 * 
-		 * FIXME TODO, in the 2nd version, if there are no results, the logic never gets this far
 		 */
-		
+
 		if (overallSuccess && sAndCText.toLowerCase().contains("no result found")) {
 			overallSuccess = false;
 			errorType = ErrorTypes.error_5;
@@ -538,7 +532,6 @@ public class SequenceServlet extends HttpServlet {
 			globicStorageSuccess = ftd.storeContentFilesToDisk(sAndCxml,
 					contentNamingDetails, prop);
 
-			
 			
 			/*
 			 * Create an XML file which contains metadata for this job, this
@@ -1104,7 +1097,7 @@ public class SequenceServlet extends HttpServlet {
 
 
 		
-	} // End of the doGet() method
+	} ///////////////////////////////// End of the doGet() method
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

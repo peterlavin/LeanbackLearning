@@ -38,21 +38,28 @@ public class TreemapSessionManager extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		if(request.getParameter("add") != null) {
+					
+			Map<String, String[]> map = request.getParameterMap();
+		
+						
+			for (String key : map.keySet()) {
+				
+				System.out.println("Activity is: " + key);
+								
+			}
 			
 			
-			
+			for (String[] value : map.values()) {
+				
+				for (String str : value){
+					System.out.print(str);
+				}
+								
+			}
+		
+			System.out.println();
+		
 		}
-		
-		Map<String, String[]> map = request.getParameterMap();
-		
-		String activity = "";
-		for (String key : map.keySet()) {
-		    activity = key;
-		}
-		
-		System.out.println("Activity is: " + activity);
-		
-		
 		
 		//System.out.println("\ndoPut Method called: " + strTest);
 		

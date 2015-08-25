@@ -947,25 +947,25 @@ function startByEnter(ev){
 		
 }
 
-function addItemToSession(article, section) {
+function addItemToSession(article, sectionName) {
 	
-	   // alert('Now added: ' + passedName);
+	   	console.log(article + " : " + sectionName);
 	    
-	   	console.log(article);
-	    
-//		$.post('TreemapSessionManager', {
-//			
-//							add : article						
-//												
-//						},
-//						function(responseText) {
-//							console.log(responseText);
-//						});
+		$.post('TreemapSessionManager', {
+			
+							add : article,
+							
+							
+												
+						},
+						function(responseText) {
+							console.log(responseText);
+						});
 		
 		
 	   	
-	   	
-		$('#scrolltext').append(article + ":" + section + " ");
+	   	// Temp code to append articles to a text scroller in the webpage
+		$('#scrolltext').append(article + ":" + sectionName + " ");
 	    	
 	}
 	

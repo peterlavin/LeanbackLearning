@@ -78,7 +78,7 @@
 
 <div class="row">
       <div class="text-center col-sm-4 col-sm-offset-4" id="welcome_msg">
-      	  <div id="usermsg"><h5>Welkome Mr A User</h5></div>
+      	  <div id="usermsg"><h5>Welcome Mr A User</h5></div>
       </div>
       <div class="text-right" id="sign_out_btn" >
       	<input id="disconnect" type="image" src="images/google_signout.png" name="saveForm"/>
