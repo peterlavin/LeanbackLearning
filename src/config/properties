@@ -8,11 +8,11 @@ debug=true
 ######### These Three variables change for moving from dev to production
 
 # For debian Ubuntu (school VM, production)
-###############audioFileStorageLinux=/var/www/lbl/audio
+audioFileStorageLinux=/var/www/lbl/audio
 
 
 # for debian dev laptop (Linux Mint, devel and test)
-audioFileStorageLinux=/var/www/html/lbl/audio
+############audioFileStorageLinux=/var/www/html/lbl/audio
 
 # for debian Ubuntu (school VM, production)
 ##############contentFileStorageLinux=/var/www/lbl/content
@@ -22,8 +22,9 @@ contentFileStorageLinux=/var/www/html/lbl/content
 
 ## Alternate between these for dev and production
 
-################mediaServerIP=lbltest.scss.tcd.ie
-mediaServerIP=localhost
+mediaServerIP=lbltest.scss.tcd.ie
+#################mediaServerIP=localhost
+
 
 ###################################################################
 

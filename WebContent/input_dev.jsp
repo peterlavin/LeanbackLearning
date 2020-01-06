@@ -110,6 +110,12 @@
  	  </div>
    </div>
    
+   	
+   	
+   	
+   	
+   	
+   	
    	<div class="row">
    	  <div class="col-sm-2" id="previsualContainer" style="display: none;">
  	    <!-- Centering visual container -->
@@ -118,6 +124,14 @@
  	    <!-- Treemap --> 
 	  </div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
 
    	<div class="row">
    	  <div class="col-sm-6 col-sm-offset-2 text-center" id="playerProgressBar" style="display: none;">
@@ -135,7 +149,10 @@
 		</div>
 	</div>
    </div>
-        
+
+
+
+
    <div class="row" id="lang_lod_play">
 	 <div class="col-sm-6 col-sm-offset-2 text-left" id="output_lang">  
 			<button class="btn output_lang_btn" id="fr_btn"OnClick="setLanguage('fr')">French</button>
@@ -160,6 +177,8 @@
 		<button class="btn-lg btn-success btn-reset" id="startover" OnClick="reload()"/>Reset<i class="fa fa-refresh arrow-icon"></i></button>
 		<button class="btn-lg btn-success btn-continue" id="continue_image"/>Continue<i class="fa fa-arrow-right arrow-icon"></i></button>
 	</div>
+	
+		
 	
 	<!-- HTML required for the player (only the list is shown here) -->
     <div id="container" style="display:none;">

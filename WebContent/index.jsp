@@ -53,7 +53,7 @@
 		<script type="text/javascript" src="playlist/js/jplayer.playlist.min.js"></script>
   		
 		<!-- 	Page level configuration, added for button work -->
-		<meta name="google-signin-clientid" content="1014444466376-781shj0dnkd1igkfv39scjto8bs1kkdk.apps.googleusercontent.com"/>
+		<meta name="google-signin-clientid" content="340435534147-lvihtciqt17umkl1q0v8npqsd32fgil2.apps.googleusercontent.com"/>
 		<meta name="google-signin-scope" content="https://www.googleapis.com/auth/plus.login" />
 		<meta name="google-signin-requestvisibleactions" content="http://schema.org/AddAction" />
 		<meta name="google-signin-cookiepolicy" content="single_host_origin" />
